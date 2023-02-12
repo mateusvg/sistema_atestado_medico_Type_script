@@ -12,20 +12,41 @@ import {
 } from '@chakra-ui/react';
 import { CheckIcon } from '@chakra-ui/icons';
 import { Radio, RadioGroup } from '@chakra-ui/react'
+import { useNavigate } from 'react-router-dom';
+import {
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalFooter,
+    ModalBody,
+    ModalCloseButton,
+} from '@chakra-ui/react'
+import { useDisclosure } from '@chakra-ui/react'
 
 export default function Simple() {
-    const [email, setEmail] = useState('');
+    const { isOpen, onOpen, onClose } = useDisclosure()
+    const navigate = useNavigate();
+    const [nomePaciente, setNomePaciente] = useState('');
+    const [cpf, setCPF] = useState('');
+    const [nomeMedico, setNomeMedico] = useState('');
+    const [data, setData] = useState('');
+    const [aptidao, setAptidao] = useState('');
+    const [anexo, setAnexo] = useState('');
     const [state, setState] = useState<'initial' | 'submitting' | 'success'>(
         'initial'
     );
     const [error, setError] = useState(false);
 
+
     return (
+
         <Flex
             minH={'100vh'}
             align={'center'}
             justify={'center'}
             bg={useColorModeValue('gray.50', 'gray.800')}>
+
             <Container
                 maxW={'lg'}
                 bg={useColorModeValue('white', 'whiteAlpha.100')}
@@ -33,6 +54,7 @@ export default function Simple() {
                 rounded={'lg'}
                 p={6}
             >
+
                 <Heading
                     as={'h2'}
                     fontSize={{ base: 'xl', sm: '2xl' }}
@@ -52,14 +74,16 @@ export default function Simple() {
 
                         // remove this code and implement your submit logic right here
                         setTimeout(() => {
-                            if (email === 'fail@example.com') {
+                            if (nomePaciente === 'teste') {
                                 setError(true);
                                 setState('initial');
                                 return;
                             }
 
                             setState('success');
+
                         }, 1000);
+
                     }}>
                     <FormControl>
                         <Input
@@ -71,15 +95,15 @@ export default function Simple() {
                                 color: 'gray.400',
                             }}
                             borderColor={useColorModeValue('gray.300', 'gray.700')}
-                            id={'email'}
-                            type={'email'}
+                            id={'nomePaciente'}
+                            type={'nomePaciente'}
                             required
                             placeholder={'Nome Paciente'}
                             aria-label={'Seu nome'}
-                            value={email}
+                            value={nomePaciente}
                             disabled={state !== 'initial'}
                             onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                                setEmail(e.target.value)
+                                setNomePaciente(e.target.value)
                             }
                         />
                         <Input
@@ -91,15 +115,15 @@ export default function Simple() {
                                 color: 'gray.400',
                             }}
                             borderColor={useColorModeValue('gray.300', 'gray.700')}
-                            id={'email'}
-                            type={'email'}
+                            id={'cpf'}
+                            type={'cpf'}
                             required
                             placeholder={'CPF'}
                             aria-label={'Seu CPF'}
-                            value={email}
+                            value={cpf}
                             disabled={state !== 'initial'}
                             onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                                setEmail(e.target.value)
+                                setCPF(e.target.value)
                             }
                         />
                         <Input
@@ -111,18 +135,17 @@ export default function Simple() {
                                 color: 'gray.400',
                             }}
                             borderColor={useColorModeValue('gray.300', 'gray.700')}
-                            id={'email'}
-                            type={'email'}
+                            id={'nomeMedico'}
+                            type={'nomeMedico'}
                             required
                             placeholder={'Nome Médico'}
                             aria-label={'Seu CPF'}
-                            value={email}
+                            value={nomeMedico}
                             disabled={state !== 'initial'}
                             onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                                setEmail(e.target.value)
+                                setNomeMedico(e.target.value)
                             }
                         />
-
                         <Input
                             mb={2}
                             variant={'solid'}
@@ -132,16 +155,17 @@ export default function Simple() {
                                 color: 'gray.400',
                             }}
                             borderColor={useColorModeValue('gray.300', 'gray.700')}
-
+                            id={data}
+                            value={data}
                             size="md"
                             type="date"
                         />
                         <RadioGroup defaultValue='1' mb={2}>
                             <Stack spacing={5} direction='row'>
-                                <Radio colorScheme='green' value='1'>
+                                <Radio colorScheme='green' value='1' id={aptidao}>
                                     Apto
                                 </Radio>
-                                <Radio colorScheme='red' value='2'>
+                                <Radio colorScheme='red' value='2' id={aptidao}>
                                     Inapto
                                 </Radio>
                             </Stack>
@@ -159,9 +183,30 @@ export default function Simple() {
                             colorScheme={state === 'success' ? 'green' : 'blue'}
                             isLoading={state === 'submitting'}
                             w="100%"
+                            onClick={onOpen}
                             type={state === 'success' ? 'button' : 'submit'}>
                             {state === 'success' ? <CheckIcon /> : 'Enviar'}
                         </Button>
+
+
+                        <Modal isOpen={isOpen} onClose={onClose}>
+                            <ModalOverlay />
+                            <ModalContent>
+                                <ModalHeader>Modal Title</ModalHeader>
+                                <ModalCloseButton />
+                                <ModalBody>
+                                    <Text></Text>
+                                </ModalBody>
+
+                                <ModalFooter>
+                                    <Button colorScheme='blue' mr={3} onClick={onClose}>
+                                        Close
+                                    </Button>
+                                    <Button variant='ghost'>Secondary Action</Button>
+                                </ModalFooter>
+                            </ModalContent>
+                        </Modal>
+
                     </FormControl>
                 </Stack>
 
