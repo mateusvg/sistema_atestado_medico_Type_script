@@ -11,10 +11,20 @@ import {
     Flex,
 } from '@chakra-ui/react';
 import { CheckIcon } from '@chakra-ui/icons';
-import { Radio, RadioGroup } from '@chakra-ui/react'
+import {
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalFooter,
+    ModalBody,
+    ModalCloseButton,
+} from '@chakra-ui/react'
+import { useDisclosure } from '@chakra-ui/react'
 
 export default function Simple() {
-    const [email, setEmail] = useState('');
+    const { isOpen, onOpen, onClose } = useDisclosure()
+    const [cpf, setCpf] = useState('');
     const [state, setState] = useState<'initial' | 'submitting' | 'success'>(
         'initial'
     );
@@ -52,7 +62,7 @@ export default function Simple() {
 
                         // remove this code and implement your submit logic right here
                         setTimeout(() => {
-                            if (email === 'fail@example.com') {
+                            if (cpf === 'fail@example.com') {
                                 setError(true);
                                 setState('initial');
                                 return;
@@ -71,15 +81,15 @@ export default function Simple() {
                                 color: 'gray.400',
                             }}
                             borderColor={useColorModeValue('gray.300', 'gray.700')}
-                            id={'email'}
-                            type={'email'}
+                            id={'cpf'}
+                            type={'cpf'}
                             required
                             placeholder={'CPF'}
                             aria-label={'Seu CPF'}
-                            value={email}
+                            value={cpf}
                             disabled={state !== 'initial'}
                             onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                                setEmail(e.target.value)
+                                setCpf(e.target.value)
                             }
                         />
                     </FormControl>
@@ -88,12 +98,31 @@ export default function Simple() {
                             colorScheme={state === 'success' ? 'green' : 'blue'}
                             isLoading={state === 'submitting'}
                             w="100%"
+                            onClick={onOpen}
                             type={state === 'success' ? 'button' : 'submit'}>
                             {state === 'success' ? <CheckIcon /> : 'Enviar'}
                         </Button>
                     </FormControl>
                 </Stack>
+                <Modal isOpen={isOpen} onClose={onClose}>
+                            <ModalOverlay />
+                            <ModalContent>
+                                <ModalHeader>Status</ModalHeader>
+                                <ModalCloseButton />
+                                <ModalBody>
+                                    <Text>O status do pedido é:</Text>
+                                    <Text>Aprovado</Text>
+                                </ModalBody>
 
+                                <ModalFooter>
+
+                                    <Button colorScheme='red' mr={'25%'} w={'50%'} onClick={onClose}>
+                                    Fechar
+                                    </Button>
+
+                                </ModalFooter>
+                            </ModalContent>
+                        </Modal>
             </Container>
         </Flex>
     );

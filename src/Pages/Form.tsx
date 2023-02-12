@@ -1,4 +1,5 @@
 import { FormEvent, ChangeEvent, useState } from 'react';
+
 import {
     Stack,
     FormControl,
@@ -9,6 +10,7 @@ import {
     Text,
     Container,
     Flex,
+    Center
 } from '@chakra-ui/react';
 import { CheckIcon } from '@chakra-ui/icons';
 import { Radio, RadioGroup } from '@chakra-ui/react'
@@ -24,20 +26,88 @@ import {
 } from '@chakra-ui/react'
 import { useDisclosure } from '@chakra-ui/react'
 
+import {
+    NumberInput,
+    NumberInputField,
+    NumberInputStepper,
+    NumberIncrementStepper,
+    NumberDecrementStepper,
+  } from '@chakra-ui/react'
+
 export default function Simple() {
-    const { isOpen, onOpen, onClose } = useDisclosure()
+    const { isOpen, onOpen: onOpenModal, onClose } = useDisclosure()
     const navigate = useNavigate();
     const [nomePaciente, setNomePaciente] = useState('');
     const [cpf, setCPF] = useState('');
     const [nomeMedico, setNomeMedico] = useState('');
     const [data, setData] = useState('');
-    const [aptidao, setAptidao] = useState('');
-    const [anexo, setAnexo] = useState('');
     const [state, setState] = useState<'initial' | 'submitting' | 'success'>(
         'initial'
     );
+    const [aptidao, setAptidao] = useState<String>();
+
+    const [postImage, setPostImage] = useState({
+        myFile: '',
+    });
+
     const [error, setError] = useState(false);
 
+    // Post form
+    const handleSubmit = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const payload = { nomePaciente: nomePaciente, cpf: cpf, nomeMedico: nomeMedico, data: data, aptidao: aptidao, postImage: postImage }
+        const uri2 = 'http://localhost:8080/raffle/create';
+        const postRafle = async () => {
+            try {
+                console.log(payload)
+                const resp = await fetch(uri2, {
+                    method: 'POST',
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+
+                    body: JSON.stringify({ nomePaciente: nomePaciente, cpf: cpf, nomeMedico: nomeMedico, data: data, aptidao: aptidao, postImage: postImage }),
+                })
+                if (resp.ok) {
+                    console.log("Formulario enviado")
+                }
+
+            } catch (err) {
+                console.log(err);
+            }
+        }
+        postRafle()
+        setNomeMedico('')
+        setNomePaciente('')
+        setCPF('')
+        setData('')
+        setAptidao('')
+        setPostImage({ myFile: '' })
+    };
+
+    // Convert to base64
+    const convertToBase64 = (file: any) => {
+        return new Promise((resolve, reject) => {
+            const fileReader = new FileReader();
+            fileReader.readAsDataURL(file);
+            fileReader.onload = () => {
+                resolve(fileReader.result);
+            };
+            fileReader.onerror = (error) => {
+                reject(error);
+            };
+        });
+    };
+    const handleFileUpload = async (e: any) => {
+        const file = e.target.files[0];
+        const base64 = await convertToBase64(file);
+        setPostImage({ ...postImage, myFile: `${base64}` });
+    };
+
+    // This function will be triggered when a radio button is selected
+    const radioHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setAptidao(event.target.value);
+    };
 
     return (
 
@@ -45,7 +115,8 @@ export default function Simple() {
             minH={'100vh'}
             align={'center'}
             justify={'center'}
-            bg={useColorModeValue('gray.50', 'gray.800')}>
+            bg={useColorModeValue('gray.50', 'gray.800')}
+            onSubmit={handleSubmit}>
 
             <Container
                 maxW={'lg'}
@@ -54,7 +125,6 @@ export default function Simple() {
                 rounded={'lg'}
                 p={6}
             >
-
                 <Heading
                     as={'h2'}
                     fontSize={{ base: 'xl', sm: '2xl' }}
@@ -81,7 +151,7 @@ export default function Simple() {
                             }
 
                             setState('success');
-
+                            onOpenModal()
                         }, 1000);
 
                     }}>
@@ -97,6 +167,7 @@ export default function Simple() {
                             borderColor={useColorModeValue('gray.300', 'gray.700')}
                             id={'nomePaciente'}
                             type={'nomePaciente'}
+                            name={nomePaciente}
                             required
                             placeholder={'Nome Paciente'}
                             aria-label={'Seu nome'}
@@ -106,6 +177,7 @@ export default function Simple() {
                                 setNomePaciente(e.target.value)
                             }
                         />
+                        
                         <Input
                             mb={2}
                             variant={'solid'}
@@ -157,15 +229,20 @@ export default function Simple() {
                             borderColor={useColorModeValue('gray.300', 'gray.700')}
                             id={data}
                             value={data}
+                            required
+                            disabled={state !== 'initial'}
+                            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                                setData(e.target.value)
+                            }
                             size="md"
                             type="date"
                         />
                         <RadioGroup defaultValue='1' mb={2}>
                             <Stack spacing={5} direction='row'>
-                                <Radio colorScheme='green' value='1' id={aptidao}>
+                                <Radio colorScheme='green' value='apto' onChange={radioHandler} >
                                     Apto
                                 </Radio>
-                                <Radio colorScheme='red' value='2' id={aptidao}>
+                                <Radio colorScheme='red' value='inapto' onChange={radioHandler}>
                                     Inapto
                                 </Radio>
                             </Stack>
@@ -174,8 +251,12 @@ export default function Simple() {
                             borderWidth={0}
                             mb={2}
                             size="md"
+                            name='myFile'
                             type="file"
+                            required
+                            id=''
                             accept="image/png, image/jpeg"
+                            onChange={(e) => handleFileUpload(e)}
                         />
                     </FormControl>
                     <FormControl w={{ base: '100%', md: '40%' }}>
@@ -183,7 +264,7 @@ export default function Simple() {
                             colorScheme={state === 'success' ? 'green' : 'blue'}
                             isLoading={state === 'submitting'}
                             w="100%"
-                            onClick={onOpen}
+
                             type={state === 'success' ? 'button' : 'submit'}>
                             {state === 'success' ? <CheckIcon /> : 'Enviar'}
                         </Button>
@@ -192,17 +273,18 @@ export default function Simple() {
                         <Modal isOpen={isOpen} onClose={onClose}>
                             <ModalOverlay />
                             <ModalContent>
-                                <ModalHeader>Modal Title</ModalHeader>
+                                <ModalHeader>Sucesso!</ModalHeader>
                                 <ModalCloseButton />
                                 <ModalBody>
-                                    <Text></Text>
+                                    <Text>Você pode acompanhar o status do pedido no link abaixo:</Text>
                                 </ModalBody>
 
                                 <ModalFooter>
-                                    <Button colorScheme='blue' mr={3} onClick={onClose}>
-                                        Close
+
+                                    <Button colorScheme='blue' mr={'25%'} w={'50%'} onClick={() => navigate('status')}>
+                                    Acompanhar Status
                                     </Button>
-                                    <Button variant='ghost'>Secondary Action</Button>
+
                                 </ModalFooter>
                             </ModalContent>
                         </Modal>
