@@ -1,4 +1,5 @@
 import { FormEvent, ChangeEvent, useState } from 'react';
+import { mask } from "../Components/Mask"
 import {
     Stack,
     FormControl,
@@ -23,12 +24,19 @@ import {
 import { useDisclosure } from '@chakra-ui/react'
 
 export default function Simple() {
-    const { isOpen, onOpen, onClose } = useDisclosure()
-    const [cpf, setCpf] = useState('');
+
+    const { isOpen, onOpen: onOpenModal, onClose } = useDisclosure()
+    const [cpf, setCPF] = useState('');
     const [state, setState] = useState<'initial' | 'submitting' | 'success'>(
         'initial'
     );
     const [error, setError] = useState(false);
+    
+    //CPF mask
+    function handleChangeMask(event: any) {
+        const { value } = event.target
+        setCPF(mask(value))
+    }
 
     return (
         <Flex
@@ -69,36 +77,31 @@ export default function Simple() {
                             }
 
                             setState('success');
+                            onOpenModal()
                         }, 1000);
                     }}>
                     <FormControl>
-                        <Input
-                            mb={2}
+                    <Input mb={2}
                             variant={'solid'}
                             borderWidth={1}
                             color={'gray.800'}
                             _placeholder={{
                                 color: 'gray.400',
-                            }}
+                            }} 
                             borderColor={useColorModeValue('gray.300', 'gray.700')}
-                            id={'cpf'}
-                            type={'cpf'}
-                            required
                             placeholder={'CPF'}
                             aria-label={'Seu CPF'}
-                            value={cpf}
                             disabled={state !== 'initial'}
-                            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                                setCpf(e.target.value)
-                            }
-                        />
+                            required
+                            onChange={handleChangeMask} 
+                            value={cpf} 
+                            maxLength={14} />
                     </FormControl>
                     <FormControl w={{ base: '100%', md: '40%' }}>
                         <Button
                             colorScheme={state === 'success' ? 'green' : 'blue'}
                             isLoading={state === 'submitting'}
                             w="100%"
-                            onClick={onOpen}
                             type={state === 'success' ? 'button' : 'submit'}>
                             {state === 'success' ? <CheckIcon /> : 'Enviar'}
                         </Button>
@@ -111,7 +114,8 @@ export default function Simple() {
                                 <ModalCloseButton />
                                 <ModalBody>
                                     <Text>O status do pedido é:</Text>
-                                    <Text>Aprovado</Text>
+                                    
+                                    <Text ml={"40%"}>Aprovado</Text>
                                 </ModalBody>
 
                                 <ModalFooter>
