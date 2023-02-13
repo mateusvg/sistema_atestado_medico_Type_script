@@ -10,7 +10,6 @@ import {
     Text,
     Container,
     Flex,
-    Center
 } from '@chakra-ui/react';
 import { CheckIcon } from '@chakra-ui/icons';
 import { Radio, RadioGroup } from '@chakra-ui/react'
@@ -25,14 +24,6 @@ import {
     ModalCloseButton,
 } from '@chakra-ui/react'
 import { useDisclosure } from '@chakra-ui/react'
-
-import {
-    NumberInput,
-    NumberInputField,
-    NumberInputStepper,
-    NumberIncrementStepper,
-    NumberDecrementStepper,
-} from '@chakra-ui/react'
 
 export default function Simple() {
     const { isOpen, onOpen: onOpenModal, onClose } = useDisclosure()
