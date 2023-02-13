@@ -8,11 +8,23 @@ import {
   TableCaption,
   TableContainer,
 } from '@chakra-ui/react'
-import {CircleIcon} from '../Components/CircleIconStatus'
+import { CircleIcon } from '../Components/CircleIconStatus'
 import { SettingsIcon, DownloadIcon } from '@chakra-ui/icons'
 import { Button } from '@chakra-ui/react';
+import { useState } from 'react';
 
 export default function Simple() {
+  const aptidao = 'apto'
+
+  const setStatusColorIcon = (aptidao: string) => {
+    if (aptidao == 'inapto') {
+      return 'red.500'
+    } else if (aptidao == 'apto') {
+      return 'green.500'
+    } else {
+      return 'blue.500'
+    }
+  }
 
 
   return (
@@ -40,7 +52,7 @@ export default function Simple() {
               <Td>Jose Maria</Td>
               <Td>Apto</Td>
               <Td>Em análise </Td>
-              <Td><CircleIcon color='blue.500' /></Td>
+              <Td><CircleIcon color={`${setStatusColorIcon(aptidao)}`} /></Td>
               <Td><Button><SettingsIcon /></Button></Td>
             </Tr>
             <Tr>
@@ -50,7 +62,7 @@ export default function Simple() {
               <Td>Jose Maria</Td>
               <Td>Inapto</Td>
               <Td>Reprovado</Td>
-              <Td><CircleIcon color='red.500' /></Td>
+              <Td><CircleIcon color={`${setStatusColorIcon(aptidao)}`} /></Td>
               <Td><Button><SettingsIcon /></Button></Td>
             </Tr>
             <Tr>
@@ -60,7 +72,7 @@ export default function Simple() {
               <Td>Jose Maria</Td>
               <Td>Apto</Td>
               <Td>Aprovado</Td>
-              <Td><CircleIcon color='green.500' /></Td>
+              <Td><CircleIcon color={`${setStatusColorIcon(aptidao)}`} /></Td>
               <Td><Button><SettingsIcon /></Button></Td>
             </Tr>
           </Tbody>
