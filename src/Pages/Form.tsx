@@ -1,5 +1,5 @@
 import { FormEvent, ChangeEvent, useState } from 'react';
-
+import { mask } from "../Components/Mask"
 import {
     Stack,
     FormControl,
@@ -32,7 +32,7 @@ import {
     NumberInputStepper,
     NumberIncrementStepper,
     NumberDecrementStepper,
-  } from '@chakra-ui/react'
+} from '@chakra-ui/react'
 
 export default function Simple() {
     const { isOpen, onOpen: onOpenModal, onClose } = useDisclosure()
@@ -84,6 +84,13 @@ export default function Simple() {
         setAptidao('')
         setPostImage({ myFile: '' })
     };
+
+
+    //CPF mask
+    function handleChangeMask(event: any) {
+        const { value } = event.target
+        setCPF(mask(value))
+    }
 
     // Convert to base64
     const convertToBase64 = (file: any) => {
@@ -156,6 +163,7 @@ export default function Simple() {
 
                     }}>
                     <FormControl>
+                        
                         <Input
                             mb={2}
                             variant={'solid'}
@@ -177,27 +185,22 @@ export default function Simple() {
                                 setNomePaciente(e.target.value)
                             }
                         />
-                        
-                        <Input
-                            mb={2}
+                        <Input mb={2}
                             variant={'solid'}
                             borderWidth={1}
                             color={'gray.800'}
                             _placeholder={{
                                 color: 'gray.400',
-                            }}
+                            }} 
                             borderColor={useColorModeValue('gray.300', 'gray.700')}
-                            id={'cpf'}
-                            type={'cpf'}
-                            required
                             placeholder={'CPF'}
                             aria-label={'Seu CPF'}
-                            value={cpf}
                             disabled={state !== 'initial'}
-                            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                                setCPF(e.target.value)
-                            }
-                        />
+                            required
+                            onChange={handleChangeMask} 
+                            value={cpf} 
+                            maxLength={14} />
+
                         <Input
                             mb={2}
                             variant={'solid'}
@@ -282,7 +285,7 @@ export default function Simple() {
                                 <ModalFooter>
 
                                     <Button colorScheme='blue' mr={'25%'} w={'50%'} onClick={() => navigate('status')}>
-                                    Acompanhar Status
+                                        Acompanhar Status
                                     </Button>
 
                                 </ModalFooter>
