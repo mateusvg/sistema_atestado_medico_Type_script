@@ -46,7 +46,7 @@ export default function Simple() {
     // Post form
     const handleSubmit = (e: React.ChangeEvent<HTMLInputElement>) => {
         const payload = { nomePaciente: nomePaciente, cpf: cpf, nomeMedico: nomeMedico, data: data, aptidao: aptidao, postImage: postImage }
-        const uri2 = 'http://localhost:8080/raffle/create';
+        const uri2 = 'http://localhost:8080/form';
         const postRafle = async () => {
             try {
                 console.log(payload)
