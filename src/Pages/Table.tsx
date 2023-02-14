@@ -11,15 +11,40 @@ import {
 import { CircleIcon } from '../Components/CircleIconStatus'
 import { SettingsIcon, DownloadIcon } from '@chakra-ui/icons'
 import { Button } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function Simple() {
   const aptidao = 'apto'
 
-  const setStatusColorIcon = (aptidao: string) => {
-    if (aptidao == 'inapto') {
+  type resultProps = {
+    idForm: string
+    nomePaciente: string
+    cpf: string
+    anexo: string
+    nomeMedico: string
+    data: string
+    aptidao: string
+    Status:string
+};
+
+  const [result, setResult] = useState<resultProps[]>([]);
+  useEffect(() => {
+          getAllRegisters()
+  }, [])
+
+  const getAllRegisters = async () => {
+      const data = await fetch("http://localhost:8080/admin/table", {
+          method: "GET"
+      });
+      const jsonData = await data.json();
+      setResult(jsonData);
+  };
+
+
+  const setStatusColorIcon = (Status: string) => {
+    if (Status == 'Reprovado') {
       return 'red.500'
-    } else if (aptidao == 'apto') {
+    } else if (Status == 'Aprovado') {
       return 'green.500'
     } else {
       return 'blue.500'
@@ -44,38 +69,20 @@ export default function Simple() {
               <Th>Ação</Th>
             </Tr>
           </Thead>
-          <Tbody>
+          {result?.map((row) => (
+          <Tbody border='1px' borderColor='gray.200'>
             <Tr>
-              <Td>Tobias Silva</Td>
-              <Td>242.417.550-03</Td>
+              <Td>{row.nomePaciente}</Td>
+              <Td>{row.cpf}</Td>
               <Td><Button><DownloadIcon /></Button></Td>
-              <Td>Jose Maria</Td>
-              <Td>Apto</Td>
-              <Td>Em análise </Td>
-              <Td><CircleIcon color={`${setStatusColorIcon(aptidao)}`} /></Td>
-              <Td><Button><SettingsIcon /></Button></Td>
-            </Tr>
-            <Tr>
-              <Td>Mateus Manfredo</Td>
-              <Td>485.815.450-50</Td>
-              <Td><Button><DownloadIcon /></Button></Td>
-              <Td>Jose Maria</Td>
-              <Td>Inapto</Td>
-              <Td>Reprovado</Td>
-              <Td><CircleIcon color={`${setStatusColorIcon(aptidao)}`} /></Td>
-              <Td><Button><SettingsIcon /></Button></Td>
-            </Tr>
-            <Tr>
-              <Td>Natalia Amorin</Td>
-              <Td>464.802.400-14</Td>
-              <Td><Button><DownloadIcon /></Button></Td>
-              <Td>Jose Maria</Td>
-              <Td>Apto</Td>
-              <Td>Aprovado</Td>
-              <Td><CircleIcon color={`${setStatusColorIcon(aptidao)}`} /></Td>
+              <Td>{row.nomeMedico}</Td>
+              <Td>{row.aptidao}</Td>
+              <Td>{row.Status}</Td>
+              <Td><CircleIcon color={`${setStatusColorIcon(row.Status)}`} /></Td>
               <Td><Button><SettingsIcon /></Button></Td>
             </Tr>
           </Tbody>
+            ))}
         </Table>
       </TableContainer>
     </>
