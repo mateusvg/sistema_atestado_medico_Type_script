@@ -1,8 +1,8 @@
-import { Input, InputLeftElement, InputRightElement } from '@chakra-ui/react';
+import { FormControl, Input, InputLeftElement, InputRightElement } from '@chakra-ui/react';
 import { CircleIcon } from '../Components/CircleIconStatus'
 import { EditIcon, DownloadIcon, Search2Icon } from '@chakra-ui/icons'
 import { Button } from '@chakra-ui/react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import {
   Modal,
   ModalOverlay,
@@ -21,15 +21,17 @@ import {
   TableCaption,
   TableContainer,
   InputGroup,
+  Text
 } from '@chakra-ui/react'
 
 
 import { useDisclosure } from '@chakra-ui/react'
+import { useNavigate } from 'react-router-dom';
+
+
 export default function Simple() {
 
   const { isOpen, onOpen: onOpenModal, onClose } = useDisclosure()
-
-  const aptidao = 'apto'
 
   type resultProps = {
     idForm: string
@@ -54,7 +56,36 @@ export default function Simple() {
     const jsonData = await data.json();
     setResult(jsonData);
   };
+  
+  const navigate = useNavigate();
+  // Post form
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
+    e.preventDefault();
+    const payload = { status: status, cpf: cpf }
+    console.log(payload)
+    const uri2 = 'http://localhost:8080/status/status/update/admin';
+    const postRafle = async () => {
+      try {
+        console.log(`try console.log ${JSON.stringify(payload)}`)
+        const req = await fetch(uri2, {
+          method: 'PUT',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
 
+          body: JSON.stringify({ status: status, cpf: cpf }),
+
+        })
+
+
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    postRafle()
+    window.location.reload()
+  };
 
   const setStatusColorIcon = (Status: string) => {
     if (Status == 'Reprovado') {
@@ -67,13 +98,11 @@ export default function Simple() {
   }
 
   const [searchInput, setSearchInput] = useState("")
-
   const handleChange = (e: any) => {
     e.preventDefault()
     console.log(searchInput)
     setSearchInput(e.target.value)
   }
-
   if (searchInput.length > 0) {
     result.filter((data) => {
       console.log(`dados: ${data.cpf}`)
@@ -81,11 +110,28 @@ export default function Simple() {
     })
   }
 
+  const [status, setStatusDropDown] = useState('')
+  const [cpf, setCpf] = useState('')
+  const handleChangeDropDown = (e: any) => {
+    e.preventDefault()
+    if (e.target.value == 'Em processamento') {
+      setStatusDropDown('1')
+    } else if (e.target.value == 'Aprovado') {
+      setStatusDropDown('2')
+    } else {
+      setStatusDropDown('3')
+    }
+  }
+  const handleOpenModal = (cpf: string, Status: string) => {
+    setStatusDropDown(Status)
+    setCpf(cpf);
+    onOpenModal();
+  };
 
   return (
     <>
       <InputGroup>
-      <InputLeftElement>
+        <InputLeftElement>
           <Search2Icon mt={6} />
         </InputLeftElement>
         <Input
@@ -136,35 +182,38 @@ export default function Simple() {
                   <Td>{post.aptidao}</Td>
                   <Td>{post.Status}</Td>
                   <Td><CircleIcon color={`${setStatusColorIcon(post.Status)}`} /></Td>
-                  <Td><Button><EditIcon onClick={onOpenModal} /></Button></Td>
+                  <Td><Button onClick={() => handleOpenModal(post.cpf, post.Status)}><EditIcon /></Button></Td>
                 </Tr>
               </Tbody>
             ))
           }
         </Table>
 
-        <Modal isOpen={isOpen} onClose={onClose}>
+        <Modal isOpen={isOpen} onClose={onClose} >
           <ModalOverlay />
-          <ModalContent>
-            <ModalHeader>Alterar configurações de status</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody>
-              <Select placeholder='Selecione o status'>
-                <option value='option1'>Em processamento</option>
-                <option value='option2'>Aprovado</option>
-                <option value='option3'>Reprovado</option>
-              </Select>
-            </ModalBody>
-
-            <ModalFooter>
-
-              <Button colorScheme='blue' mr={'25%'} w={'50%'} onClick={onClose}>
-                Atualizar
-              </Button>
-
-            </ModalFooter>
-          </ModalContent>
+          <form onSubmit={handleSubmit} >
+            <ModalContent>
+              <ModalHeader>Alterar configurações de status</ModalHeader>
+              <ModalCloseButton />
+              <ModalBody>
+                <FormControl >
+                  <Text>{cpf}</Text>
+                  <Select placeholder='Selecione o status' onChange={handleChangeDropDown} >
+                    <option value='Em processamento'>Em processamento</option>
+                    <option value='Aprovado'>Aprovado</option>
+                    <option value='Reprovado'>Reprovado</option>
+                  </Select>
+                </FormControl>
+              </ModalBody>
+              <ModalFooter>
+                <Button colorScheme='blue' mr={'25%'} w={'50%'} type='submit' onClick={onClose}>
+                  Atualizar
+                </Button>
+              </ModalFooter>
+            </ModalContent>
+          </form>
         </Modal>
+
       </TableContainer>
     </>
   )

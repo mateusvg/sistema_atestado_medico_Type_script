@@ -17,9 +17,24 @@ async function viewStatusCPF(cpf) {
     } catch (err) {
         console.log(err)
     }
-
 }
 
-module.exports = { viewStatusCPF }
+async function updateStatusAdmin(status, cpf) {
+    try {
+        console.log(status)
+        console.log(cpf)
+        const result = await new Promise((resolve, reject) => {
+            conn.query('UPDATE form SET status = ? WHERE cpf = ?',[status, cpf], (error, results, fields) => {
+                if (error) return reject(error);
+
+            });
+        });
+    } catch (err) {
+        console.log(err)
+    }
+}
+module.exports = { viewStatusCPF, updateStatusAdmin }
+
+
 
 // SELECT * FROM `form` INNER JOIN `statusporcpf` ON `statusporcpf`.`idtable1` = `form`.`status` WHERE `form`.`CPF` ='787.571.100-26'
