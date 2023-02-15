@@ -14,6 +14,7 @@ import {
     useColorModeValue,
     useBreakpointValue,
     useDisclosure,
+    HStack
 } from '@chakra-ui/react';
 import {
     HamburgerIcon,
@@ -65,7 +66,35 @@ export default function WithSubnavigation() {
                         <img src={Logo} alt="Logo" />
                     </Text>
 
+                    <HStack
+                        ml={7}
+                        as={'nav'}
+                        spacing={4}
+                        display={{ base: 'none', md: 'flex' }}>
+                        <Link px={2}
+                        onClick={() => navigate('status')}
+                            py={1}
+                            rounded={'md'}
+                            _hover={{
+                                textDecoration: 'none',
+                                bg: useColorModeValue('gray.200', 'gray.700'),
+                            }} >Status</Link>
+                    </HStack>
 
+                    <HStack
+                        ml={4}
+                        as={'nav'}
+                        spacing={4}
+                        display={{ base: 'none', md: 'flex' }}>
+                        <Link px={2}
+                        onClick={() => navigate('/')}
+                            py={1}
+                            rounded={'md'}
+                            _hover={{
+                                textDecoration: 'none',
+                                bg: useColorModeValue('gray.200', 'gray.700'),
+                            }} >Formulário</Link>
+                    </HStack>
                 </Flex>
 
                 <Stack
@@ -73,34 +102,6 @@ export default function WithSubnavigation() {
                     justify={'flex-end'}
                     direction={'row'}
                     spacing={6}>
-                    <Button
-                        onClick={() => navigate('status')}
-                        as={'a'}
-                        display={{ base: 'none', md: 'inline-flex' }}
-                        fontSize={'sm'}
-                        fontWeight={600}
-                        color={'white'}
-                        bg={'blue.400'}
-                        href={'#'}
-                        _hover={{
-                            bg: 'blue.300',
-                        }}>
-                        Status
-                    </Button>
-                    <Button
-                        onClick={() => navigate('/')}
-                        as={'a'}
-                        display={{ base: 'none', md: 'inline-flex' }}
-                        fontSize={'sm'}
-                        fontWeight={600}
-                        color={'white'}
-                        bg={'blue.400'}
-                        href={'#'}
-                        _hover={{
-                            bg: 'blue.300',
-                        }}>
-                        Formulário
-                    </Button>
                     <Button
                         onClick={() => navigate('login')}
                         as={'a'}
