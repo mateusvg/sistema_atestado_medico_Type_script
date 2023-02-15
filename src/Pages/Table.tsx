@@ -1,4 +1,17 @@
+import { Input, InputLeftElement, InputRightElement } from '@chakra-ui/react';
+import { CircleIcon } from '../Components/CircleIconStatus'
+import { EditIcon, DownloadIcon, Search2Icon } from '@chakra-ui/icons'
+import { Button } from '@chakra-ui/react';
+import { useState, useEffect } from 'react';
 import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  Select,
   Table,
   Thead,
   Tbody,
@@ -7,14 +20,15 @@ import {
   Td,
   TableCaption,
   TableContainer,
+  InputGroup,
 } from '@chakra-ui/react'
-import { Input } from '@chakra-ui/react';
-import { CircleIcon } from '../Components/CircleIconStatus'
-import { SettingsIcon, DownloadIcon, Search2Icon } from '@chakra-ui/icons'
-import { Button } from '@chakra-ui/react';
-import { useState, useEffect } from 'react';
 
+
+import { useDisclosure } from '@chakra-ui/react'
 export default function Simple() {
+
+  const { isOpen, onOpen: onOpenModal, onClose } = useDisclosure()
+
   const aptidao = 'apto'
 
   type resultProps = {
@@ -70,21 +84,26 @@ export default function Simple() {
 
   return (
     <>
-      <Input
-        placeholder="Procurar CPF"
-        mb={3}
-        mt={3}
-        variant={'solid'}
-        borderWidth={1}
-        color={'gray.800'}
-        _placeholder={{
-          color: 'gray.400',
-        }}
-        type="search"
-        id="outlined-basic"
-        onChange={handleChange}
-        value={searchInput}
-      />
+      <InputGroup>
+      <InputLeftElement>
+          <Search2Icon mt={6} />
+        </InputLeftElement>
+        <Input
+          placeholder="Procurar CPF"
+          mb={3}
+          mt={3}
+          variant={'solid'}
+          borderWidth={1}
+          color={'gray.800'}
+          _placeholder={{
+            color: 'gray.400',
+          }}
+          type="search"
+          id="outlined-basic"
+          onChange={handleChange}
+          value={searchInput}
+        />
+      </InputGroup>
       <TableContainer>
         <Table variant='simple' colorScheme='#E6FFFA' size='sm'>
           <TableCaption>Pacientes</TableCaption>
@@ -109,20 +128,43 @@ export default function Simple() {
               }
             }).map((post, index) => (
               <Tbody >
-              <Tr >
-                <Td>{post.nomePaciente}</Td>
-                <Td>{post.cpf}</Td>
-                <Td><Button><DownloadIcon /></Button></Td>
-                <Td>{post.nomeMedico}</Td>
-                <Td>{post.aptidao}</Td>
-                <Td>{post.Status}</Td>
-                <Td><CircleIcon color={`${setStatusColorIcon(post.Status)}`} /></Td>
-                <Td><Button><SettingsIcon /></Button></Td>
-              </Tr>
-            </Tbody>
+                <Tr >
+                  <Td>{post.nomePaciente}</Td>
+                  <Td>{post.cpf}</Td>
+                  <Td><Button><DownloadIcon /></Button></Td>
+                  <Td>{post.nomeMedico}</Td>
+                  <Td>{post.aptidao}</Td>
+                  <Td>{post.Status}</Td>
+                  <Td><CircleIcon color={`${setStatusColorIcon(post.Status)}`} /></Td>
+                  <Td><Button><EditIcon onClick={onOpenModal} /></Button></Td>
+                </Tr>
+              </Tbody>
             ))
           }
         </Table>
+
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Alterar configurações de status</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <Select placeholder='Selecione o status'>
+                <option value='option1'>Em processamento</option>
+                <option value='option2'>Aprovado</option>
+                <option value='option3'>Reprovado</option>
+              </Select>
+            </ModalBody>
+
+            <ModalFooter>
+
+              <Button colorScheme='blue' mr={'25%'} w={'50%'} onClick={onClose}>
+                Atualizar
+              </Button>
+
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
       </TableContainer>
     </>
   )
