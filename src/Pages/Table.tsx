@@ -55,7 +55,7 @@ export default function Simple() {
   return (
     <>
       <TableContainer>
-        <Table variant='striped' colorScheme='teal'>
+        <Table variant='simple' colorScheme='#E6FFFA' size='sm'>
           <TableCaption>Pacientes</TableCaption>
           <Thead>
             <Tr>
@@ -70,7 +70,7 @@ export default function Simple() {
             </Tr>
           </Thead>
           {result?.map((row) => (
-          <Tbody border='1px' borderColor='gray.200'>
+          <Tbody >
             <Tr>
               <Td>{row.nomePaciente}</Td>
               <Td>{row.cpf}</Td>
