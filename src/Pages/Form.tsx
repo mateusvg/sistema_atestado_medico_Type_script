@@ -133,7 +133,6 @@ export default function Simple() {
                 <Stack
                     direction={{ base: 'column' }}
                     as={'form'}
-
                     spacing={'12px'}
                     onSubmit={(e: FormEvent) => {
                         e.preventDefault();
