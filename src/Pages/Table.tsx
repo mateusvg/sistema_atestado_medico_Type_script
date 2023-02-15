@@ -8,6 +8,7 @@ import {
   TableCaption,
   TableContainer,
 } from '@chakra-ui/react'
+import { Input } from '@chakra-ui/react';
 import { CircleIcon } from '../Components/CircleIconStatus'
 import { SettingsIcon, DownloadIcon } from '@chakra-ui/icons'
 import { Button } from '@chakra-ui/react';
@@ -24,20 +25,20 @@ export default function Simple() {
     nomeMedico: string
     data: string
     aptidao: string
-    Status:string
-};
+    Status: string
+  };
 
   const [result, setResult] = useState<resultProps[]>([]);
   useEffect(() => {
-          getAllRegisters()
+    getAllRegisters()
   }, [])
 
   const getAllRegisters = async () => {
-      const data = await fetch("http://localhost:8080/admin/table", {
-          method: "GET"
-      });
-      const jsonData = await data.json();
-      setResult(jsonData);
+    const data = await fetch("http://localhost:8080/admin/table", {
+      method: "GET"
+    });
+    const jsonData = await data.json();
+    setResult(jsonData);
   };
 
 
@@ -54,6 +55,11 @@ export default function Simple() {
 
   return (
     <>
+      <Input
+        placeholder="Select Date and Time"
+        size="md"
+        type="search"
+      />
       <TableContainer>
         <Table variant='simple' colorScheme='#E6FFFA' size='sm'>
           <TableCaption>Pacientes</TableCaption>
@@ -70,19 +76,19 @@ export default function Simple() {
             </Tr>
           </Thead>
           {result?.map((row) => (
-          <Tbody >
-            <Tr>
-              <Td>{row.nomePaciente}</Td>
-              <Td>{row.cpf}</Td>
-              <Td><Button><DownloadIcon /></Button></Td>
-              <Td>{row.nomeMedico}</Td>
-              <Td>{row.aptidao}</Td>
-              <Td>{row.Status}</Td>
-              <Td><CircleIcon color={`${setStatusColorIcon(row.Status)}`} /></Td>
-              <Td><Button><SettingsIcon /></Button></Td>
-            </Tr>
-          </Tbody>
-            ))}
+            <Tbody >
+              <Tr>
+                <Td>{row.nomePaciente}</Td>
+                <Td>{row.cpf}</Td>
+                <Td><Button><DownloadIcon /></Button></Td>
+                <Td>{row.nomeMedico}</Td>
+                <Td>{row.aptidao}</Td>
+                <Td>{row.Status}</Td>
+                <Td><CircleIcon color={`${setStatusColorIcon(row.Status)}`} /></Td>
+                <Td><Button><SettingsIcon /></Button></Td>
+              </Tr>
+            </Tbody>
+          ))}
         </Table>
       </TableContainer>
     </>
