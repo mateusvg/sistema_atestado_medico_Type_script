@@ -33,8 +33,8 @@ export default function SimpleCard() {
     const navigate = useNavigate();
 
     // Post form
-    const handleSubmit = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const payload = { user: user, password: password }
+    const handleSubmit = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const payload = await { user: user, password: password }
         console.log(payload)
         const uri2 = 'http://localhost:8080/admin';
         const postRafle = async () => {
@@ -53,7 +53,7 @@ export default function SimpleCard() {
                     .then(json => {
                         console.log("First status in the array:");
                         console.log(json[0]);
-                        if (json[0].AdminUserEmail == `${user}`) {
+                        if (json[0].AdminUserEmail === `${user}`) {
                             navigate('table')
                         } 
 

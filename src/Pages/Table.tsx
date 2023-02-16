@@ -24,10 +24,7 @@ import {
   Text
 } from '@chakra-ui/react'
 
-
 import { useDisclosure } from '@chakra-ui/react'
-import { useNavigate } from 'react-router-dom';
-
 
 export default function Simple() {
 
@@ -37,7 +34,7 @@ export default function Simple() {
     idForm: string
     nomePaciente: string
     cpf: string
-    anexo: string
+    anexo: any
     nomeMedico: string
     data: string
     aptidao: string
@@ -49,6 +46,7 @@ export default function Simple() {
     getAllRegisters()
   }, [])
 
+  //Get all registers
   const getAllRegisters = async () => {
     const data = await fetch("http://localhost:8080/admin/table", {
       method: "GET"
@@ -56,9 +54,19 @@ export default function Simple() {
     const jsonData = await data.json();
     setResult(jsonData);
   };
-  
-  const navigate = useNavigate();
-  // Post form
+
+  // Post form update status
+  const handleDownload = (anexo: any) => {
+    anexo = anexo.replace('data:image/png;base64,','') 
+    const payload = { anexo: anexo }
+    // console.log(payload.anexo)
+    var a = document.createElement("a"); //Create <a>
+    a.href = "data:image/png;base64," + payload.anexo; //Image Base64 Goes here
+    a.download = "Image.png"; //File name Here
+    a.click(); //Downloaded file
+  };
+
+  // Post form update status
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     const payload = { status: status, cpf: cpf }
@@ -177,7 +185,7 @@ export default function Simple() {
                 <Tr >
                   <Td>{post.nomePaciente}</Td>
                   <Td>{post.cpf}</Td>
-                  <Td><Button><DownloadIcon /></Button></Td>
+                  <Td><Button onClick={() => handleDownload(post.anexo)}><DownloadIcon /></Button></Td>
                   <Td>{post.nomeMedico}</Td>
                   <Td>{post.aptidao}</Td>
                   <Td>{post.Status}</Td>
