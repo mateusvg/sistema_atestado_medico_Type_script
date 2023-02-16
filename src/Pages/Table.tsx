@@ -1,8 +1,8 @@
-import { FormControl, Input, InputLeftElement, InputRightElement } from '@chakra-ui/react';
+import { FormControl, Input, InputLeftElement } from '@chakra-ui/react';
 import { CircleIcon } from '../Components/CircleIconStatus'
 import { EditIcon, DownloadIcon, Search2Icon } from '@chakra-ui/icons'
 import { Button } from '@chakra-ui/react';
-import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Modal,
   ModalOverlay,
@@ -57,7 +57,7 @@ export default function Simple() {
 
   // Post form update status
   const handleDownload = (anexo: any) => {
-    anexo = anexo.replace('data:image/png;base64,','') 
+    anexo = anexo.replace('data:image/png;base64,', '')
     const payload = { anexo: anexo }
     // console.log(payload.anexo)
     var a = document.createElement("a"); //Create <a>
@@ -81,11 +81,8 @@ export default function Simple() {
             Accept: 'application/json',
             'Content-Type': 'application/json',
           },
-
           body: JSON.stringify({ status: status, cpf: cpf }),
-
         })
-
 
       } catch (err) {
         console.log(err);
@@ -96,9 +93,9 @@ export default function Simple() {
   };
 
   const setStatusColorIcon = (Status: string) => {
-    if (Status == 'Reprovado') {
+    if (Status === 'Reprovado') {
       return 'red.500'
-    } else if (Status == 'Aprovado') {
+    } else if (Status === 'Aprovado') {
       return 'green.500'
     } else {
       return 'blue.500'
@@ -122,9 +119,9 @@ export default function Simple() {
   const [cpf, setCpf] = useState('')
   const handleChangeDropDown = (e: any) => {
     e.preventDefault()
-    if (e.target.value == 'Em processamento') {
+    if (e.target.value === 'Em processamento') {
       setStatusDropDown('1')
-    } else if (e.target.value == 'Aprovado') {
+    } else if (e.target.value === 'Aprovado') {
       setStatusDropDown('2')
     } else {
       setStatusDropDown('3')

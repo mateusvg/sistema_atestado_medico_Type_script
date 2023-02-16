@@ -232,10 +232,10 @@ export default function Simple() {
                         />
                         <RadioGroup defaultValue='1' mb={2}>
                             <Stack spacing={5} direction='row'>
-                                <Radio colorScheme='green' value='apto' onChange={radioHandler} >
+                                <Radio colorScheme='green' value='Apto' onChange={radioHandler} >
                                     Apto
                                 </Radio>
-                                <Radio colorScheme='red' value='inapto' onChange={radioHandler}>
+                                <Radio colorScheme='red' value='Inapto' onChange={radioHandler}>
                                     Inapto
                                 </Radio>
                             </Stack>

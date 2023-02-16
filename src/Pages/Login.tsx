@@ -24,7 +24,6 @@ export default function SimpleCard() {
     const [state, setState] = useState<'initial' | 'submitting' | 'success'>(
         'initial'
     );
-    const [error, setError] = useState(false);
 
     const [user, setUser] = useState('');
     const [password, setPassword] = useState('');
