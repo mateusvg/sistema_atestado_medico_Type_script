@@ -4,18 +4,22 @@ import Login from './Pages/Login';
 import NavBar from './Components/NavBar'
 import Table from './Pages/Table'
 import Status from './Pages/Status'
+import Home from './Pages/Home'
+import { useState } from 'react';
 
 
 const App = () => {
+  const [auth, setAuth] = useState(false);
+
   return (
     <>
-      <NavBar />
+      <NavBar auth={auth} />
       <Routes>
-        <Route path="/" element={<Form />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/form" element={<Form />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/login/table" element={<Table />} />
+        <Route path="/login/table" element={<Table setAuth={setAuth}/>} />
         <Route path="/status" element={<Status />} />
-
       </Routes>
     </>
   );

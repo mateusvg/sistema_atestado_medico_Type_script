@@ -27,7 +27,7 @@ export default function Login() {
 
     const [user, setUser] = useState('');
     const [password, setPassword] = useState('');
-    const [wrong, setWrongText]= useState('')
+    const [wrong, setWrongText] = useState('')
 
     const navigate = useNavigate();
 
@@ -54,7 +54,7 @@ export default function Login() {
                         console.log(json[0]);
                         if (json[0].AdminUserEmail === `${user}`) {
                             navigate('table')
-                        } 
+                        }
 
                     })
 
@@ -95,7 +95,7 @@ export default function Login() {
                     onSubmit={handleSubmit}
                 >
                     <form>
-                        <Stack spacing={4} onSubmit={(e: FormEvent) => {e.preventDefault()}}>
+                        <Stack spacing={4} onSubmit={(e: FormEvent) => { e.preventDefault() }}>
                             <FormControl isRequired>
                                 <FormLabel>Email</FormLabel>
                                 <Input
@@ -134,7 +134,7 @@ export default function Login() {
                                         type={state === 'success' ? 'button' : 'submit'}>
                                         {state === 'success' ? <CheckIcon /> : 'Enviar'}
                                     </Button>
-                                            <Text>{wrong}</Text>
+                                    <Text>{wrong}</Text>
                                 </FormControl>
                             </Stack>
                         </Stack>

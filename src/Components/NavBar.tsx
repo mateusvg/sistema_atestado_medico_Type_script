@@ -16,6 +16,7 @@ import {
     useDisclosure,
     HStack
 } from '@chakra-ui/react';
+
 import {
     HamburgerIcon,
     CloseIcon,
@@ -23,13 +24,15 @@ import {
     ChevronRightIcon,
 } from '@chakra-ui/icons';
 
+import { useState } from 'react';
+
+import Menu from './Menu'
 import Logo from '../img/Logo.png'
 
 import { useNavigate } from 'react-router-dom';
 
-export default function WithSubnavigation() {
+export default function WithSubnavigation(props: any) {
     const navigate = useNavigate();
-
     const { isOpen, onToggle } = useDisclosure();
 
     return (
@@ -63,7 +66,7 @@ export default function WithSubnavigation() {
                         textAlign={useBreakpointValue({ base: 'center', md: 'left' })}
                         fontFamily={'heading'}
                         color={useColorModeValue('gray.800', 'white')}>
-                        <img src={Logo} alt="Logo" />
+                        <img src={Logo} alt="Logo" onClick={() => navigate('/')} />
                     </Text>
 
                     <HStack
@@ -72,7 +75,7 @@ export default function WithSubnavigation() {
                         spacing={4}
                         display={{ base: 'none', md: 'flex' }}>
                         <Link px={2}
-                        onClick={() => navigate('status')}
+                            onClick={() => navigate('status')}
                             py={1}
                             rounded={'md'}
                             _hover={{
@@ -87,7 +90,7 @@ export default function WithSubnavigation() {
                         spacing={4}
                         display={{ base: 'none', md: 'flex' }}>
                         <Link px={2}
-                        onClick={() => navigate('/')}
+                            onClick={() => navigate('/form')}
                             py={1}
                             rounded={'md'}
                             _hover={{
@@ -116,6 +119,7 @@ export default function WithSubnavigation() {
                         }}>
                         Admin
                     </Button>
+                    <Menu auth={props.auth}/>
                 </Stack>
             </Flex>
 

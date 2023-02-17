@@ -28,7 +28,7 @@ import {
 
 import { useDisclosure } from '@chakra-ui/react'
 
-export default function Simple() {
+export default function Simple(props: any) {
 
     const { isOpen, onOpen: onOpenModal, onClose } = useDisclosure()
 
@@ -49,7 +49,14 @@ export default function Simple() {
     const [result, setResult] = useState<resultProps[]>([]);
     useEffect(() => {
         getAllRegisters()
+        handleClickAdminUser()
     }, [])
+
+    async function handleClickAdminUser() {
+        console.log("table")
+        await props.setAuth(true)
+     }
+
 
     const [allStatus, setAllStatus] = useState<allStatus[]>([]);
     useEffect(() => {
