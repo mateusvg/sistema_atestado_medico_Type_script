@@ -161,13 +161,13 @@ export default function Simple() {
             <Stack spacing={5} direction='row' justify='center' mt={4}>
                 
                 <Box maxW='sm' borderWidth='1px' borderRadius='lg' overflow='hidden' shadow='sm' p={3} >
-                    <CircleIcon color={'blue'} />Total "Em processamento": {allStatusMap[0]}
+                    <CircleIcon color={'blue'} />Em processamento: {allStatusMap[0]}
                 </Box>
                 <Box maxW='sm' borderWidth='1px' borderRadius='lg' overflow='hidden' shadow='sm' p={3}>
-                    <CircleIcon color={'green'} />Total "Aprovado": {allStatusMap[1]}
+                    <CircleIcon color={'green'} />Aprovado: {allStatusMap[1]}
                 </Box>
                 <Box maxW='sm' borderWidth='1px' borderRadius='lg' overflow='hidden' shadow='sm' p={3}>
-                    <CircleIcon color={'red'} /> Total "Reprovado": {allStatusMap[2]}
+                    <CircleIcon color={'red'} /> Reprovado: {allStatusMap[2]}
                 </Box>
             </Stack>
 
