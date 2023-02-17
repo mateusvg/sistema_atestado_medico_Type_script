@@ -34,7 +34,7 @@ export default function Login() {
     // Post form
     const handleSubmit = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const payload = await { user: user, password: password }
-        console.log(payload)
+        console.log(`payload ${payload}`)
         const uri2 = 'http://localhost:8080/admin';
         const postRafle = async () => {
             try {
@@ -51,7 +51,7 @@ export default function Login() {
                 }).then(res => res.json())
                     .then(json => {
                         console.log("First status in the array:");
-                        console.log(json[0]);
+                        console.log(json[0].AdminUserEmail);
                         if (json[0].AdminUserEmail === `${user}`) {
                             navigate('table')
                         }
@@ -63,11 +63,8 @@ export default function Login() {
             }
         }
         postRafle()
-        setPassword('')
-        setUser('')
         setWrongText('Usuario ou senha não cadastrados')
     };
-
 
     return (
         <Flex

@@ -10,10 +10,11 @@ import { useState } from 'react';
 
 const App = () => {
   const [auth, setAuth] = useState(false);
+  
 
   return (
     <>
-      <NavBar auth={auth} />
+      <NavBar auth={auth} setAuth={setAuth} />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/form" element={<Form />} />

@@ -42,6 +42,7 @@ export default function Simple(props: any) {
         aptidao: string
         Status: string
     };
+
     type allStatus={
         status:string
     }
@@ -75,10 +76,10 @@ export default function Simple(props: any) {
     };
 
     const getAllStatus = async () => {
-        const data = await fetch("http://localhost:8080/admin/table/status/count", {
+        const data1 = await fetch("http://localhost:8080/admin/table/status/count", {
             method: "GET"
         });
-        const jsonData = await data.json();
+        const jsonData = await data1.json();
         console.log(`Dados Json ${jsonData}`)
         setAllStatus(jsonData);
         console.log(`todos status ${JSON.stringify(allStatus)}`)
@@ -99,7 +100,7 @@ export default function Simple(props: any) {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
         const payload = { status: status, cpf: cpf }
-        console.log(payload)
+        console.log(JSON.stringify(payload))
 
         const uri2 = 'http://localhost:8080/status/status/update/admin';
         const updateStatus = async () => {

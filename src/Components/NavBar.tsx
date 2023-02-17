@@ -119,7 +119,7 @@ export default function WithSubnavigation(props: any) {
                         }}>
                         Admin
                     </Button>
-                    <Menu auth={props.auth}/>
+                    <Menu auth={props.auth} setAuth={props.setAuth}/>
                 </Stack>
             </Flex>
 
