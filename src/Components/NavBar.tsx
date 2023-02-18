@@ -27,7 +27,7 @@ import {
 import { useState } from 'react';
 
 import Menu from './Menu'
-import Logo from '../img/Logo.png'
+import Logo from '../assets/img/Logo.png'
 
 import { useNavigate } from 'react-router-dom';
 

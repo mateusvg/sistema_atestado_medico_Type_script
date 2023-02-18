@@ -1,5 +1,5 @@
 import { Center, Text, Stack } from '@chakra-ui/react'
-import LogoX from '../img/LogoX.png'
+import LogoX from '../assets/img/LogoX.png'
 export default function () {
     return (
         <Center >

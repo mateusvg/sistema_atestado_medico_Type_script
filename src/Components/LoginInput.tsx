@@ -12,7 +12,7 @@ import {
     Text,
     useColorModeValue,
 } from '@chakra-ui/react';
-import Logo from '../img/Logo.png'
+import Logo from '../assets/img/Logo.png'
 import { useState, FormEvent, ChangeEvent } from 'react'
 import { CheckIcon } from '@chakra-ui/icons';
 import { useNavigate } from 'react-router-dom';

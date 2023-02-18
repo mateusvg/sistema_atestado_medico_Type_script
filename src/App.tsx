@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import Form from './Pages/Form';
 import Login from './Pages/Login';
-import NavBar from './Components/NavBar'
+import NavBar from './components/NavBar'
 import Table from './Pages/Table'
 import Status from './Pages/Status'
 import Home from './Pages/Home'

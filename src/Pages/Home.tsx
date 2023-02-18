@@ -1,4 +1,4 @@
-import Home from '../Components/HomeLogo'
+import Home from '../components/HomeLogo'
 export default function () {
     return (<Home />)
 }
