@@ -15,9 +15,7 @@ import {
 import Logo from '../img/Logo.png'
 import { useState, FormEvent, ChangeEvent } from 'react'
 import { CheckIcon } from '@chakra-ui/icons';
-
 import { useNavigate } from 'react-router-dom';
-
 
 export default function Login() {
 
@@ -30,8 +28,6 @@ export default function Login() {
     const [wrong, setWrongText] = useState('')
 
     const navigate = useNavigate();
-
-
 
     // Post form
     const handleSubmit = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,8 +49,8 @@ export default function Login() {
                 const parsedValue = await req.json()
                 const response = await parsedValue[0].AdminUserEmail
                 console.log(`responsta e :${response}`)
-                
-                if(response =='admin'){
+
+                if (response == 'admin') {
                     console.log('direcionamento')
                     navigate('table')
                 } else {
