@@ -8,23 +8,18 @@ import {
     Collapse,
     Icon,
     Link,
-    Popover,
-    PopoverTrigger,
-    PopoverContent,
+
     useColorModeValue,
     useBreakpointValue,
     useDisclosure,
-    HStack
+    HStack,
 } from '@chakra-ui/react';
 
 import {
     HamburgerIcon,
     CloseIcon,
     ChevronDownIcon,
-    ChevronRightIcon,
-} from '@chakra-ui/icons';
-
-import { useState } from 'react';
+} from '@chakra-ui/icons'
 
 import Menu from './Menu'
 import Logo from '../assets/img/Logo.png'
@@ -34,6 +29,7 @@ import { useNavigate } from 'react-router-dom';
 export default function WithSubnavigation(props: any) {
     const navigate = useNavigate();
     const { isOpen, onToggle } = useDisclosure();
+    const isLogged = props.auth
 
     return (
         <Box>
@@ -98,22 +94,30 @@ export default function WithSubnavigation(props: any) {
                                 bg: useColorModeValue('gray.200', 'gray.700'),
                             }} >Formulário</Link>
                     </HStack>
-
-                    <HStack
-                        ml={4}
-                        as={'nav'}
-                        spacing={4}
-                        display={{ base: 'none', md: 'flex' }}>
-                        <Link px={2}
-                            onClick={() => navigate('/calendar')}
-                            py={1}
-                            rounded={'md'}
-                            _hover={{
-                                textDecoration: 'none',
-                                bg: useColorModeValue('gray.200', 'gray.700'),
-                            }} >Calendário</Link>
-                    </HStack>
                 </Flex>
+
+                {isLogged ? <Stack
+                    mr={2}
+                    flex={{ base: 1, md: 0 }}
+                    justify={'flex-end'}
+                    direction={'row'}
+                    spacing={6}>
+                    <Button
+                        onClick={() => navigate('/login/calendar')}
+                        as={'a'}
+                        display={{ base: 'none', md: 'inline-flex' }}
+                        fontSize={'sm'}
+                        fontWeight={600}
+                        color={'white'}
+                        bg={'blue.400'}
+                        href={'#'}
+                        _hover={{
+                            bg: 'blue.300',
+                        }}>
+                        Agendamento
+                    </Button>
+                </Stack> : <> </> }
+
 
                 <Stack
                     flex={{ base: 1, md: 0 }}
@@ -121,7 +125,7 @@ export default function WithSubnavigation(props: any) {
                     direction={'row'}
                     spacing={6}>
                     <Button
-                        onClick={() => props.auth ? navigate('/login/table'): navigate('login')}
+                        onClick={() => props.auth ? navigate('/login/table') : navigate('login')}
                         as={'a'}
                         display={{ base: 'none', md: 'inline-flex' }}
                         fontSize={'sm'}
@@ -134,7 +138,7 @@ export default function WithSubnavigation(props: any) {
                         }}>
                         Admin
                     </Button>
-                    <Menu auth={props.auth} setAuth={props.setAuth}/>
+                    <Menu auth={props.auth} setAuth={props.setAuth} />
                 </Stack>
             </Flex>
 
@@ -145,86 +149,6 @@ export default function WithSubnavigation(props: any) {
     );
 }
 
-const DesktopNav = () => {
-    const linkColor = useColorModeValue('gray.600', 'gray.200');
-    const linkHoverColor = useColorModeValue('gray.800', 'white');
-    const popoverContentBgColor = useColorModeValue('white', 'gray.800');
-
-    return (
-        <Stack direction={'row'} spacing={4}>
-            {NAV_ITEMS.map((navItem) => (
-                <Box key={navItem.label}>
-                    <Popover trigger={'hover'} placement={'bottom-start'}>
-                        <PopoverTrigger>
-                            <Link
-                                p={2}
-                                href={navItem.href ?? '#'}
-                                fontSize={'sm'}
-                                fontWeight={500}
-                                color={linkColor}
-                                _hover={{
-                                    textDecoration: 'none',
-                                    color: linkHoverColor,
-                                }}>
-                                {navItem.label}
-                            </Link>
-                        </PopoverTrigger>
-
-                        {navItem.children && (
-                            <PopoverContent
-                                border={0}
-                                boxShadow={'xl'}
-                                bg={popoverContentBgColor}
-                                p={4}
-                                rounded={'xl'}
-                                minW={'sm'}>
-                                <Stack>
-                                    {navItem.children.map((child) => (
-                                        <DesktopSubNav key={child.label} {...child} />
-                                    ))}
-                                </Stack>
-                            </PopoverContent>
-                        )}
-                    </Popover>
-                </Box>
-            ))}
-        </Stack>
-    );
-};
-
-const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
-    return (
-        <Link
-            href={href}
-            role={'group'}
-            display={'block'}
-            p={2}
-            rounded={'md'}
-            _hover={{ bg: useColorModeValue('pink.50', 'gray.900') }}>
-            <Stack direction={'row'} align={'center'}>
-                <Box>
-                    <Text
-                        transition={'all .3s ease'}
-                        _groupHover={{ color: 'pink.400' }}
-                        fontWeight={500}>
-                        {label}
-                    </Text>
-                    <Text fontSize={'sm'}>{subLabel}</Text>
-                </Box>
-                <Flex
-                    transition={'all .3s ease'}
-                    transform={'translateX(-10px)'}
-                    opacity={0}
-                    _groupHover={{ opacity: '100%', transform: 'translateX(0)' }}
-                    justify={'flex-end'}
-                    align={'center'}
-                    flex={1}>
-                    <Icon color={'pink.400'} w={5} h={5} as={ChevronRightIcon} />
-                </Flex>
-            </Stack>
-        </Link>
-    );
-};
 
 const MobileNav = () => {
     return (
@@ -303,14 +227,14 @@ const NAV_ITEMS: Array<NavItem> = [
     },
     {
         label: 'Formulario',
-        href: '/',
+        href: '/form',
     },
     {
         label: 'Status',
         href: '/status',
     },
     {
-        label: 'Calendario',
-        href: '/calendar',
+        label: 'Agendamento',
+        href: 'login/calendar',
     },
 ];
