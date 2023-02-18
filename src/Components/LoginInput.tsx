@@ -31,32 +31,35 @@ export default function Login() {
 
     const navigate = useNavigate();
 
+
+
     // Post form
     const handleSubmit = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        e.preventDefault();
         const payload = await { user: user, password: password }
         console.log(`payload ${payload}`)
         const uri2 = 'http://localhost:8080/admin';
         const postRafle = async () => {
             try {
-                console.log(payload)
+                console.log(`payload ${JSON.stringify(payload)}`)
                 const req = await fetch(uri2, {
                     method: 'POST',
                     headers: {
                         Accept: 'application/json',
                         'Content-Type': 'application/json',
                     },
-
                     body: JSON.stringify({ user: user }),
-
-                }).then(res => res.json())
-                    .then(json => {
-                        console.log("First status in the array:");
-                        console.log(json[0].AdminUserEmail);
-                        if (json[0].AdminUserEmail === `${user}`) {
-                            navigate('table')
-                        }
-
-                    })
+                })
+                const parsedValue = await req.json()
+                const response = await parsedValue[0].AdminUserEmail
+                console.log(`responsta e :${response}`)
+                
+                if(response =='admin'){
+                    console.log('direcionamento')
+                    navigate('table')
+                } else {
+                    console.log('não autenticado')
+                }
 
             } catch (err) {
                 console.log(err);
