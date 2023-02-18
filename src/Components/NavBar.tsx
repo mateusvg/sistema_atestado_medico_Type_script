@@ -98,6 +98,21 @@ export default function WithSubnavigation(props: any) {
                                 bg: useColorModeValue('gray.200', 'gray.700'),
                             }} >Formulário</Link>
                     </HStack>
+
+                    <HStack
+                        ml={4}
+                        as={'nav'}
+                        spacing={4}
+                        display={{ base: 'none', md: 'flex' }}>
+                        <Link px={2}
+                            onClick={() => navigate('/calendar')}
+                            py={1}
+                            rounded={'md'}
+                            _hover={{
+                                textDecoration: 'none',
+                                bg: useColorModeValue('gray.200', 'gray.700'),
+                            }} >Calendário</Link>
+                    </HStack>
                 </Flex>
 
                 <Stack
@@ -293,5 +308,9 @@ const NAV_ITEMS: Array<NavItem> = [
     {
         label: 'Status',
         href: '/status',
+    },
+    {
+        label: 'Calendario',
+        href: '/calendar',
     },
 ];

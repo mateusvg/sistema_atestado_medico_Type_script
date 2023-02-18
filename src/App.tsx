@@ -5,6 +5,7 @@ import NavBar from './components/NavBar'
 import Table from './Pages/Table'
 import Status from './Pages/Status'
 import Home from './Pages/Home'
+import Calendar from './Pages/Calendar'
 import { useState } from 'react';
 
 
@@ -19,6 +20,7 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/form" element={<Form />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/calendar" element={<Calendar />} />
         <Route path="/login/table" element={<Table setAuth={setAuth}/>} />
         <Route path="/status" element={<Status />} />
       </Routes>
