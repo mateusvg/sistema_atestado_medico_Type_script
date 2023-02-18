@@ -106,7 +106,7 @@ export default function WithSubnavigation(props: any) {
                     direction={'row'}
                     spacing={6}>
                     <Button
-                        onClick={() => navigate('login')}
+                        onClick={() => props.auth ? navigate('/login/table'): navigate('login')}
                         as={'a'}
                         display={{ base: 'none', md: 'inline-flex' }}
                         fontSize={'sm'}

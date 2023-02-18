@@ -1,6 +1,6 @@
 import { FormControl, Input, InputLeftElement } from '@chakra-ui/react';
 import { CircleIcon } from './CircleIconStatus'
-import { EditIcon, DownloadIcon, Search2Icon } from '@chakra-ui/icons'
+import { EditIcon, DownloadIcon, Search2Icon, DeleteIcon } from '@chakra-ui/icons'
 import { Button } from '@chakra-ui/react';
 import { useState, useEffect } from 'react';
 import {
@@ -43,8 +43,8 @@ export default function Simple(props: any) {
         Status: string
     };
 
-    type allStatus={
-        status:string
+    type allStatus = {
+        status: string
     }
 
     const [result, setResult] = useState<resultProps[]>([]);
@@ -56,7 +56,7 @@ export default function Simple(props: any) {
     async function handleClickAdminUser() {
         console.log("table")
         await props.setAuth(true)
-     }
+    }
 
 
     const [allStatus, setAllStatus] = useState<allStatus[]>([]);
@@ -167,8 +167,8 @@ export default function Simple(props: any) {
     return (
         <>
             <Stack spacing={5} direction='row' justify='center' mt={4}>
-                
-                <Box maxW='sm' borderWidth='1px' borderRadius='lg' overflow='hidden' shadow='sm' p={3} >
+
+                <Box  maxW='sm' borderWidth='1px' borderRadius='lg' overflow='hidden' shadow='sm' p={3} >
                     <CircleIcon color={'blue'} />Em processamento: {allStatusMap[0]}
                 </Box>
                 <Box maxW='sm' borderWidth='1px' borderRadius='lg' overflow='hidden' shadow='sm' p={3}>
@@ -176,6 +176,9 @@ export default function Simple(props: any) {
                 </Box>
                 <Box maxW='sm' borderWidth='1px' borderRadius='lg' overflow='hidden' shadow='sm' p={3}>
                     <CircleIcon color={'red'} /> Reprovado: {allStatusMap[2]}
+                </Box>
+                <Box maxW='sm' borderWidth='1px' borderRadius='lg' overflow='hidden' shadow='sm' p={3}>
+                    Total: {allStatusMap[2] + allStatusMap[0] + allStatusMap[1]}
                 </Box>
             </Stack>
 
@@ -185,7 +188,7 @@ export default function Simple(props: any) {
                 </InputLeftElement>
                 <Input
                     placeholder="Procurar CPF"
-                    mb={3}
+                    mb={5}
                     mt={3}
                     variant={'solid'}
                     borderWidth={1}
@@ -211,7 +214,8 @@ export default function Simple(props: any) {
                             <Th>Aptidão</Th>
                             <Th>Status</Th>
                             <Th></Th>
-                            <Th>Ação</Th>
+                            <Th>Editar</Th>
+                            <Th></Th>
                         </Tr>
                     </Thead>
                     {
@@ -222,8 +226,8 @@ export default function Simple(props: any) {
                                 return post;
                             }
                         }).map((post, index) => (
-                            <Tbody >
-                                <Tr >
+                            <Tbody>
+                                <Tr>
                                     <Td>{post.nomePaciente}</Td>
                                     <Td>{post.cpf}</Td>
                                     <Td><Button onClick={() => handleDownload(post.anexo)}><DownloadIcon /></Button></Td>
@@ -232,6 +236,7 @@ export default function Simple(props: any) {
                                     <Td>{post.Status}</Td>
                                     <Td><CircleIcon color={`${setStatusColorIcon(post.Status)}`} /></Td>
                                     <Td><Button onClick={() => handleOpenModal(post.cpf, post.Status)}><EditIcon /></Button></Td>
+                                    <Td><Button colorScheme='red'> <DeleteIcon /></Button></Td>
                                 </Tr>
                             </Tbody>
                         ))
