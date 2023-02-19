@@ -257,11 +257,9 @@ export default function Simple() {
                             colorScheme={state === 'success' ? 'green' : 'blue'}
                             isLoading={state === 'submitting'}
                             w="100%"
-
                             type={state === 'success' ? 'button' : 'submit'}>
                             {state === 'success' ? <CheckIcon /> : 'Enviar'}
                         </Button>
-
 
                         <Modal isOpen={isOpen} onClose={onClose}>
                             <ModalOverlay />

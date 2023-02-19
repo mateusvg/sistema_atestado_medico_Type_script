@@ -23,6 +23,7 @@ const App = () => {
         <Route path="/login/calendar" element={<Calendar />} />
         <Route path="/login/table" element={<Table setAuth={setAuth}/>} />
         <Route path="/status" element={<Status />} />
+        <Route path="/form/status" element={<Status />} />
       </Routes>
     </>
   );
