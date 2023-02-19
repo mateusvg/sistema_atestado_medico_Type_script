@@ -8,7 +8,7 @@ export default function () {
 
     const handleSubmit = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
-        const payload = { nomePaciente: nomePaciente, cpf: cpf, date:data }
+        const payload = { nomePaciente: nomePaciente, cpf: cpf, date: data }
         const uri2 = 'http://localhost:8080/admin/table/schedule/date';
         console.log(payload)
         const postRafle = async () => {
@@ -20,7 +20,7 @@ export default function () {
                         Accept: 'application/json',
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ nomePaciente: nomePaciente, cpf: cpf, date:data }),
+                    body: JSON.stringify({ nomePaciente: nomePaciente, cpf: cpf, date: data }),
                 })
                 if (resp.ok) {
                     console.log("Formulario enviado")
@@ -111,7 +111,9 @@ export default function () {
                 </Stack>
                 <Stack onSubmit={handleSubmit}>
                     <form >
-                        <FormControl onSubmit={(e: FormEvent) => { e.preventDefault() }}>
+                        <Stack>
+
+
                             <Text mt={7}>Agendamento</Text>
                             <Input mb={2}
                                 mt={7}
@@ -145,27 +147,27 @@ export default function () {
                                 aria-label={'Seu CPF'}
                                 required
                                 maxLength={14} />
-                                                        <Input
-                            mb={2}
-                            variant={'solid'}
-                            borderWidth={1}
-                            color={'gray.800'}
-                            _placeholder={{
-                                color: 'gray.400',
-                            }}
-                            borderColor={useColorModeValue('gray.300', 'gray.700')}
-                            id={data}
-                            value={data}
-                            required
-                            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                                setData(e.target.value)
-                            }
-                            size="md"
-                            type="date"
-                        />
+                            <Input
+                                mb={2}
+                                variant={'solid'}
+                                borderWidth={1}
+                                color={'gray.800'}
+                                _placeholder={{
+                                    color: 'gray.400',
+                                }}
+                                borderColor={useColorModeValue('gray.300', 'gray.700')}
+                                id={data}
+                                value={data}
+                                required
+                                onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                                    setData(e.target.value)
+                                }
+                                size="md"
+                                type="date"
+                            />
                             <Button w="100%" value="Submit" type="submit"> Agendar
                             </Button>
-                        </FormControl>
+                        </Stack>
                     </form>
                 </Stack>
             </Stack>
