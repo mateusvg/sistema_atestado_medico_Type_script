@@ -111,10 +111,8 @@ export default function () {
                 </Stack>
                 <Stack onSubmit={handleSubmit}>
                     <form >
-                        <Stack>
-
-
-                            <Text mt={7}>Agendamento</Text>
+                        <Stack mt={7} ml={5} p={3} borderWidth={1} borderColor={'grey'}>
+                            <Center><Text>Agendamento</Text></Center>
                             <Input mb={2}
                                 mt={7}
                                 variant={'solid'}
