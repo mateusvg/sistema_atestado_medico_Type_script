@@ -1,13 +1,30 @@
-import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react'
+import React, { useState, useEffect, ChangeEvent, FormEvent, MouseEventHandler } from 'react'
 import Calendar from 'react-calendar'
 import 'react-calendar/dist/Calendar.css'
 import { mask } from "../components/Mask"
-import { Center, Text, Stack, FormControl, useColorModeValue, Input, Button } from '@chakra-ui/react'
+import { Center, Text, Stack, FormControl, useColorModeValue, Input, Button, Box, Divider, Spacer } from '@chakra-ui/react'
+import {
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalFooter,
+    ModalBody,
+    ModalCloseButton,
+} from '@chakra-ui/react'
+import { useDisclosure } from '@chakra-ui/react'
+import { CheckIcon, DeleteIcon } from '@chakra-ui/icons';
 
 export default function () {
+    const [state, setState] = useState<'initial' | 'submitting' | 'success'>(
+        'initial'
+    );
+    const [error, setError] = useState(false);
 
-    const handleSubmit = (e: React.ChangeEvent<HTMLInputElement>) => {
-        e.preventDefault();
+    const { isOpen, onOpen: onOpenModal, onClose: onCloseModal } = useDisclosure()
+
+    const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
         const payload = { nomePaciente: nomePaciente, cpf: cpf, date: data }
         const uri2 = 'http://localhost:8080/admin/table/schedule/date';
         console.log(payload)
@@ -32,6 +49,14 @@ export default function () {
         postRafle()
         setNomePaciente('')
         setCPF('')
+        setData('')
+        setState('success')
+        setTimeout(() => {
+            onCloseModal()
+        }, 2000);
+        setTimeout(() => {
+            setState('initial')
+        }, 3000);
     };
 
 
@@ -81,14 +106,53 @@ export default function () {
     }
     console.log(convert(`${value}`))
 
-    function ScheduleTrue(props: any) {
-        const teste = props.schedule
-        return (
 
-            teste.map((post: any) =>
-                <Text>
-                    <Text>{post.nomePaciente} - {post.cpf}</Text>
-                </Text>
+    function handleDelete(props: any, e:any) {
+        console.log(`propriedade: ${props}`)
+        e.preventDefault()
+        const uri2 = 'http://localhost:8080/admin/table/schedule/delete';
+        console.log(props)
+        const deleteSchedule = async () => {
+            try {
+                console.log(props)
+                const resp = await fetch(uri2, {
+                    method: 'delete',
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ id: props }),
+                })
+                if (resp.ok) {
+                    console.log("Formulario enviado")
+                }
+            } catch (err) {
+                console.log(err);
+            }
+
+        }
+        deleteSchedule()
+        window.location.reload()
+    }
+
+    function ScheduleTrue(props: any) {
+        const dadosBack = props.schedule
+        return (
+            dadosBack.map((post: any) =>
+                <Box>
+                    <Stack direction={'row'}>
+                        <Box>
+
+                        <Text> {post.nomePaciente} - {post.cpf}
+                        </Text>
+                        </Box>
+                        <Spacer />
+                        <Button colorScheme='red' size='xs' onClick={(event => handleDelete(post.idSchedule, event))} >
+                            <DeleteIcon />
+                        </Button>
+                    </Stack>
+                    <Divider orientation='horizontal' />
+                </Box>
             )
         )
     }
@@ -101,6 +165,8 @@ export default function () {
         )
     }
 
+
+
     return (
         <Center mt={4}>
             <Stack direction='row' justify='center'>
@@ -108,65 +174,84 @@ export default function () {
                     <Calendar onChange={onChange} value={value} />
                     <Text>Pacientes agendados do dia:</Text>
                     {schedule.length > 0 ? <ScheduleTrue schedule={schedule} /> : <ScheduleFalse />}
+                    <Button w="100%" colorScheme={'blue'} onClick={onOpenModal}> Agendar
+                    </Button>
                 </Stack>
-                <Stack onSubmit={handleSubmit}>
-                    <form >
-                        <Stack mt={7} ml={5} p={3} borderWidth={1} borderColor={'grey'}>
-                            <Center><Text>Agendamento</Text></Center>
-                            <Input mb={2}
-                                mt={7}
-                                variant={'solid'}
-                                borderWidth={1}
-                                color={'gray.800'}
-                                _placeholder={{
-                                    color: 'gray.400',
-                                }}
-                                borderColor={useColorModeValue('gray.300', 'gray.700')}
-                                placeholder={'Nome Paciente'}
-                                aria-label={'nome Paciente'}
-                                onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                                    setNomePaciente(e.target.value)
-                                }
-                                value={nomePaciente}
-                                required
-                                maxLength={14} />
-                            <Input mb={2}
+                <Stack >
+                    <Stack>
+                        <Modal isOpen={isOpen} onClose={onCloseModal}>
+                            <form onSubmit={handleSubmit}>
+                                <ModalOverlay />
+                                <ModalContent>
+                                    <ModalHeader>Status</ModalHeader>
+                                    <ModalCloseButton />
+                                    <ModalBody>
+                                        <Input mb={2}
+                                            mt={7}
+                                            variant={'solid'}
+                                            borderWidth={1}
+                                            color={'gray.800'}
+                                            _placeholder={{
+                                                color: 'gray.400',
+                                            }}
+                                            borderColor={useColorModeValue('gray.300', 'gray.700')}
+                                            placeholder={'Nome Paciente'}
+                                            aria-label={'nome Paciente'}
+                                            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                                                setNomePaciente(e.target.value)
+                                            }
+                                            value={nomePaciente}
+                                            required
+                                            maxLength={14} />
+                                        <Input mb={2}
 
-                                variant={'solid'}
-                                borderWidth={1}
-                                color={'gray.800'}
-                                _placeholder={{
-                                    color: 'gray.400',
-                                }}
-                                borderColor={useColorModeValue('gray.300', 'gray.700')}
-                                placeholder={'CPF'}
-                                onChange={handleChangeMask}
-                                value={cpf}
-                                aria-label={'Seu CPF'}
-                                required
-                                maxLength={14} />
-                            <Input
-                                mb={2}
-                                variant={'solid'}
-                                borderWidth={1}
-                                color={'gray.800'}
-                                _placeholder={{
-                                    color: 'gray.400',
-                                }}
-                                borderColor={useColorModeValue('gray.300', 'gray.700')}
-                                id={data}
-                                value={data}
-                                required
-                                onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                                    setData(e.target.value)
-                                }
-                                size="md"
-                                type="date"
-                            />
-                            <Button w="100%" value="Submit" type="submit"> Agendar
-                            </Button>
-                        </Stack>
-                    </form>
+                                            variant={'solid'}
+                                            borderWidth={1}
+                                            color={'gray.800'}
+                                            _placeholder={{
+                                                color: 'gray.400',
+                                            }}
+                                            borderColor={useColorModeValue('gray.300', 'gray.700')}
+                                            placeholder={'CPF'}
+                                            onChange={handleChangeMask}
+                                            value={cpf}
+                                            aria-label={'Seu CPF'}
+                                            required
+                                            maxLength={14} />
+                                        <Input
+                                            mb={2}
+                                            variant={'solid'}
+                                            borderWidth={1}
+                                            color={'gray.800'}
+                                            _placeholder={{
+                                                color: 'gray.400',
+                                            }}
+                                            borderColor={useColorModeValue('gray.300', 'gray.700')}
+                                            id={data}
+                                            value={data}
+                                            required
+                                            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                                                setData(e.target.value)
+                                            }
+                                            size="md"
+                                            type="date"
+                                        />
+                                    </ModalBody>
+                                    <ModalFooter>
+                                        <FormControl>
+                                            <Button
+                                                colorScheme={state === 'success' ? 'green' : 'blue'}
+                                                isLoading={state === 'submitting'}
+                                                w="100%"
+                                                type={state === 'success' ? 'button' : 'submit'}>
+                                                {state === 'success' ? <CheckIcon /> : 'Enviar'}
+                                            </Button>
+                                        </FormControl>
+                                    </ModalFooter>
+                                </ModalContent>
+                            </form>
+                        </Modal>
+                    </Stack>
                 </Stack>
             </Stack>
         </Center>

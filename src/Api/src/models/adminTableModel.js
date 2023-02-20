@@ -36,7 +36,7 @@ async function countAllStatus() {
 async function getScheduleAdmin(date) {
     try {
         const result = await new Promise((resolve, reject) => {
-            conn.query("SELECT * FROM form WHERE scheduleDate = ?  ", [date], (error, results, fields) => {
+            conn.query("SELECT * FROM schedule WHERE scheduleDate = ?  ", [date], (error, results, fields) => {
                 if (error) return reject(error);
                 return resolve(results);
             });
@@ -48,10 +48,27 @@ async function getScheduleAdmin(date) {
     }
 }
 
-async function updateScheduteAdmin(date, cpf) {
+async function updateScheduteAdmin(nomePaciente, date, cpf) {
+    try {
+        let idSchedule = ''
+        const result = await new Promise((resolve, reject) => {
+            conn.query("INSERT INTO schedule VALUES (?, ?, ? , ?)  ", [idSchedule, nomePaciente, cpf, date], (error, results, fields) => {
+                if (error) return reject(error);
+                return resolve(results);
+            });
+        });
+        console.log(result)
+        return result
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+async function deleteScheduleModel(idSchedule) {
     try {
         const result = await new Promise((resolve, reject) => {
-            conn.query("UPDATE form SET scheduleDate = ? WHERE cpf = ?  ", [date, cpf], (error, results, fields) => {
+            console.log("id"+ idSchedule)
+            conn.query("DELETE FROM schedule WHERE idSchedule = ?  ", [idSchedule], (error, results, fields) => {
                 if (error) return reject(error);
                 return resolve(results);
             });
@@ -63,6 +80,6 @@ async function updateScheduteAdmin(date, cpf) {
     }
 }
 
-module.exports = { viewAllRegistersTable, countAllStatus, getScheduleAdmin, updateScheduteAdmin }
+module.exports = { viewAllRegistersTable, countAllStatus, getScheduleAdmin, updateScheduteAdmin, deleteScheduleModel }
 
 // SELECT * FROM `form` INNER JOIN `statusporcpf` ON `statusporcpf`.`idtable1` = `form`.`status` WHERE `form`.`CPF` ='787.571.100-26'

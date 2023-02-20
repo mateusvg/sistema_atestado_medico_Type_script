@@ -22,7 +22,15 @@ exports.getSchedule = async (req, res, next) => {
 exports.updateSchedute = async (req, res, next) => {
     console.log("userAdminUpdateSchedule")
     let date = req.body.date
+    let nomePaciente = req.body.nomePaciente
     let cpf = req.body.cpf
-    const data = await adminTable.updateScheduteAdmin(date,cpf)
+    const data = await adminTable.updateScheduteAdmin(nomePaciente, date,cpf)
+    res.status(200).send(data);
+};
+
+exports.deleteSchedule = async (req, res, next) => {
+    console.log("userAdminUpdateSchedule")
+    let id = req.body.id
+    const data = await adminTable.deleteScheduleModel(id)
     res.status(200).send(data);
 };
