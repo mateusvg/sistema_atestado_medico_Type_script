@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ChangeEvent, FormEvent, MouseEventHandler } from 'react'
+import React, { useState, useEffect, ChangeEvent } from 'react'
 import Calendar from 'react-calendar'
 import 'react-calendar/dist/Calendar.css'
 import { mask } from "../components/Mask"
@@ -14,8 +14,11 @@ import {
 } from '@chakra-ui/react'
 import { useDisclosure } from '@chakra-ui/react'
 import { CheckIcon, DeleteIcon } from '@chakra-ui/icons';
+import { useNavigate } from 'react-router-dom'
 
 export default function () {
+    const navigate = useNavigate();
+
     const [state, setState] = useState<'initial' | 'submitting' | 'success'>(
         'initial'
     );
@@ -53,7 +56,8 @@ export default function () {
         setState('success')
         setTimeout(() => {
             onCloseModal()
-        }, 2000);
+            getAllRegisters()
+        }, 1000)
         setTimeout(() => {
             setState('initial')
         }, 3000);
@@ -107,7 +111,7 @@ export default function () {
     console.log(convert(`${value}`))
 
 
-    function handleDelete(props: any, e:any) {
+    function handleDelete(props: any, e: any) {
         console.log(`propriedade: ${props}`)
         e.preventDefault()
         const uri2 = 'http://localhost:8080/admin/table/schedule/delete';
@@ -129,10 +133,11 @@ export default function () {
             } catch (err) {
                 console.log(err);
             }
-
         }
         deleteSchedule()
-        window.location.reload()
+        setTimeout(() => {
+            getAllRegisters()
+        }, 100)
     }
 
     function ScheduleTrue(props: any) {
@@ -143,8 +148,8 @@ export default function () {
                     <Stack direction={'row'}>
                         <Box>
 
-                        <Text> {post.nomePaciente} - {post.cpf}
-                        </Text>
+                            <Text> {post.nomePaciente} - {post.cpf}
+                            </Text>
                         </Box>
                         <Spacer />
                         <Button colorScheme='red' size='xs' onClick={(event => handleDelete(post.idSchedule, event))} >

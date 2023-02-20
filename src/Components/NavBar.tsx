@@ -149,23 +149,22 @@ export default function WithSubnavigation(props: any) {
     );
 }
 
-
-const MobileNav = () => {
+const MobileNav = (props:any) => {
     return (
         <Stack
             bg={useColorModeValue('white', 'gray.800')}
             p={4}
             display={{ md: 'none' }}>
             {NAV_ITEMS.map((navItem) => (
-                <MobileNavItem key={navItem.label} {...navItem} />
+                <MobileNavItem key={navItem.label} {...navItem } />
             ))}
         </Stack>
     );
 };
 
-const MobileNavItem = ({ label, children, href }: NavItem) => {
+const MobileNavItem = ({ label, children, href }: NavItem, props:any) => {
     const { isOpen, onToggle } = useDisclosure();
-
+    console.log(`propriedade link ${ props.auth }`)
     return (
         <Stack spacing={4} onClick={children && onToggle}>
             <Flex
