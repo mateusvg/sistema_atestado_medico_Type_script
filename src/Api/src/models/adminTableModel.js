@@ -80,6 +80,22 @@ async function deleteScheduleModel(idSchedule) {
     }
 }
 
-module.exports = { viewAllRegistersTable, countAllStatus, getScheduleAdmin, updateScheduteAdmin, deleteScheduleModel }
+async function deleteTableModel(idForm) {
+    try {
+        const result = await new Promise((resolve, reject) => {
+            console.log("id"+ idForm)
+            conn.query("DELETE FROM form WHERE idForm = ?  ", [idForm], (error, results, fields) => {
+                if (error) return reject(error);
+                return resolve(results);
+            });
+        });
+        console.log(result)
+        return result
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+module.exports = { viewAllRegistersTable, countAllStatus, getScheduleAdmin, updateScheduteAdmin, deleteScheduleModel, deleteTableModel }
 
 // SELECT * FROM `form` INNER JOIN `statusporcpf` ON `statusporcpf`.`idtable1` = `form`.`status` WHERE `form`.`CPF` ='787.571.100-26'

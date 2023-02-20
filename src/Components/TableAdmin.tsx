@@ -162,7 +162,37 @@ export default function Simple(props: any) {
         setStatusDropDown(Status)
         setCpf(cpf);
         onOpenModal();
-    };
+    }
+
+    function handleDelete(props: any, e: any) {
+        console.log(`propriedadeID Table: ${props}`)
+        e.preventDefault()
+        const uri2 = 'http://localhost:8080/admin/table/delete';
+        console.log(props)
+        const deleteSchedule = async () => {
+            try {
+                console.log(props)
+                const resp = await fetch(uri2, {
+                    method: 'delete',
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ id: props }),
+                })
+                if (resp.ok) {
+                    console.log("Formulario enviado")
+                }
+            } catch (err) {
+                console.log(err);
+            }
+        }
+        deleteSchedule()
+        setTimeout(() => {
+            getAllRegisters()
+            getAllStatus()
+        }, 100)
+    }
 
     return (
         <>
@@ -236,7 +266,7 @@ export default function Simple(props: any) {
                                     <Td>{post.Status}</Td>
                                     <Td><CircleIcon color={`${setStatusColorIcon(post.Status)}`} /></Td>
                                     <Td><Button onClick={() => handleOpenModal(post.cpf, post.Status)}><EditIcon /></Button></Td>
-                                    <Td><Button colorScheme='red'> <DeleteIcon /></Button></Td>
+                                    <Td><Button colorScheme='red' onClick={(event => handleDelete(post.idForm, event))}> <DeleteIcon /></Button></Td>
                                 </Tr>
                             </Tbody>
                         ))

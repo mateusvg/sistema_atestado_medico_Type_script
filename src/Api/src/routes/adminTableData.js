@@ -4,6 +4,7 @@ const controller = require('../controllers/adminTableController')
 
 router.get('/', controller.get);
 router.get('/status/count', controller.getCountStatus);
+router.delete('/delete', controller.deleteTable)
 router.post('/schedule', controller.getSchedule);
 router.put('/schedule/date', controller.updateSchedute)
 router.delete('/schedule/delete', controller.deleteSchedule)

@@ -34,3 +34,10 @@ exports.deleteSchedule = async (req, res, next) => {
     const data = await adminTable.deleteScheduleModel(id)
     res.status(200).send(data);
 };
+
+exports.deleteTable = async (req, res, next) => {
+    console.log("userAdminUpdateSchedule")
+    let id = req.body.id
+    const data = await adminTable.deleteTableModel(id)
+    res.status(200).send(data);
+};
