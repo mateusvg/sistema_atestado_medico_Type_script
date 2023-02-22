@@ -24,7 +24,7 @@ import {
     ModalCloseButton,
 } from '@chakra-ui/react'
 import { useDisclosure } from '@chakra-ui/react'
-import { postFormUser } from '../services/postFormUser'
+import { postFormUser } from '../services/User/postFormUser'
 
 export default function Simple() {
     const { isOpen, onOpen: onOpenModal, onClose } = useDisclosure()

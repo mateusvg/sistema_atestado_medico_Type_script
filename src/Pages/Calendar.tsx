@@ -15,6 +15,9 @@ import {
 import { useDisclosure } from '@chakra-ui/react'
 import { CheckIcon, DeleteIcon } from '@chakra-ui/icons';
 import { useNavigate } from 'react-router-dom'
+import { deleteScheduleApointment } from '../services/Admin/deleteSchedule'
+import { updateScheduleApointment } from '../services/Admin/updateScheduleApointment'
+import { getAllScheduleApointments } from '../services/Admin/getAllSchedule'
 
 export default function () {
     const navigate = useNavigate();
@@ -28,28 +31,11 @@ export default function () {
 
     const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        const payload = { nomePaciente: nomePaciente, cpf: cpf, date: data }
-        const uri2 = 'http://localhost:8080/admin/table/schedule/date';
-        console.log(payload)
-        const postRafle = async () => {
-            try {
-                console.log(payload)
-                const resp = await fetch(uri2, {
-                    method: 'PUT',
-                    headers: {
-                        Accept: 'application/json',
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ nomePaciente: nomePaciente, cpf: cpf, date: data }),
-                })
-                if (resp.ok) {
-                    console.log("Formulario enviado")
-                }
-            } catch (err) {
-                console.log(err);
-            }
+
+        const postScheduleApointment = async () => {
+            const resp = updateScheduleApointment({ nomePaciente: nomePaciente, cpf: cpf, date: data })
         }
-        postRafle()
+        postScheduleApointment()
         setNomePaciente('')
         setCPF('')
         setData('')
@@ -88,17 +74,7 @@ export default function () {
 
     const getAllRegisters = async () => {
         const value2 = convert(value)
-        const data = await fetch("http://localhost:8080/admin/table/schedule", {
-            method: "POST",
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-
-            body: JSON.stringify({ date: value2 }),
-        });
-        const response = await data.json()
-        console.log(`a resposta ${response.length}`)
+        const response =  await Promise.resolve( getAllScheduleApointments(value2))
         setSchedule(response)
     };
 
@@ -114,25 +90,8 @@ export default function () {
     function handleDelete(props: any, e: any) {
         console.log(`propriedade: ${props}`)
         e.preventDefault()
-        const uri2 = 'http://localhost:8080/admin/table/schedule/delete';
-        console.log(props)
         const deleteSchedule = async () => {
-            try {
-                console.log(props)
-                const resp = await fetch(uri2, {
-                    method: 'delete',
-                    headers: {
-                        Accept: 'application/json',
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ id: props }),
-                })
-                if (resp.ok) {
-                    console.log("Formulario enviado")
-                }
-            } catch (err) {
-                console.log(err);
-            }
+            await deleteScheduleApointment({ id: props })
         }
         deleteSchedule()
         setTimeout(() => {

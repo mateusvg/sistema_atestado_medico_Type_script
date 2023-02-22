@@ -34,6 +34,7 @@ async function countAllStatus() {
 }
 
 async function getScheduleAdmin(date) {
+    console.log(`Data é ${date}` )
     try {
         const result = await new Promise((resolve, reject) => {
             conn.query("SELECT * FROM schedule WHERE scheduleDate = ?  ", [date], (error, results, fields) => {

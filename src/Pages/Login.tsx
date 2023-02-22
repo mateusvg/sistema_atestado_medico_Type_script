@@ -16,7 +16,7 @@ import Logo from '../assets/img/Logo.png'
 import { useState, FormEvent, ChangeEvent } from 'react'
 import { CheckIcon } from '@chakra-ui/icons';
 import { useNavigate } from 'react-router-dom';
-import { getLoginUserAdmin } from '../services/getLoginAdmin'
+import { getLoginUserAdmin } from '../services/Login/getLoginAdmin'
 
 export default function Login() {
 
@@ -38,8 +38,7 @@ export default function Login() {
                 const parsedValue = await getLoginUserAdmin({ user: user, password: password })
                 const response = await parsedValue[0].AdminUserEmail
                 console.log(`responsta e :${response}`)
-
-                if (response == 'admin') {
+                if (response === 'admin') {
                     console.log('direcionamento')
                     navigate('table')
                 } else {

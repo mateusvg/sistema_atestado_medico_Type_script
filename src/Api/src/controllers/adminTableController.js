@@ -7,14 +7,14 @@ exports.get = async (req, res, next) => {
 };
 
 exports.getCountStatus = async (req, res, next) => {
-    console.log("userAdminTableController")
+    console.log("userAdminTableGetStatusCountController")
     const data = await adminTable.countAllStatus()
     res.status(200).send(data);
 };
 
 exports.getSchedule = async (req, res, next) => {
-    console.log("userAdminSchadule")
-    let date = req.body.date
+    console.log("userAdminSchedule")
+    let date = req.body
     const data = await adminTable.getScheduleAdmin(date)
     res.status(200).send(data);
 };

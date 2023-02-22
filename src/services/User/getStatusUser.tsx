@@ -1,5 +1,4 @@
 export const getStatusUser = async (...props: any) => {
-  console.log(`props get status user ${JSON.stringify(props)}`)
   const uri = 'http://localhost:8080/status/cpf';
   try {
     const response = await fetch(

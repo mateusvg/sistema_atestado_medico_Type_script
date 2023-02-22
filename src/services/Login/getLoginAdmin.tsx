@@ -1,6 +1,5 @@
-export const postFormUser = async (...props: any) => {
-    console.log(`props post user form ${JSON.stringify(props)}`)
-    const uri = 'http://localhost:8080/form';
+export const getLoginUserAdmin = async (...props: any) => {
+    const uri = 'http://localhost:8080/admin';
     try {
         const response = await fetch(
             uri, {
@@ -11,9 +10,8 @@ export const postFormUser = async (...props: any) => {
             },
             body: JSON.stringify(props[0]),
         })
-        if (response.ok) {
-            console.log("Formulario enviado")
-        }
+        const jsonObj = await response.json();
+        return jsonObj
     } catch (error) {
         console.error(error);
     }
