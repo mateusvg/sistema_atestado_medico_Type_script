@@ -1,4 +1,4 @@
-import { FormEvent, ChangeEvent, useState, useEffect  } from 'react';
+import { FormEvent, ChangeEvent, useState, useEffect } from 'react';
 import { mask } from "../utils/MaskFormaterCPF"
 import {
     Stack,
@@ -23,6 +23,7 @@ import {
 } from '@chakra-ui/react'
 import { useDisclosure } from '@chakra-ui/react'
 import React from 'react';
+import { getStatusUser } from '../services/getStatusUser'
 
 export default function Simple() {
 
@@ -38,26 +39,14 @@ export default function Simple() {
 
     // Post form
     const handleSubmit = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const payload = { cpf: cpf, }
-        const uri2 = 'http://localhost:8080/status/cpf';
         const postRafle = async () => {
             try {
-                console.log(payload)
-                const req = await fetch(uri2, {
-                    method: 'POST',
-                    headers: {
-                        Accept: 'application/json',
-                        'Content-Type': 'application/json',
-                    },
-
-                    body: JSON.stringify({ cpf: cpf }),
-
-                }).then(res => res.json())
-                .then(json => {
-                    console.log("First status in the array:");
-                    console.log(json[0]);
-                    setStatus(json[0])
-            })
+                const messages = await getStatusUser({ cpf: cpf })
+                    .then(json => {
+                        console.log("First status in the array:");
+                        console.log(json[0]);
+                        setStatus(json[0])
+                    })
 
             } catch (err) {
                 console.log(err);
@@ -65,6 +54,9 @@ export default function Simple() {
         }
         postRafle()
         setCPF('')
+        setTimeout(() => {
+            setState('initial')
+        }, 2000);
     };
 
     function teste() {
@@ -153,7 +145,7 @@ export default function Simple() {
                         <ModalHeader>Status</ModalHeader>
                         <ModalCloseButton />
                         <ModalBody>
-                            <Text>O status do pedido é: {status === null ?'CPF não encontrado':`${status}`}</Text>
+                            <Text>O status do pedido é: {status === null ? 'CPF não encontrado' : `${status}`}</Text>
 
                         </ModalBody>
 
