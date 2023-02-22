@@ -27,6 +27,7 @@ import {
 } from '@chakra-ui/react'
 
 import { useDisclosure } from '@chakra-ui/react'
+import { deleteTableRegister } from '../services/Admin/TableAdmin/deleteRegisterTable'
 
 export default function Simple(props: any) {
 
@@ -170,22 +171,7 @@ export default function Simple(props: any) {
         const uri2 = 'http://localhost:8080/admin/table/delete';
         console.log(props)
         const deleteSchedule = async () => {
-            try {
-                console.log(props)
-                const resp = await fetch(uri2, {
-                    method: 'delete',
-                    headers: {
-                        Accept: 'application/json',
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ id: props }),
-                })
-                if (resp.ok) {
-                    console.log("Formulario enviado")
-                }
-            } catch (err) {
-                console.log(err);
-            }
+            const deleteTableById = await deleteTableRegister({ id: props })
         }
         deleteSchedule()
         setTimeout(() => {
@@ -198,7 +184,7 @@ export default function Simple(props: any) {
         <>
             <Stack spacing={5} direction='row' justify='center' mt={4}>
 
-                <Box  maxW='sm' borderWidth='1px' borderRadius='lg' overflow='hidden' shadow='sm' p={3} >
+                <Box maxW='sm' borderWidth='1px' borderRadius='lg' overflow='hidden' shadow='sm' p={3} >
                     <CircleIcon color={'blue'} />Em processamento: {allStatusMap[0]}
                 </Box>
                 <Box maxW='sm' borderWidth='1px' borderRadius='lg' overflow='hidden' shadow='sm' p={3}>
