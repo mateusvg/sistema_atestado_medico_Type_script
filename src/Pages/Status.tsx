@@ -38,7 +38,7 @@ export default function Simple() {
 
     // Post form
     const handleSubmit = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const postRafle = async () => {
+        const postUserForm = async () => {
             try {
                 await getStatusUser({ cpf: cpf })
                     .then(json => {
@@ -51,7 +51,7 @@ export default function Simple() {
                 console.log(err);
             }
         }
-        postRafle()
+        postUserForm()
         setCPF('')
         setTimeout(() => {
             setState('initial')
