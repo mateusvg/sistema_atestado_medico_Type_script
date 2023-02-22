@@ -1,7 +1,7 @@
 import React, { useState, useEffect, ChangeEvent } from 'react'
 import Calendar from 'react-calendar'
 import 'react-calendar/dist/Calendar.css'
-import { mask } from "../components/Mask"
+import { mask } from "../utils/MaskFormaterCPF"
 import { Center, Text, Stack, FormControl, useColorModeValue, Input, Button, Box, Divider, Spacer } from '@chakra-ui/react'
 import {
     Modal,

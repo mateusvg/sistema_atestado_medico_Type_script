@@ -1,5 +1,5 @@
 import { FormEvent, ChangeEvent, useState } from 'react';
-import { mask } from "./Mask"
+import { mask } from "../utils/MaskFormaterCPF"
 import {
     Stack,
     FormControl,

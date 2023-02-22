@@ -1,11 +1,11 @@
 import { Routes, Route } from 'react-router-dom';
-import Form from './Pages/Form';
-import Login from './Pages/Login';
+import Form from './pages/Form';
+import Login from './pages/Login';
 import NavBar from './components/NavBar'
-import Table from './Pages/Table'
-import Status from './Pages/Status'
-import Home from './Pages/Home'
-import Calendar from './Pages/Calendar'
+import Table from './pages/Table'
+import Status from './pages/Status'
+import Home from './pages/Home'
+import Calendar from './pages/Calendar'
 import { useState } from 'react';
 
 
