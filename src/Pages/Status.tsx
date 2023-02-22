@@ -1,4 +1,4 @@
-import { FormEvent, ChangeEvent, useState, useEffect } from 'react';
+import { FormEvent, useState } from 'react';
 import { mask } from "../utils/MaskFormaterCPF"
 import {
     Stack,
@@ -33,7 +33,6 @@ export default function Simple() {
         'initial'
     );
     const [error, setError] = useState(false);
-    const [response, setResponse] = useState({})
     const [status, setStatus] = useState('')
 
 
@@ -41,7 +40,7 @@ export default function Simple() {
     const handleSubmit = (e: React.ChangeEvent<HTMLInputElement>) => {
         const postRafle = async () => {
             try {
-                const messages = await getStatusUser({ cpf: cpf })
+                await getStatusUser({ cpf: cpf })
                     .then(json => {
                         console.log("First status in the array:");
                         console.log(json[0]);

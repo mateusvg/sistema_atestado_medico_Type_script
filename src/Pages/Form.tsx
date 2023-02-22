@@ -24,6 +24,7 @@ import {
     ModalCloseButton,
 } from '@chakra-ui/react'
 import { useDisclosure } from '@chakra-ui/react'
+import { postFormUser } from '../services/postFormUser'
 
 export default function Simple() {
     const { isOpen, onOpen: onOpenModal, onClose } = useDisclosure()
@@ -45,23 +46,10 @@ export default function Simple() {
 
     // Post form
     const handleSubmit = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const payload = { nomePaciente: nomePaciente, cpf: cpf, nomeMedico: nomeMedico, data: data, aptidao: aptidao, postImage: postImage }
-        const uri2 = 'http://localhost:8080/form';
+
         const postRafle = async () => {
             try {
-                console.log(payload)
-                const resp = await fetch(uri2, {
-                    method: 'POST',
-                    headers: {
-                        Accept: 'application/json',
-                        'Content-Type': 'application/json',
-                    },
-
-                    body: JSON.stringify({ nomePaciente: nomePaciente, cpf: cpf, nomeMedico: nomeMedico, data: data, aptidao: aptidao, postImage: postImage }),
-                })
-                if (resp.ok) {
-                    console.log("Formulario enviado")
-                }
+                await postFormUser({ nomePaciente: nomePaciente, cpf: cpf, nomeMedico: nomeMedico, data: data, aptidao: aptidao, postImage: postImage })
 
             } catch (err) {
                 console.log(err);
@@ -153,7 +141,7 @@ export default function Simple() {
 
                     }}>
                     <FormControl>
-                        
+
                         <Input
                             mb={2}
                             variant={'solid'}
@@ -181,14 +169,14 @@ export default function Simple() {
                             color={'gray.800'}
                             _placeholder={{
                                 color: 'gray.400',
-                            }} 
+                            }}
                             borderColor={useColorModeValue('gray.300', 'gray.700')}
                             placeholder={'CPF'}
                             aria-label={'Seu CPF'}
                             disabled={state !== 'initial'}
                             required
-                            onChange={handleChangeMask} 
-                            value={cpf} 
+                            onChange={handleChangeMask}
+                            value={cpf}
                             maxLength={14} />
 
                         <Input
