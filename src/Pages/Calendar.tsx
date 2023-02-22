@@ -15,9 +15,9 @@ import {
 import { useDisclosure } from '@chakra-ui/react'
 import { CheckIcon, DeleteIcon } from '@chakra-ui/icons';
 import { useNavigate } from 'react-router-dom'
-import { deleteScheduleApointment } from '../services/Admin/ScheduleApointment/deleteSchedule'
-import { updateScheduleApointment } from '../services/Admin/ScheduleApointment/updateScheduleApointment'
-import { getAllScheduleApointments } from '../services/Admin/ScheduleApointment/getAllSchedule'
+import { deleteScheduleApointment } from '../services/Admin/CalendarSchedule/deleteSchedule'
+import { updateScheduleApointment } from '../services/Admin/CalendarSchedule/updateScheduleApointment'
+import { getAllScheduleApointments } from '../services/Admin/CalendarSchedule/getAllSchedule'
 
 export default function () {
     const navigate = useNavigate();
