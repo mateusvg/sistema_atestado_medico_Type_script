@@ -16,6 +16,7 @@ import Logo from '../assets/img/Logo.png'
 import { useState, FormEvent, ChangeEvent } from 'react'
 import { CheckIcon } from '@chakra-ui/icons';
 import { useNavigate } from 'react-router-dom';
+import { getLoginUserAdmin } from '../services/getLoginAdmin'
 
 export default function Login() {
 
@@ -32,21 +33,9 @@ export default function Login() {
     // Post form
     const handleSubmit = async (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
-        const payload = await { user: user, password: password }
-        console.log(`payload ${payload}`)
-        const uri2 = 'http://localhost:8080/admin';
         const postRafle = async () => {
             try {
-                console.log(`payload ${JSON.stringify(payload)}`)
-                const req = await fetch(uri2, {
-                    method: 'POST',
-                    headers: {
-                        Accept: 'application/json',
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ user: user }),
-                })
-                const parsedValue = await req.json()
+                const parsedValue = await getLoginUserAdmin({ user: user, password: password })
                 const response = await parsedValue[0].AdminUserEmail
                 console.log(`responsta e :${response}`)
 
