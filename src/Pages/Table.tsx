@@ -28,6 +28,9 @@ import {
 
 import { useDisclosure } from '@chakra-ui/react'
 import { deleteTableRegister } from '../services/Admin/TableAdmin/deleteRegisterTable'
+import { updateStatusTableAdmin } from '../services/Admin/TableAdmin/updateStatusTable'
+import { getAllRegistersAdmin } from '../services/Admin/TableAdmin/getAllRegisterTable'
+import { getStatusCountRegistersAdmin } from '../services/Admin/TableAdmin/getStatusCountAdminTable'
 
 export default function Simple(props: any) {
 
@@ -69,24 +72,15 @@ export default function Simple(props: any) {
 
     //Get all registers
     const getAllRegisters = async () => {
-        const data = await fetch("http://localhost:8080/admin/table", {
-            method: "GET"
-        });
-        const jsonData = await data.json();
-        setResult(jsonData);
+        const data = await getAllRegistersAdmin()
+        setResult(data);
     };
 
     const getAllStatus = async () => {
-        const data1 = await fetch("http://localhost:8080/admin/table/status/count", {
-            method: "GET"
-        });
-        const jsonData = await data1.json();
-        console.log(`Dados Json ${jsonData}`)
-        setAllStatus(jsonData);
-        console.log(`todos status ${JSON.stringify(allStatus)}`)
+        const data1 = await getStatusCountRegistersAdmin()
+        setAllStatus(data1);
     };
 
-    // Post form update status
     const handleDownload = (anexo: any) => {
         anexo = anexo.replace('data:image/png;base64,', '')
         const payload = { anexo: anexo }
@@ -100,25 +94,8 @@ export default function Simple(props: any) {
     // Post form update status
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
-        const payload = { status: status, cpf: cpf }
-        console.log(JSON.stringify(payload))
-
-        const uri2 = 'http://localhost:8080/status/status/update/admin';
         const updateStatus = async () => {
-            try {
-                console.log(`try console.log ${JSON.stringify(payload)}`)
-                const req = await fetch(uri2, {
-                    method: 'PUT',
-                    headers: {
-                        Accept: 'application/json',
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ status: status, cpf: cpf }),
-                })
-
-            } catch (err) {
-                console.log(err);
-            }
+            const updateStatusAdminTable = await updateStatusTableAdmin({ status: status, cpf: cpf })
         }
         updateStatus()
         window.location.reload()
@@ -168,8 +145,6 @@ export default function Simple(props: any) {
     function handleDelete(props: any, e: any) {
         console.log(`propriedadeID Table: ${props}`)
         e.preventDefault()
-        const uri2 = 'http://localhost:8080/admin/table/delete';
-        console.log(props)
         const deleteSchedule = async () => {
             const deleteTableById = await deleteTableRegister({ id: props })
         }
