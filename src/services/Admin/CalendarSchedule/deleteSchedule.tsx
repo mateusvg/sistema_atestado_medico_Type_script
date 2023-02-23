@@ -11,7 +11,7 @@ export const deleteScheduleApointment = async (...props: any) => {
             body: JSON.stringify(props[0]),
         })
         if (response.ok) {
-            console.log("Formulario enviado")
+            console.log("Schedule deleted")
         }
     } catch (error) {
         console.error(error);

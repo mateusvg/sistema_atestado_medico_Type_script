@@ -143,7 +143,7 @@ export default function Simple(props: any) {
         onOpenModal();
     }
 
-const [idDelete, setIdDelete] = useState('')
+    const [idDelete, setIdDelete] = useState('')
     const handleOpenModalDelete = (id: any, cpf: any) => {
         onOpenDelete();
         setIdDelete(id)

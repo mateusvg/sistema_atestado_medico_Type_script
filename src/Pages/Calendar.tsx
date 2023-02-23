@@ -14,20 +14,17 @@ import {
 } from '@chakra-ui/react'
 import { useDisclosure } from '@chakra-ui/react'
 import { CheckIcon, DeleteIcon } from '@chakra-ui/icons';
-import { useNavigate } from 'react-router-dom'
 import { deleteScheduleApointment } from '../services/Admin/CalendarSchedule/deleteSchedule'
 import { updateScheduleApointment } from '../services/Admin/CalendarSchedule/updateScheduleApointment'
 import { getAllScheduleApointments } from '../services/Admin/CalendarSchedule/getAllSchedule'
 
 export default function () {
-    const navigate = useNavigate();
-
     const [state, setState] = useState<'initial' | 'submitting' | 'success'>(
         'initial'
     );
-    const [error, setError] = useState(false);
 
     const { isOpen, onOpen: onOpenModal, onClose: onCloseModal } = useDisclosure()
+    const { isOpen: isOpenDelete, onOpen: onOpenDelete, onClose: onCloseDelete } = useDisclosure()
 
     const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -74,7 +71,7 @@ export default function () {
 
     const getAllRegisters = async () => {
         const value2 = convert(value)
-        const response =  await Promise.resolve( getAllScheduleApointments(value2))
+        const response = await Promise.resolve(getAllScheduleApointments(value2))
         setSchedule(response)
     };
 
@@ -86,14 +83,18 @@ export default function () {
     }
     console.log(convert(`${value}`))
 
-
-    function handleDelete(props: any, e: any) {
-        console.log(`propriedade: ${props}`)
-        e.preventDefault()
+    const [idDelete, setIdDelete] = useState('')
+    const handleOpenModalDelete = (id: any) => {
+        onOpenDelete();
+        setIdDelete(id)
+    }
+    function handleDelete(e: any) {
         const deleteSchedule = async () => {
-            await deleteScheduleApointment({ id: props })
+            await deleteScheduleApointment({ id: idDelete })
         }
+        e.preventDefault()
         deleteSchedule()
+        onCloseDelete()
         setTimeout(() => {
             getAllRegisters()
         }, 100)
@@ -111,7 +112,7 @@ export default function () {
                             </Text>
                         </Box>
                         <Spacer />
-                        <Button colorScheme='red' size='xs' onClick={(event => handleDelete(post.idSchedule, event))} >
+                        <Button colorScheme='red' size='xs' onClick={() => handleOpenModalDelete(post.idSchedule)} >
                             <DeleteIcon />
                         </Button>
                     </Stack>
@@ -128,7 +129,6 @@ export default function () {
             </Text>
         )
     }
-
 
 
     return (
@@ -211,6 +211,27 @@ export default function () {
                                                 {state === 'success' ? <CheckIcon /> : 'Enviar'}
                                             </Button>
                                         </FormControl>
+                                    </ModalFooter>
+                                </ModalContent>
+                            </form>
+                        </Modal>
+
+                        <Modal isOpen={isOpenDelete} onClose={onCloseDelete} >
+                            <ModalOverlay />
+                            <form>
+                                <ModalContent>
+                                    <ModalHeader>Deletar registro</ModalHeader>
+                                    <ModalCloseButton />
+                                    <ModalBody>
+                                        <FormControl >
+                                            <Text>Deseja deletar o registro?</Text>
+                                            <Text>{cpf}</Text>
+                                        </FormControl>
+                                    </ModalBody>
+                                    <ModalFooter>
+                                        <Button colorScheme='red' mr={'25%'} w={'50%'} type='submit' onClick={(event => handleDelete(event))}>
+                                            Deletar
+                                        </Button>
                                     </ModalFooter>
                                 </ModalContent>
                             </form>
