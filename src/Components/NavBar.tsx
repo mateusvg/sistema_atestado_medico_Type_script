@@ -13,18 +13,14 @@ import {
     useDisclosure,
     HStack,
 } from '@chakra-ui/react';
-
 import {
     HamburgerIcon,
     CloseIcon,
     ChevronDownIcon,
 } from '@chakra-ui/icons'
-
 import Menu from './Menu'
 import Logo from '../assets/img/Logo.png'
-
 import { useNavigate } from 'react-router-dom';
-import React from 'react';
 
 export default function WithSubnavigation(props: any) {
     const navigate = useNavigate();
@@ -117,7 +113,6 @@ export default function WithSubnavigation(props: any) {
                         Agendamento
                     </Button>
                 </Stack> : <> </> }
-
 
                 <Stack
                     flex={{ base: 1, md: 0 }}
