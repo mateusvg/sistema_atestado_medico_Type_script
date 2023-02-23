@@ -1,5 +1,7 @@
+import { relativeURI } from '../../../helpers/RelativeURI'
+const uriRelative = relativeURI()
 export const updateScheduleApointment = async (...props: any) => {
-    const uri = 'http://localhost:8080/admin/table/schedule/date';
+    const uri = `${uriRelative}admin/table/schedule/date`
     try {
         const response = await fetch(
             uri, {

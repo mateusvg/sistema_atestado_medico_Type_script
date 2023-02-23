@@ -1,5 +1,7 @@
+import { relativeURI } from '../../../helpers/RelativeURI'
+const uriRelative = relativeURI()
 export const getAllRegistersAdmin = async () => {
-    const uri = 'http://localhost:8080/admin/table';
+    const uri = `${uriRelative}admin/table`
     try {
       const response = await fetch(
         uri, {

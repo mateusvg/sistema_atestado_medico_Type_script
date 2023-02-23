@@ -1,6 +1,7 @@
-export const getAllScheduleApointments = async (...props: any)  => {
-    console.log(`data e ${props}`)
-    const uri = 'http://localhost:8080/admin/table/schedule';
+import { relativeURI } from '../../../helpers/RelativeURI'
+const uriRelative = relativeURI()
+export const getAllScheduleApointments = async (...props: any) => {
+    const uri = `${uriRelative}admin/table/schedule`
     try {
         const response = await fetch(
             uri, {

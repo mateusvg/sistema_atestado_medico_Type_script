@@ -1,5 +1,7 @@
+import { relativeURI } from '../../helpers/RelativeURI'
+const uriRelative = relativeURI()
 export const getLoginUserAdmin = async (...props: any) => {
-    const uri = 'http://localhost:8080/admin';
+    const uri = `${uriRelative}admin`
     try {
         const response = await fetch(
             uri, {

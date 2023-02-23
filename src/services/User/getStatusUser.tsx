@@ -1,5 +1,7 @@
+import { relativeURI } from '../../helpers/RelativeURI'
+const uriRelative = relativeURI()
 export const getStatusUser = async (...props: any) => {
-  const uri = 'http://localhost:8080/status/cpf';
+  const uri = `${uriRelative}status/cpf`
   try {
     const response = await fetch(
       uri, {

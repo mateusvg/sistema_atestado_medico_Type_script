@@ -1,5 +1,7 @@
+import { relativeURI } from '../../helpers/RelativeURI'
+const uriRelative = relativeURI()
 export const postFormUser = async (...props: any) => {
-    const uri = 'http://localhost:8080/form';
+    const uri = `${uriRelative}form`
     try {
         const response = await fetch(
             uri, {
