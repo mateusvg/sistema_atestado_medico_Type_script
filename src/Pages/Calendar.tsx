@@ -135,7 +135,7 @@ export default function () {
         <Center mt={4}>
             <Stack direction='row' justify='center'>
                 <Stack direction='column' justify='center' mt={7}>
-                    <Calendar onChange={onChange} value={value} />
+                    <Calendar onChange={onChange} value={value} locale={'pt'}/>
                     <Text>Pacientes agendados do dia:</Text>
                     {schedule.length > 0 ? <ScheduleTrue schedule={schedule} /> : <ScheduleFalse />}
                     <Button w="100%" colorScheme={'blue'} onClick={onOpenModal}> Agendar
