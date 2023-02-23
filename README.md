@@ -44,3 +44,7 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
+
+## Figma project
+
+https://www.figma.com/file/jfRAJhTj06369ebzeNnp0c/Atestado-Medico?node-id=2%3A389&t=FaRXon9RJfTB9ViI-1
