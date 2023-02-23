@@ -99,7 +99,11 @@ export default function Simple(props: any) {
             const updateStatusAdminTable = await updateStatusTableAdmin({ status: status, cpf: cpf })
         }
         updateStatus()
-        window.location.reload()
+        onClose()
+        setTimeout(() => {
+            getAllRegisters()
+            getAllStatus()
+        }, 100)
     };
 
     const setStatusColorIcon = (Status: string) => {
@@ -149,11 +153,13 @@ export default function Simple(props: any) {
         setIdDelete(id)
         setCpf(cpf)
     }
-    function handleDelete() {
+    function handleDelete(e:any) {
+        e.preventDefault()
         const deleteSchedule = async () => {
             const deleteTableById = await deleteTableRegister({ id: idDelete })
         }
         deleteSchedule()
+        onCloseDelete()
         setTimeout(() => {
             getAllRegisters()
             getAllStatus()
@@ -277,7 +283,7 @@ export default function Simple(props: any) {
                                 </FormControl>
                             </ModalBody>
                             <ModalFooter>
-                                <Button colorScheme='red' mr={'25%'} w={'50%'} type='submit' onClick={(event => handleDelete())}>
+                                <Button colorScheme='red' mr={'25%'} w={'50%'} type='submit' onClick={(event => handleDelete(event))}>
                                     Deletar
                                 </Button>
                             </ModalFooter>
