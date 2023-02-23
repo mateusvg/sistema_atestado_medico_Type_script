@@ -35,6 +35,7 @@ import { getStatusCountRegistersAdmin } from '../services/Admin/TableAdmin/getSt
 export default function Simple(props: any) {
 
     const { isOpen, onOpen: onOpenModal, onClose } = useDisclosure()
+    const { isOpen: isOpenDelete, onOpen: onOpenDelete, onClose: onCloseDelete } = useDisclosure()
 
     type resultProps = {
         idForm: string
@@ -142,11 +143,15 @@ export default function Simple(props: any) {
         onOpenModal();
     }
 
-    function handleDelete(props: any, e: any) {
-        console.log(`propriedadeID Table: ${props}`)
-        e.preventDefault()
+const [idDelete, setIdDelete] = useState('')
+    const handleOpenModalDelete = (id: any, cpf: any) => {
+        onOpenDelete();
+        setIdDelete(id)
+        setCpf(cpf)
+    }
+    function handleDelete() {
         const deleteSchedule = async () => {
-            const deleteTableById = await deleteTableRegister({ id: props })
+            const deleteTableById = await deleteTableRegister({ id: idDelete })
         }
         deleteSchedule()
         setTimeout(() => {
@@ -227,7 +232,7 @@ export default function Simple(props: any) {
                                     <Td>{post.Status}</Td>
                                     <Td><CircleIcon color={`${setStatusColorIcon(post.Status)}`} /></Td>
                                     <Td><Button onClick={() => handleOpenModal(post.cpf, post.Status)}><EditIcon /></Button></Td>
-                                    <Td><Button colorScheme='red' onClick={(event => handleDelete(post.idForm, event))}> <DeleteIcon /></Button></Td>
+                                    <Td><Button colorScheme='red' onClick={() => handleOpenModalDelete(post.idForm, post.cpf)}> <DeleteIcon /></Button></Td>
                                 </Tr>
                             </Tbody>
                         ))
@@ -259,6 +264,26 @@ export default function Simple(props: any) {
                     </form>
                 </Modal>
 
+                <Modal isOpen={isOpenDelete} onClose={onCloseDelete} >
+                    <ModalOverlay />
+                    <form onSubmit={handleSubmit} >
+                        <ModalContent>
+                            <ModalHeader>Deletar registro</ModalHeader>
+                            <ModalCloseButton />
+                            <ModalBody>
+                                <FormControl >
+                                    <Text>Deseja deletar o registro?</Text>
+                                    <Text>{cpf}</Text>
+                                </FormControl>
+                            </ModalBody>
+                            <ModalFooter>
+                                <Button colorScheme='red' mr={'25%'} w={'50%'} type='submit' onClick={(event => handleDelete())}>
+                                    Deletar
+                                </Button>
+                            </ModalFooter>
+                        </ModalContent>
+                    </form>
+                </Modal>
             </TableContainer>
         </>
     )
