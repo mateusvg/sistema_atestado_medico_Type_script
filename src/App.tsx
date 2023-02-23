@@ -6,7 +6,7 @@ import Table from './pages/Table'
 import Status from './pages/Status'
 import Home from './pages/Home'
 import Calendar from './pages/Calendar'
-import Configuration from './pages/Configuration'
+import Settings from './pages/Settings'
 import { useState } from 'react';
 
 
@@ -25,7 +25,7 @@ const App = () => {
         <Route path="/login/table" element={<Table setAuth={setAuth}/>} />
         <Route path="/status" element={<Status />} />
         <Route path="/form/status" element={<Status />} />
-        <Route path="/login/configuration" element={<Configuration />} />
+        <Route path="/login/settings" element={<Settings />} />
       </Routes>
     </>
   );

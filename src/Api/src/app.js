@@ -13,6 +13,7 @@ const formRoute = require('./routes/formRoute');
 const adminUserRoute = require('./routes/adminUserRoute');
 const statusRoute = require('./routes/statusRoute');
 const adminTableData = require('./routes/adminTableData')
+const adminSettings = require('./routes/adminSettings')
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -22,5 +23,6 @@ app.use('/form', formRoute);
 app.use('/admin', adminUserRoute)
 app.use('/status', statusRoute)
 app.use('/admin/table', adminTableData)
+app.use('/admin/settings', adminSettings)
 
 module.exports = app;

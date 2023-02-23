@@ -51,7 +51,7 @@ export default function NavLink(props: any) {
                         </Center>
                         <br />
                         <MenuDivider />
-                        <MenuItem onClick={() => { navigate('/login/configuration') }}>Configurações</MenuItem>
+                        <MenuItem onClick={() => { navigate('/login/settings') }}>Configurações</MenuItem>
                         <MenuItem onClick={() => { handleLogout(props) }}>Logout</MenuItem>
                     </MenuList>
                 </Menu>
