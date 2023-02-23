@@ -1,7 +1,6 @@
-import { relativeURI } from '../../helpers/RelativeURI'
-const uriRelative = relativeURI()
+var relativeURI2 = require('../../helpers/RelativeURI').relativeURI()
 export const postFormUser = async (...props: any) => {
-    const uri = `${uriRelative}form`
+    const uri = `${relativeURI2}form`
     try {
         const response = await fetch(
             uri, {
