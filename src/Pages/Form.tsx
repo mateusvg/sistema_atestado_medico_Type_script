@@ -47,7 +47,7 @@ export default function Simple() {
     // Post form
     const handleSubmit = (e: React.ChangeEvent<HTMLInputElement>) => {
 
-        const postRafle = async () => {
+        const postForm = async () => {
             try {
                 await postFormUser({ nomePaciente: nomePaciente, cpf: cpf, nomeMedico: nomeMedico, data: data, aptidao: aptidao, postImage: postImage })
 
@@ -55,7 +55,7 @@ export default function Simple() {
                 console.log(err);
             }
         }
-        postRafle()
+        postForm()
         setNomeMedico('')
         setNomePaciente('')
         setCPF('')

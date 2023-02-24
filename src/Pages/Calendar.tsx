@@ -2,7 +2,7 @@ import React, { useState, useEffect, ChangeEvent } from 'react'
 import Calendar from 'react-calendar'
 import 'react-calendar/dist/Calendar.css'
 import { mask } from "../utils/MaskFormaterCPF"
-import { Center, Text, Stack, FormControl, useColorModeValue, Input, Button, Box, Divider, Spacer } from '@chakra-ui/react'
+import { Center, Text, Stack, FormControl, useColorModeValue, Input, Button, Box, Divider, Spacer, Thead, Tr, Th } from '@chakra-ui/react'
 import {
     Modal,
     ModalOverlay,
@@ -137,6 +137,8 @@ export default function () {
                 <Stack direction='column' justify='center' mt={7}>
                     <Calendar onChange={onChange} value={value} locale={'pt'}/>
                     <Text>Pacientes agendados do dia:</Text>
+                    <Text>Nome - CPF</Text>
+
                     {schedule.length > 0 ? <ScheduleTrue schedule={schedule} /> : <ScheduleFalse />}
                     <Button w="100%" colorScheme={'blue'} onClick={onOpenModal}> Agendar
                     </Button>

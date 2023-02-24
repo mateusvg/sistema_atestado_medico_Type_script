@@ -31,9 +31,12 @@ import { deleteTableRegister } from '../services/Admin/TableAdmin/deleteRegister
 import { updateStatusTableAdmin } from '../services/Admin/TableAdmin/updateStatusTable'
 import { getAllRegistersAdmin } from '../services/Admin/TableAdmin/getAllRegisterTable'
 import { getStatusCountRegistersAdmin } from '../services/Admin/TableAdmin/getStatusCountAdminTable'
+import React, { useContext } from "react";
+import { Context } from "../contexts/Context";
 
 export default function Simple(props: any) {
 
+    //Modal
     const { isOpen, onOpen: onOpenModal, onClose } = useDisclosure()
     const { isOpen: isOpenDelete, onOpen: onOpenDelete, onClose: onCloseDelete } = useDisclosure()
 
@@ -46,24 +49,24 @@ export default function Simple(props: any) {
         data: string
         aptidao: string
         Status: string
-    };
+    }
+    //Get all registers
+    const [result, setResult] = useState<resultProps[]>([]);
+    const getAllRegisters = async () => {
+        const data = await getAllRegistersAdmin()
+        setResult(data)
+    }
+
+    const { context, setContext } = useContext(Context)
+    useEffect(() => {
+        getAllRegisters()
+        setContext(true)
+        console.log(`context table ${context}`)
+    }, [])
 
     type allStatus = {
         status: string
     }
-
-    const [result, setResult] = useState<resultProps[]>([]);
-    useEffect(() => {
-        getAllRegisters()
-        handleClickAdminUser()
-    }, [])
-
-    async function handleClickAdminUser() {
-        console.log("table")
-        await props.setAuth(true)
-    }
-
-
     const [allStatus, setAllStatus] = useState<allStatus[]>([]);
     useEffect(() => {
         getAllStatus()
@@ -71,11 +74,6 @@ export default function Simple(props: any) {
     }, [])
     let allStatusMap = allStatus.map(a => a.status)
 
-    //Get all registers
-    const getAllRegisters = async () => {
-        const data = await getAllRegistersAdmin()
-        setResult(data);
-    };
 
     const getAllStatus = async () => {
         const data1 = await getStatusCountRegistersAdmin()
@@ -153,7 +151,7 @@ export default function Simple(props: any) {
         setIdDelete(id)
         setCpf(cpf)
     }
-    function handleDelete(e:any) {
+    function handleDelete(e: any) {
         e.preventDefault()
         const deleteSchedule = async () => {
             const deleteTableById = await deleteTableRegister({ id: idDelete })

@@ -17,6 +17,8 @@ import { useState, FormEvent, ChangeEvent } from 'react'
 import { CheckIcon } from '@chakra-ui/icons';
 import { useNavigate } from 'react-router-dom';
 import { getLoginUserAdmin } from '../services/Login/getLoginAdmin'
+import React, { useContext } from "react";
+import { Context } from "../contexts/Context";
 
 export default function Login() {
 
@@ -30,16 +32,19 @@ export default function Login() {
 
     const navigate = useNavigate();
 
+    const { context, setContext } = useContext(Context);
+    console.log(`login context ${context}`)
     // Post form
     const handleSubmit = async (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
-        const postRafle = async () => {
+        const authUser = async () => {
             try {
+                console.log(`context table${context}`)
                 const parsedValue = await getLoginUserAdmin({ user: user, password: password })
                 const response = await parsedValue[0].AdminUserEmail
                 console.log(`responsta e :${response}`)
                 if (response === 'admin') {
-                    console.log('direcionamento')
+                    setContext(true)
                     navigate('table')
                 } else {
                     console.log('não autenticado')
@@ -49,7 +54,7 @@ export default function Login() {
                 console.log(err);
             }
         }
-        postRafle()
+        authUser()
         setWrongText('Usuario ou senha não cadastrados')
     };
 

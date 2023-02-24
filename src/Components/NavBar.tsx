@@ -22,10 +22,13 @@ import Menu from './Menu'
 import Logo from '../assets/img/Logo.png'
 import { useNavigate } from 'react-router-dom';
 
-export default function WithSubnavigation(props: any) {
+import React, { useContext } from "react";
+import { Context } from "../contexts/Context";
+
+export default function WithSubnavigation() {
     const navigate = useNavigate();
     const { isOpen, onToggle } = useDisclosure();
-    const isLogged = props.auth
+    const { context, setContext } = useContext(Context);
 
     return (
         <Box>
@@ -92,7 +95,7 @@ export default function WithSubnavigation(props: any) {
                     </HStack>
                 </Flex>
 
-                {isLogged ? <Stack
+                {context ? <Stack
                     mr={2}
                     flex={{ base: 1, md: 0 }}
                     justify={'flex-end'}
@@ -120,7 +123,7 @@ export default function WithSubnavigation(props: any) {
                     direction={'row'}
                     spacing={6}>
                     <Button
-                        onClick={() => props.auth ? navigate('/login/table') : navigate('login')}
+                        onClick={() => context ? navigate('/login/table') : navigate('login')}
                         as={'a'}
                         display={{ base: 'none', md: 'inline-flex' }}
                         fontSize={'sm'}
@@ -133,7 +136,7 @@ export default function WithSubnavigation(props: any) {
                         }}>
                         Admin
                     </Button>
-                    <Menu auth={props.auth} setAuth={props.setAuth} />
+                    <Menu />
                 </Stack>
             </Flex>
 
@@ -159,7 +162,6 @@ const MobileNav = (props:any) => {
 
 const MobileNavItem = ({ label, children, href }: NavItem, props:any) => {
     const { isOpen, onToggle } = useDisclosure();
-    console.log(`propriedade link ${ props.auth }`)
     return (
         <Stack spacing={4} onClick={children && onToggle}>
             <Flex

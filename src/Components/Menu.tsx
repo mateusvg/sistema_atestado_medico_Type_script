@@ -10,21 +10,22 @@ import {
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 
+import { useContext } from "react";
+import { Context } from "../contexts/Context";
 
-export default function NavLink(props: any) {
-
+export default function NavLink() {
+    const { context, setContext } = useContext(Context);
     const navigate = useNavigate();
-    function handleLogout(props: any) {
-        props.setAuth(false)
+    function handleLogout() {
+        setContext(false)
+        console.log(`menu context ${context}`)
         navigate('/')
-
     }
-    const isLoggedIn = props.auth
-    console.log(`logado? ${isLoggedIn}`)
+
     return (
 
         <div>
-            {isLoggedIn ?
+            {context ?
                 <Menu>
                     <MenuButton
                         as={Button}
@@ -52,7 +53,7 @@ export default function NavLink(props: any) {
                         <br />
                         <MenuDivider />
                         <MenuItem onClick={() => { navigate('/login/settings') }}>Configurações</MenuItem>
-                        <MenuItem onClick={() => { handleLogout(props) }}>Logout</MenuItem>
+                        <MenuItem onClick={() => { handleLogout() }}>Logout</MenuItem>
                     </MenuList>
                 </Menu>
                 :
