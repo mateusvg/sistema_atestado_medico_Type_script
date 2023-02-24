@@ -1,4 +1,4 @@
-import { FormControl, Input, InputLeftElement } from '@chakra-ui/react';
+import { Center, FormControl, Input, InputLeftElement } from '@chakra-ui/react';
 import { CircleIcon } from '../components/CircleIconStatus'
 import { EditIcon, DownloadIcon, Search2Icon, DeleteIcon } from '@chakra-ui/icons'
 import { Button } from '@chakra-ui/react';
@@ -182,26 +182,30 @@ export default function Simple(props: any) {
                 </Box>
             </Stack>
 
-            <InputGroup shadow='sm'>
-                <InputLeftElement >
-                    <Search2Icon mt={6} />
-                </InputLeftElement>
-                <Input
-                    placeholder="Procurar CPF"
-                    mb={5}
-                    mt={3}
-                    variant={'solid'}
-                    borderWidth={1}
-                    color={'gray.800'}
-                    _placeholder={{
-                        color: 'gray.400',
-                    }}
-                    type="search"
-                    id="outlined-basic"
-                    onChange={handleChange}
-                    value={searchInput}
-                />
-            </InputGroup>
+            <Center m={4}>
+                <Stack direction={'row'}>
+                    <InputGroup shadow='sm'>
+                        <InputLeftElement >
+                            <Search2Icon mt={6} />
+                        </InputLeftElement>
+                        <Input
+                            placeholder="Procurar CPF"
+                            mb={5}
+                            mt={3}
+                            variant={'solid'}
+                            borderWidth={1}
+                            color={'gray.800'}
+                            _placeholder={{
+                                color: 'gray.400',
+                            }}
+                            type="search"
+                            id="outlined-basic"
+                            onChange={handleChange}
+                            value={searchInput}
+                        />
+                    </InputGroup>
+                </Stack>
+            </Center>
             <TableContainer>
                 <Table variant='simple' colorScheme='#E6FFFA' size='sm'>
                     <TableCaption>Pacientes</TableCaption>
