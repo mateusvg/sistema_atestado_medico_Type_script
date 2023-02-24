@@ -184,7 +184,7 @@ export default function Simple(props: any) {
 
             <Center m={4}>
                 <Stack direction={'row'}>
-                    <InputGroup shadow='sm'>
+                    <InputGroup >
                         <InputLeftElement >
                             <Search2Icon mt={6} />
                         </InputLeftElement>
@@ -206,7 +206,7 @@ export default function Simple(props: any) {
                     </InputGroup>
                 </Stack>
             </Center>
-            <TableContainer>
+            <TableContainer m={2}>
                 <Table variant='simple' colorScheme='#E6FFFA' size='sm'>
                     <TableCaption>Pacientes</TableCaption>
                     <Thead>
