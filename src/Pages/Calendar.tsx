@@ -3,7 +3,7 @@ import Calendar from 'react-calendar'
 import 'react-calendar/dist/Calendar.css'
 import { mask } from "../utils/MaskFormaterCPF"
 import { phoneMask } from "../utils/MaskPhone"
-import { Center, Text, Stack, FormControl, useColorModeValue, Input, Button, Box, Divider, Spacer, Thead, Tr, Th, Table, Tbody, Td, TableContainer, TableCaption } from '@chakra-ui/react'
+import { Center, Text, Stack, FormControl, useColorModeValue, Input, Button, Box, Divider, Spacer, Thead, Tr, Th, Table, Tbody, Td, TableContainer, TableCaption, Select } from '@chakra-ui/react'
 import {
     Modal,
     ModalOverlay,
@@ -26,6 +26,7 @@ export default function () {
 
     const { isOpen, onOpen: onOpenModal, onClose: onCloseModal } = useDisclosure()
     const { isOpen: isOpenDelete, onOpen: onOpenDelete, onClose: onCloseDelete } = useDisclosure()
+    const { isOpen: isOpenEdit, onOpen: onOpenEdit, onClose: onCloseEdit } = useDisclosure()
 
     const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -92,20 +93,28 @@ export default function () {
     console.log(convert(`${value}`))
 
     const [idDelete, setIdDelete] = useState('')
-    const handleOpenModalDelete = (id: any) => {
+    const handleOpenModalDelete = (id: any, cpf: any) => {
         onOpenDelete();
         setIdDelete(id)
+        setCPF(cpf)
     }
     function handleDelete(e: any) {
         const deleteSchedule = async () => {
             await deleteScheduleApointment({ id: idDelete })
         }
         e.preventDefault()
+        setCPF('')
         deleteSchedule()
         onCloseDelete()
         setTimeout(() => {
             getAllRegisters()
         }, 100)
+    }
+
+    const [idEdit, setIdEdit] = useState('')
+    const handleOpenModalEdit = (id: any) => {
+        onOpenEdit();
+        setIdEdit(id)
     }
 
     function ScheduleTrue(props: any) {
@@ -130,8 +139,9 @@ export default function () {
                                     <Td>{post.nomePaciente}</Td>
                                     <Td>{post.cpf}</Td>
                                     <Td>{post.phone}</Td>
-                                    <Td><Button colorScheme='red' size='xs' onClick={() => handleOpenModalDelete(post.idSchedule)} ><DeleteIcon /></Button></Td>
-                                    <Td><Button size='xs'><EditIcon /></Button></Td>
+                                    <Td><Button colorScheme='red' size='xs' onClick={() => handleOpenModalDelete(post.idSchedule, post.cpf)} ><DeleteIcon /></Button></Td>
+                                    <Td><Button size='xs' onClick={() => handleOpenModalEdit(post.idSchedule)}><EditIcon /></Button></Td>
+                                    <Td><Button size='xs'>CONFIRMADO</Button></Td>
                                 </Tr>
                             </Tbody>
                         ))
@@ -267,8 +277,7 @@ export default function () {
                                     <ModalCloseButton />
                                     <ModalBody>
                                         <FormControl >
-                                            <Text>Deseja deletar o registro?</Text>
-                                            <Text>{cpf}</Text>
+                                            <Text>Deseja deletar o registro? {cpf}</Text>
                                         </FormControl>
                                     </ModalBody>
                                     <ModalFooter>
@@ -279,6 +288,33 @@ export default function () {
                                 </ModalContent>
                             </form>
                         </Modal>
+
+
+                        <Modal isOpen={isOpenEdit} onClose={onCloseEdit} >
+                            <ModalOverlay />
+                            <form>
+                                <ModalContent>
+                                    <ModalHeader>Alterar configurações de status agendamento</ModalHeader>
+                                    <ModalCloseButton />
+                                    <ModalBody>
+                                        <FormControl >
+                                            <Text>{cpf}</Text>
+                                            <Select placeholder='Selecione o status'  >
+                                                <option value='Em processamento'>Remarcado</option>
+                                                <option value='Aprovado'>Confirmado</option>
+                                                <option value='Reprovado'>A Confirmar</option>
+                                            </Select>
+                                        </FormControl>
+                                    </ModalBody>
+                                    <ModalFooter>
+                                        <Button colorScheme='blue' mr={'25%'} w={'50%'} type='submit' onClick={onCloseEdit}>
+                                            Atualizar
+                                        </Button>
+                                    </ModalFooter>
+                                </ModalContent>
+                            </form>
+                        </Modal>
+
                     </Stack>
                 </Stack>
             </Stack>
