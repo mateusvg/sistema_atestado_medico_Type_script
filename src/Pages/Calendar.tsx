@@ -119,8 +119,9 @@ export default function () {
         console.log(value)
         setStatusApointment(value)
     }
-    const handleOpenModalEdit = (id: any) => {
+    const handleOpenModalEdit = (id: any, cpf: any) => {
         onOpenEdit();
+        setCPF(cpf)
         setIdEdit(id)
     }
     function handleEditStatus(e: any) {
@@ -176,7 +177,7 @@ export default function () {
                                     <Td>{post.phone}</Td>
                                     <Td><Button size='xs' colorScheme={`${colorBackGroundbutton(post.status)}`}>{post.status}</Button></Td>
                                     <Td><Button colorScheme='red' size='xs' onClick={() => handleOpenModalDelete(post.idSchedule, post.cpf)} ><DeleteIcon /></Button></Td>
-                                    <Td><Button size='xs' colorScheme='red' onClick={() => handleOpenModalEdit(post.idSchedule)}><EditIcon /></Button></Td>
+                                    <Td><Button size='xs' onClick={() => handleOpenModalEdit(post.idSchedule, post.cpf)}><EditIcon /></Button></Td>
                                 </Tr>
                             </Tbody>
                         ))
@@ -308,11 +309,11 @@ export default function () {
                             <ModalOverlay />
                             <form>
                                 <ModalContent>
-                                    <ModalHeader>Deletar registro</ModalHeader>
+                                    <ModalHeader>Deletar agendamento</ModalHeader>
                                     <ModalCloseButton />
                                     <ModalBody>
                                         <FormControl >
-                                            <Text>Deseja deletar o registro? {cpf}</Text>
+                                            <Text>Deseja deletar o agendamento? {cpf}</Text>
                                         </FormControl>
                                     </ModalBody>
                                     <ModalFooter>
@@ -333,7 +334,7 @@ export default function () {
                                     <ModalCloseButton />
                                     <ModalBody>
                                         <FormControl >
-                                            <Text>{cpf}</Text>
+                                            <Text>Alterar statusde {cpf} ?</Text>
                                             <Select placeholder='Selecione o status' onChange={handleChangeDropDown} >
                                                 <option value='Remarcado'>Remarcado</option>
                                                 <option value='Confirmado'>Confirmado</option>
