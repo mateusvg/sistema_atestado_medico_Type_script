@@ -2,6 +2,7 @@ import React, { useState, useEffect, ChangeEvent } from 'react'
 import Calendar from 'react-calendar'
 import 'react-calendar/dist/Calendar.css'
 import { mask } from "../utils/MaskFormaterCPF"
+import { phoneMask } from "../utils/MaskPhone"
 import { Center, Text, Stack, FormControl, useColorModeValue, Input, Button, Box, Divider, Spacer, Thead, Tr, Th } from '@chakra-ui/react'
 import {
     Modal,
@@ -30,12 +31,13 @@ export default function () {
         e.preventDefault()
 
         const postScheduleApointment = async () => {
-            const resp = updateScheduleApointment({ nomePaciente: nomePaciente, cpf: cpf, date: data })
+            const resp = updateScheduleApointment({ nomePaciente: nomePaciente, cpf: cpf, date: data, phone: phone })
         }
         postScheduleApointment()
         setNomePaciente('')
         setCPF('')
         setData('')
+        setPhone('')
         setState('success')
         setTimeout(() => {
             onCloseModal()
@@ -50,16 +52,22 @@ export default function () {
     const [nomePaciente, setNomePaciente] = useState('');
     const [cpf, setCPF] = useState('');
     const [data, setData] = useState('');
+    const [phone, setPhone] = useState('');
 
     //CPF mask
     function handleChangeMask(event: any) {
         const { value } = event.target
         setCPF(mask(value))
     }
+    function handlePhoneMaskChange(event: any){
+        const { value } = event.target
+        setPhone(phoneMask(value))
+    }
 
     type resultProps = {
         nomePaciente: string,
-        cpf: string
+        cpf: string,
+        phone: string
     };
 
     const [value, onChange] = useState(new Date())
@@ -107,9 +115,7 @@ export default function () {
                 <Box>
                     <Stack direction={'row'}>
                         <Box>
-
-                            <Text> {post.nomePaciente} - {post.cpf}
-                            </Text>
+                            <Text> {post.nomePaciente} - {post.cpf} - {post.phone}</Text>
                         </Box>
                         <Spacer />
                         <Button colorScheme='red' size='xs' onClick={() => handleOpenModalDelete(post.idSchedule)} >
@@ -135,7 +141,7 @@ export default function () {
         <Center mt={4}>
             <Stack direction='row' justify='center'>
                 <Stack direction='column' justify='center' mt={7}>
-                    <Calendar onChange={onChange} value={value} locale={'pt'}/>
+                    <Calendar onChange={onChange} value={value} locale={'pt'} />
                     <Text>Pacientes agendados do dia:</Text>
                     <Text>Nome - CPF</Text>
 
@@ -193,6 +199,24 @@ export default function () {
                                                 color: 'gray.400',
                                             }}
                                             borderColor={useColorModeValue('gray.300', 'gray.700')}
+                                            id={phone}
+                                            placeholder={'(xx) xxxxx-xxxx'}
+                                            value={phone}
+                                            maxLength={15}
+                                            required
+                                            onChange={handlePhoneMaskChange}
+                                            size="md"
+                                            type="phone"
+                                        />
+                                        <Input
+                                            mb={2}
+                                            variant={'solid'}
+                                            borderWidth={1}
+                                            color={'gray.800'}
+                                            _placeholder={{
+                                                color: 'gray.400',
+                                            }}
+                                            borderColor={useColorModeValue('gray.300', 'gray.700')}
                                             id={data}
                                             value={data}
                                             required
@@ -202,6 +226,7 @@ export default function () {
                                             size="md"
                                             type="date"
                                         />
+
                                     </ModalBody>
                                     <ModalFooter>
                                         <FormControl>

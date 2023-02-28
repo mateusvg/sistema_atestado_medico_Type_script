@@ -24,7 +24,8 @@ exports.updateSchedute = async (req, res, next) => {
     let date = req.body.date
     let nomePaciente = req.body.nomePaciente
     let cpf = req.body.cpf
-    const data = await adminTable.updateScheduteAdmin(nomePaciente, date,cpf)
+    let phone = req.body.phone
+    const data = await adminTable.updateScheduteAdmin(nomePaciente, date,cpf, phone)
     res.status(200).send(data);
 };
 

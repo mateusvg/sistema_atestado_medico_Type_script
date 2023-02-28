@@ -49,11 +49,11 @@ async function getScheduleAdmin(date) {
     }
 }
 
-async function updateScheduteAdmin(nomePaciente, date, cpf) {
+async function updateScheduteAdmin(nomePaciente, date, cpf, phone) {
     try {
         let idSchedule = ''
         const result = await new Promise((resolve, reject) => {
-            conn.query("INSERT INTO schedule VALUES (?, ?, ? , ?)  ", [idSchedule, nomePaciente, cpf, date], (error, results, fields) => {
+            conn.query("INSERT INTO schedule VALUES (?, ?, ?, ?, ?)  ", [idSchedule, nomePaciente, cpf, date, phone], (error, results, fields) => {
                 if (error) return reject(error);
                 return resolve(results);
             });
