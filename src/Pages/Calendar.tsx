@@ -3,7 +3,7 @@ import Calendar from 'react-calendar'
 import 'react-calendar/dist/Calendar.css'
 import { mask } from "../utils/MaskFormaterCPF"
 import { phoneMask } from "../utils/MaskPhone"
-import { Center, Text, Stack, FormControl, useColorModeValue, Input, Button, Box, Divider, Spacer, Thead, Tr, Th } from '@chakra-ui/react'
+import { Center, Text, Stack, FormControl, useColorModeValue, Input, Button, Box, Divider, Spacer, Thead, Tr, Th, Table, Tbody, Td, TableContainer, TableCaption } from '@chakra-ui/react'
 import {
     Modal,
     ModalOverlay,
@@ -14,7 +14,7 @@ import {
     ModalCloseButton,
 } from '@chakra-ui/react'
 import { useDisclosure } from '@chakra-ui/react'
-import { CheckIcon, DeleteIcon } from '@chakra-ui/icons';
+import { CheckIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons';
 import { deleteScheduleApointment } from '../services/Admin/CalendarSchedule/deleteSchedule'
 import { updateScheduleApointment } from '../services/Admin/CalendarSchedule/updateScheduleApointment'
 import { getAllScheduleApointments } from '../services/Admin/CalendarSchedule/getAllSchedule'
@@ -59,7 +59,7 @@ export default function () {
         const { value } = event.target
         setCPF(mask(value))
     }
-    function handlePhoneMaskChange(event: any){
+    function handlePhoneMaskChange(event: any) {
         const { value } = event.target
         setPhone(phoneMask(value))
     }
@@ -111,27 +111,43 @@ export default function () {
     function ScheduleTrue(props: any) {
         const dadosBack = props.schedule
         return (
-            dadosBack.map((post: any) =>
-                <Box>
-                    <Stack direction={'row'}>
-                        <Box>
-                            <Text> {post.nomePaciente} - {post.cpf} - {post.phone}</Text>
-                        </Box>
-                        <Spacer />
-                        <Button colorScheme='red' size='xs' onClick={() => handleOpenModalDelete(post.idSchedule)} >
-                            <DeleteIcon />
-                        </Button>
-                    </Stack>
-                    <Divider orientation='horizontal' />
-                </Box>
-            )
+            <TableContainer m={2}>
+                <Table>
+                    <TableCaption>Agendamentos do dia</TableCaption>
+                    <Thead>
+                        <Tr>
+                            <Th>Nome</Th>
+                            <Th>CPF</Th>
+                            <Th>Telefone</Th>
+                            <Th></Th>
+                            <Th></Th>
+                        </Tr>
+                    </Thead>
+                    {
+                        dadosBack.map((post: any) => (
+                            <Tbody>
+                                <Tr>
+                                    <Td>{post.nomePaciente}</Td>
+                                    <Td>{post.cpf}</Td>
+                                    <Td>{post.phone}</Td>
+                                    <Td><Button colorScheme='red' size='xs' onClick={() => handleOpenModalDelete(post.idSchedule)} ><DeleteIcon /></Button></Td>
+                                    <Td><Button size='xs'><EditIcon /></Button></Td>
+                                </Tr>
+                            </Tbody>
+                        ))
+                    }
+                </Table>
+            </TableContainer>
         )
+
     }
 
     const ScheduleFalse = () => {
         return (
             <Text>
-                <Text>Sem agendamentos</Text>
+                <Center>
+                    <Text m={6}>Sem agendamentos</Text>
+                </Center>
             </Text>
         )
     }
@@ -141,9 +157,9 @@ export default function () {
         <Center mt={4}>
             <Stack direction='row' justify='center'>
                 <Stack direction='column' justify='center' mt={7}>
-                    <Calendar onChange={onChange} value={value} locale={'pt'} />
-                    <Text>Pacientes agendados do dia:</Text>
-                    <Text>Nome - CPF</Text>
+                    <Center mb={5}>
+                        <Calendar onChange={onChange} value={value} locale={'pt'} />
+                    </Center>
 
                     {schedule.length > 0 ? <ScheduleTrue schedule={schedule} /> : <ScheduleFalse />}
                     <Button w="100%" colorScheme={'blue'} onClick={onOpenModal}> Agendar
