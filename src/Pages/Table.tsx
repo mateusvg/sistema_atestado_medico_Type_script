@@ -164,6 +164,33 @@ export default function Simple(props: any) {
         }, 100)
     }
 
+
+    // Download file report XLS OR TXT
+    function downloadFile(e: any) {
+        const element = document.createElement("a")
+        let novoArray : any =["ID", "CPF", "Status", "Aptidão"] 
+        let arraySemAnexo : any =[]
+        result.map(function (item, indice, array) {
+            arraySemAnexo.push(` \n ${result[indice]['idForm']}, ${result[indice]['cpf']} , ${result[indice]['Status']} , ${result[indice]['aptidao']}` ) 
+            console.log(item)
+          });
+        
+        const file = new Blob([`${novoArray} \n ${arraySemAnexo}`]);
+        
+        e.preventDefault()
+        if (e.target.value === 'XLSX') {
+            element.href = URL.createObjectURL(file);
+            element.download = `Relatorio.xls`
+            element.click();
+        } else {
+            element.href = URL.createObjectURL(file);
+            element.download = `Relatorio.txt`
+            element.click();
+        }
+
+    }
+
+
     return (
         <>
             <Stack spacing={5} direction='row' justify='center' mt={4}>
@@ -204,6 +231,12 @@ export default function Simple(props: any) {
                             value={searchInput}
                         />
                     </InputGroup>
+                </Stack>
+                <Stack ml={4} mb={2}>
+                    <Select placeholder='Exportar' onChange={downloadFile}>
+                        <option value='XLSX'>XLSX</option>
+                        <option value='TXT'>TXT</option>
+                    </Select>
                 </Stack>
             </Center>
             <TableContainer m={2}>
