@@ -52,8 +52,9 @@ async function getScheduleAdmin(date) {
 async function updateScheduteAdmin(nomePaciente, date, cpf, phone) {
     try {
         let idSchedule = ''
+        let status = 'Agendado'
         const result = await new Promise((resolve, reject) => {
-            conn.query("INSERT INTO schedule VALUES (?, ?, ?, ?, ?)  ", [idSchedule, nomePaciente, cpf, date, phone], (error, results, fields) => {
+            conn.query("INSERT INTO schedule VALUES (?, ?, ?, ?, ?, ?)  ", [idSchedule, nomePaciente, cpf, date, phone, status], (error, results, fields) => {
                 if (error) return reject(error);
                 return resolve(results);
             });
@@ -64,6 +65,22 @@ async function updateScheduteAdmin(nomePaciente, date, cpf, phone) {
         console.log(err)
     }
 }
+
+async function updateScheduleStatusApointment(idSchedule, status) {
+    try {
+        const result = await new Promise((resolve, reject) => {
+            conn.query("UPDATE schedule set status = ? where idSchedule = ?  ", [status, idSchedule], (error, results, fields) => {
+                if (error) return reject(error);
+                return resolve(results);
+            });
+        });
+        console.log(result)
+        return result
+    } catch (err) {
+        console.log(err)
+    }
+}
+
 
 async function deleteScheduleModel(idSchedule) {
     try {
@@ -97,6 +114,6 @@ async function deleteTableModel(idForm) {
     }
 }
 
-module.exports = { viewAllRegistersTable, countAllStatus, getScheduleAdmin, updateScheduteAdmin, deleteScheduleModel, deleteTableModel }
+module.exports = { viewAllRegistersTable, countAllStatus, getScheduleAdmin, updateScheduteAdmin, deleteScheduleModel, deleteTableModel, updateScheduleStatusApointment }
 
 // SELECT * FROM `form` INNER JOIN `statusporcpf` ON `statusporcpf`.`idtable1` = `form`.`status` WHERE `form`.`CPF` ='787.571.100-26'

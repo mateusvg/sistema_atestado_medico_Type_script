@@ -13,14 +13,14 @@ exports.getCountStatus = async (req, res, next) => {
 };
 
 exports.getSchedule = async (req, res, next) => {
-    console.log("userAdminSchedule")
+    console.log("getScheduleAdmin")
     let date = req.body
     const data = await adminTable.getScheduleAdmin(date)
     res.status(200).send(data);
 };
 
 exports.updateSchedute = async (req, res, next) => {
-    console.log("userAdminUpdateSchedule")
+    console.log("updateScheduteAdmin")
     let date = req.body.date
     let nomePaciente = req.body.nomePaciente
     let cpf = req.body.cpf
@@ -29,15 +29,23 @@ exports.updateSchedute = async (req, res, next) => {
     res.status(200).send(data);
 };
 
+exports.updateScheduteStatus = async (req, res, next) => {
+    console.log("updateScheduleStatusApointment")
+    let idSchedule = req.body.idSchedule
+    let status = req.body.status
+    const data = await adminTable.updateScheduleStatusApointment(idSchedule, status)
+    res.status(200).send(data);
+};
+
 exports.deleteSchedule = async (req, res, next) => {
-    console.log("userAdminUpdateSchedule")
+    console.log("deleteScheduleModel")
     let id = req.body.id
     const data = await adminTable.deleteScheduleModel(id)
     res.status(200).send(data);
 };
 
 exports.deleteTable = async (req, res, next) => {
-    console.log("userAdminUpdateSchedule")
+    console.log("deleteTableModel")
     let id = req.body.id
     const data = await adminTable.deleteTableModel(id)
     res.status(200).send(data);

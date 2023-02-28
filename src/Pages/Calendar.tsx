@@ -18,6 +18,7 @@ import { CheckIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons';
 import { deleteScheduleApointment } from '../services/Admin/CalendarSchedule/deleteSchedule'
 import { updateScheduleApointment } from '../services/Admin/CalendarSchedule/updateScheduleApointment'
 import { getAllScheduleApointments } from '../services/Admin/CalendarSchedule/getAllSchedule'
+import { editStatusScheduleApointment } from '../services/Admin/CalendarSchedule/editStatusScheduleApointment'
 
 export default function () {
     const [state, setState] = useState<'initial' | 'submitting' | 'success'>(
@@ -112,9 +113,42 @@ export default function () {
     }
 
     const [idEdit, setIdEdit] = useState('')
+    const [statusApointment, setStatusApointment] = useState('')
+    const handleChangeDropDown = (e: any) => {
+        const { value } = e.target
+        console.log(value)
+        setStatusApointment(value)
+    }
     const handleOpenModalEdit = (id: any) => {
         onOpenEdit();
         setIdEdit(id)
+    }
+    function handleEditStatus(e: any) {
+        const editStatusSchedule = async () => {
+            await editStatusScheduleApointment({ idSchedule: idEdit, status: statusApointment })
+        }
+        e.preventDefault()
+        setCPF('')
+        editStatusSchedule()
+        onCloseEdit()
+        setTimeout(() => {
+            getAllRegisters()
+        }, 100)
+    }
+
+    function colorBackGroundbutton(status :any) {
+        if(status ==='Remarcado'){
+            return 'orange'
+        }else if(status ==='Confirmado'){
+            return 'green'
+        }
+        else if (status ==='A Confirmar'){
+            return 'yellow'
+        }
+        else if (status ==='Agendado'){
+            return 'gray'
+        }
+
     }
 
     function ScheduleTrue(props: any) {
@@ -128,6 +162,7 @@ export default function () {
                             <Th>Nome</Th>
                             <Th>CPF</Th>
                             <Th>Telefone</Th>
+                            <Th>Status</Th>
                             <Th></Th>
                             <Th></Th>
                         </Tr>
@@ -139,9 +174,9 @@ export default function () {
                                     <Td>{post.nomePaciente}</Td>
                                     <Td>{post.cpf}</Td>
                                     <Td>{post.phone}</Td>
+                                    <Td><Button size='xs' colorScheme={`${colorBackGroundbutton(post.status)}`}>{post.status}</Button></Td>
                                     <Td><Button colorScheme='red' size='xs' onClick={() => handleOpenModalDelete(post.idSchedule, post.cpf)} ><DeleteIcon /></Button></Td>
-                                    <Td><Button size='xs' onClick={() => handleOpenModalEdit(post.idSchedule)}><EditIcon /></Button></Td>
-                                    <Td><Button size='xs'>CONFIRMADO</Button></Td>
+                                    <Td><Button size='xs' colorScheme='red' onClick={() => handleOpenModalEdit(post.idSchedule)}><EditIcon /></Button></Td>
                                 </Tr>
                             </Tbody>
                         ))
@@ -299,15 +334,15 @@ export default function () {
                                     <ModalBody>
                                         <FormControl >
                                             <Text>{cpf}</Text>
-                                            <Select placeholder='Selecione o status'  >
-                                                <option value='Em processamento'>Remarcado</option>
-                                                <option value='Aprovado'>Confirmado</option>
-                                                <option value='Reprovado'>A Confirmar</option>
+                                            <Select placeholder='Selecione o status' onChange={handleChangeDropDown} >
+                                                <option value='Remarcado'>Remarcado</option>
+                                                <option value='Confirmado'>Confirmado</option>
+                                                <option value='A Confirmar'>A Confirmar</option>
                                             </Select>
                                         </FormControl>
                                     </ModalBody>
                                     <ModalFooter>
-                                        <Button colorScheme='blue' mr={'25%'} w={'50%'} type='submit' onClick={onCloseEdit}>
+                                        <Button colorScheme='blue' mr={'25%'} w={'50%'} type='submit' onClick={(event => handleEditStatus(event))}>
                                             Atualizar
                                         </Button>
                                     </ModalFooter>
