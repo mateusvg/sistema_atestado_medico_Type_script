@@ -26,7 +26,7 @@ async function updateStatusAdmin(status, cpf) {
         const result = await new Promise((resolve, reject) => {
             conn.query('UPDATE form SET status = ? WHERE cpf = ?', [status, cpf], (error, results, fields) => {
                 if (error) return reject(error);
-
+                return resolve(results);
             });
         });
     } catch (err) {
