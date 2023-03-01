@@ -41,9 +41,11 @@ export default function Login() {
             try {
                 console.log(`context table${context}`)
                 const parsedValue = await getLoginUserAdmin({ user: user, password: password })
+                console.log(`valor parsed ${JSON.stringify(parsedValue[0])}`)
                 const response = await parsedValue[0].AdminUserEmail
+                const senha = await parsedValue[0].AdminUserPassword
                 console.log(`responsta e :${response}`)
-                if (response === 'admin') {
+                if (response === user && senha === password ) {
                     setContext(true)
                     navigate('table')
                 } else {
