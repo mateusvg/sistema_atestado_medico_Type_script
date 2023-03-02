@@ -1,5 +1,4 @@
 import { Center, FormControl, Input, InputLeftElement } from '@chakra-ui/react';
-import { CircleIcon } from '../components/CircleIconStatus'
 import { EditIcon, DownloadIcon, Search2Icon, DeleteIcon } from '@chakra-ui/icons'
 import { Button } from '@chakra-ui/react';
 import { useState, useEffect } from 'react';
@@ -30,7 +29,7 @@ import {
 import { useDisclosure } from '@chakra-ui/react'
 import { deleteTableRegister } from '../services/Admin/TableAdmin/deleteRegisterTable'
 import { updateStatusTableAdmin } from '../services/Admin/TableAdmin/updateStatusTable'
-import { getAllRegistersAdmin } from '../services/Admin/TableAdmin/getAllRegisterTable'
+import { getAllStockRegistersAdmin } from '../services/Admin/Stock/getAllStockRegistersAdmin'
 import { getStatusCountRegistersAdmin } from '../services/Admin/TableAdmin/getStatusCountAdminTable'
 import React, { useContext } from "react";
 import { Context } from "../contexts/Context";
@@ -42,19 +41,18 @@ export default function Simple(props: any) {
     const { isOpen: isOpenDelete, onOpen: onOpenDelete, onClose: onCloseDelete } = useDisclosure()
 
     type resultProps = {
-        idForm: string
-        nomePaciente: string
-        cpf: string
-        anexo: any
-        nomeMedico: string
-        data: string
-        aptidao: string
+        idStock: string
+        nome: string
+        foto: string
+        preco: any
+        quantidade: string
+        status: string
         Status: string
     }
     //Get all registers
     const [result, setResult] = useState<resultProps[]>([]);
     const getAllRegisters = async () => {
-        const data = await getAllRegistersAdmin()
+        const data = await getAllStockRegistersAdmin()
         setResult(data)
     }
 
@@ -105,17 +103,8 @@ export default function Simple(props: any) {
         }, 100)
     };
 
-    const setStatusColorIcon = (Status: string) => {
-        if (Status === 'Reprovado') {
-            return 'red.500'
-        } else if (Status === 'Aprovado') {
-            return 'green.500'
-        } else {
-            return 'blue.500'
-        }
-    }
 
-    const setStatusColorIconChakra= (Status: string) => {
+    const setStatusColorIconChakra = (Status: string) => {
         if (Status === 'Reprovado') {
             return 'red.500'
         } else if (Status === 'Aprovado') {
@@ -133,8 +122,8 @@ export default function Simple(props: any) {
     }
     if (searchInput.length > 0) {
         result.filter((data) => {
-            console.log(`dados: ${data.cpf}`)
-            return data.cpf.includes(searchInput)
+            console.log(`dados: ${data.nome}`)
+            return data.nome.includes(searchInput)
         })
     }
 
@@ -157,10 +146,9 @@ export default function Simple(props: any) {
     }
 
     const [idDelete, setIdDelete] = useState('')
-    const handleOpenModalDelete = (id: any, cpf: any) => {
+    const handleOpenModalDelete = (id: any) => {
         onOpenDelete();
         setIdDelete(id)
-        setCpf(cpf)
     }
     function handleDelete(e: any) {
         e.preventDefault()
@@ -179,15 +167,15 @@ export default function Simple(props: any) {
     // Download file report XLS OR TXT
     function downloadFile(e: any) {
         const element = document.createElement("a")
-        let novoArray : any =["ID", "CPF", "Status", "Aptidão"] 
-        let arraySemAnexo : any =[]
+        let novoArray: any = ["ID"]
+        let arraySemAnexo: any = []
         result.map(function (item, indice, array) {
-            arraySemAnexo.push(` \n ${result[indice]['idForm']}, ${result[indice]['cpf']} , ${result[indice]['Status']} , ${result[indice]['aptidao']}` ) 
+            arraySemAnexo.push(` \n ${result[indice]['idStock']}}`)
             console.log(item)
-          });
-        
+        });
+
         const file = new Blob([`${novoArray} \n ${arraySemAnexo}`]);
-        
+
         e.preventDefault()
         if (e.target.value === 'XLSX') {
             element.href = URL.createObjectURL(file);
@@ -205,13 +193,10 @@ export default function Simple(props: any) {
     return (
         <>
             <Stack spacing={5} direction='row' justify='center' mt={4}>
-
-
                 <Box maxW='sm' borderWidth='1px' borderRadius='lg' overflow='hidden' shadow='sm' p={3}>
                     Total produtos: {allStatusMap[2] + allStatusMap[0] + allStatusMap[1]}
                 </Box>
             </Stack>
-
             <Center m={4}>
                 <Stack direction={'row'}>
                     <InputGroup >
@@ -262,22 +247,21 @@ export default function Simple(props: any) {
                         result.filter(post => {
                             if (searchInput === '') {
                                 return post;
-                            } else if (post.cpf.toLowerCase().includes(searchInput.toLowerCase())) {
+                            } else if (post.nome.toLowerCase().includes(searchInput.toLowerCase())) {
                                 return post;
                             }
                         }).map((post, index) => (
                             <Tbody>
                                 <Tr>
-                                    <Td>{post.nomePaciente}</Td>
-                                    <Td>{post.cpf}</Td>
-                                    <Td><Button onClick={() => handleDownload(post.anexo)}><DownloadIcon /></Button></Td>
-                                    <Td>{post.nomeMedico}</Td>
-                                    <Td>{post.aptidao}</Td>
-                                    <Td>{post.Status}</Td>
-                                    <Td><CircleStatus status={setStatusColorIconChakra(post.Status)}/></Td>
-                                    {/* <Td><CircleIcon color={`${setStatusColorIcon(post.Status)}`} /></Td> */}
-                                    <Td><Button onClick={() => handleOpenModal(post.cpf, post.Status)}><EditIcon /></Button></Td>
-                                    <Td><Button colorScheme='red' onClick={() => handleOpenModalDelete(post.idForm, post.cpf)}> <DeleteIcon /></Button></Td>
+                                    <Td>{post.idStock}</Td>
+                                    <Td>{post.nome}</Td>
+                                    <Td><Button onClick={() => handleDownload(post.foto)}><DownloadIcon /></Button></Td>
+                                    <Td>{post.preco}</Td>
+                                    <Td>{post.quantidade}</Td>
+                                    <Td>{post.status}</Td>
+                                    <Td><CircleStatus status={setStatusColorIconChakra(post.Status)} /></Td>
+                                    <Td><Button onClick={() => handleOpenModal(post.idStock, post.Status)}><EditIcon /></Button></Td>
+                                    <Td><Button colorScheme='red' onClick={() => handleOpenModalDelete(post.idStock)}> <DeleteIcon /></Button></Td>
                                 </Tr>
                             </Tbody>
                         ))
