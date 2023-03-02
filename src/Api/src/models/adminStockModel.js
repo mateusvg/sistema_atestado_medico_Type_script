@@ -20,7 +20,7 @@ async function viewAllRegistersStock() {
 async function viewAllProductsStock() {
     try {
         const result = await new Promise((resolve, reject) => {
-            conn.query('SELECT count (*) as totalProdutos FROM stock', (error, results, fields) => {
+            conn.query('SELECT SUM(quantidade + 0) as total FROM stock', (error, results, fields) => {
                 if (error) return reject(error);
                 return resolve(results);
             });
@@ -37,7 +37,7 @@ async function viewAllProductsStock() {
 async function getTotalStockProductsPrice() {
     try {
         const result = await new Promise((resolve, reject) => {
-            conn.query('SELECT preco FROM stock', (error, results, fields) => {
+            conn.query('SELECT SUM(preco + 0) as precoTotal, SUM(quantidade + 0)  as quantTotal  FROM stock', (error, results, fields) => {
                 if (error) return reject(error);
                 return resolve(results);
             });

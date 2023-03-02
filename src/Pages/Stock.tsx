@@ -37,7 +37,7 @@ import { deleteTableRegister } from '../services/Admin/TableAdmin/deleteRegister
 import { updateStockProductsAttributes } from '../services/Admin/Stock/updateStockProductsAttributes'
 import { getAllStockRegistersAdmin } from '../services/Admin/Stock/getAllStockRegistersAdmin'
 import { getTotalProductsStock } from '../services/Admin/Stock/getTotalProductsStock'
-import {getTotalPriceProductsInStock} from '../services/Admin/Stock/getTotalPriceProductsInStock'
+import { getTotalPriceProductsInStock } from '../services/Admin/Stock/getTotalPriceProductsInStock'
 import React, { useContext } from "react";
 import { Context } from "../contexts/Context";
 import { currency } from '../utils/MaskPriceFormater'
@@ -87,28 +87,41 @@ export default function Simple(props: any) {
 
     // GET TOTAL PRODUCTS
     type totalProducts = {
-        totalProdutos: string
+        total: string
     }
-    const [totalProducts, settotalProducts] = useState<totalProducts[]>([]);
+    const [totalProducts, settotalProducts] = useState<totalProducts[] | []>([]);
     useEffect(() => {
         getTotalProducts()
-        getTotalPriceProducts()
         console.log(totalProducts)
     }, [])
-    let totalProductsMap = totalProducts.map(a => a.totalProdutos)
-
+    let totalProductsMap = totalProducts.map((item, index) => item.total)
 
     const getTotalProducts = async () => {
         const data1 = await getTotalProductsStock()
         console.log(`TOTAL REGISTROS ${JSON.stringify(data1)}`)
         settotalProducts(data1);
     };
+    // GET TOTAL PRODUCTS END
 
+
+    // GET TOTAL PRODUCTS PRICE
+    type totalProductsPrice = {
+        precoTotal: Number,
+        quantTotal: Number
+    }
+    const [totalProductsPrice, settotalProductsPrice] = useState<totalProductsPrice[]>([]);
+    useEffect(() => {
+        getTotalPriceProducts()
+        console.log(totalProductsPrice)
+    }, [])
+    const [totalPriceProductsGeral ,setTotalPriceProducts] = useState(0)
     const getTotalPriceProducts = async () => {
-        const data1 = await getTotalPriceProductsInStock()
-        console.log(`TOTAL REGISTROS ${JSON.stringify(data1)}`)
-        settotalProducts(data1);
+        const dataTotalPrice = await getTotalPriceProductsInStock()
+        console.log(`TOTAL PRICE ${JSON.stringify(dataTotalPrice)}`)
+        let soma = dataTotalPrice[0].precoTotal * dataTotalPrice[0].quantTotal
+        setTotalPriceProducts(soma)
     };
+    // GET TOTAL PRODUCTS PRICE END
 
     const handleDownload = (anexo: any) => {
         anexo = anexo.replace('data:image/png;base64,', '')
@@ -127,20 +140,21 @@ export default function Simple(props: any) {
             setStatusProdutoHabilitado('1')
         } else {
             setStatusProdutoHabilitado('2')
-        } 
+        }
     }
 
     // UPDATE PRODUCTS PRICE, QUANTITY, NAME
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
-        const updateStatus = async () => {
-            const updateStatusAdminTable = await updateStockProductsAttributes({ idStock: idProduto, nome: nomeProduto, preco: preco, quantidade: quantidade, status: statusProdutoHabilitado })
+        const updateProductAttributes = async () => {
+            const updateProductsAttributes = await updateStockProductsAttributes({ idStock: idProduto, nome: nomeProduto, preco: preco, quantidade: quantidade, status: statusProdutoHabilitado })
         }
-        updateStatus()
+        updateProductAttributes()
         onClose()
         setTimeout(() => {
             getAllRegistersStockProducts()
             getTotalProducts()
+            getTotalPriceProducts()
         }, 100)
     };
 
@@ -227,7 +241,10 @@ export default function Simple(props: any) {
         <>
             <Stack spacing={5} direction='row' justify='center' mt={4}>
                 <Box maxW='sm' borderWidth='1px' borderRadius='lg' overflow='hidden' shadow='sm' p={3}>
-                    Total produtos: {totalProductsMap[0]}
+                    Total produtos: {totalProductsMap}
+                </Box>
+                <Box maxW='sm' borderWidth='1px' borderRadius='lg' overflow='hidden' shadow='sm' p={3}>
+                    Total do estoque R$: {totalPriceProductsGeral}
                 </Box>
             </Stack>
             <Center m={4}>
@@ -383,7 +400,7 @@ export default function Simple(props: any) {
                                         <option value='Ativado'>Ativado</option>
                                         <option value='Inativado'>Inativo</option>
                                     </Select>
-                                        
+
                                 </FormControl>
                             </ModalBody>
                             <ModalFooter>
