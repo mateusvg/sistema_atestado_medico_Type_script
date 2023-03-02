@@ -18,6 +18,8 @@ exports.updateProductAttributes = async (req, res, next) => {
     let preco = req.body.preco
     let quantidade = req.body.quantidade
     let idStock = req.body.idStock
-    const data = await adminTable.updateProductAttributes(nome, preco, quantidade, idStock)
+    let statusProduto = req.body.status
+    console.log(`o STATUS DO PRODUTO E ${statusProduto}`)
+    const data = await adminTable.updateProductAttributes(nome, preco, quantidade, idStock, statusProduto)
     res.status(200).send(data);
 };

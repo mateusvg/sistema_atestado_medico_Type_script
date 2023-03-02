@@ -34,10 +34,10 @@ async function viewAllProductsStock() {
 
 }
 
-async function updateProductAttributes(nome, preco, quantidade, idStock) {
+async function updateProductAttributes(nome, preco, quantidade, idStock, statusProduto) {
     try {
         const result = await new Promise((resolve, reject) => {
-            conn.query("UPDATE stock set nome = ?, preco = ?, quantidade = ? where idStock = ?  ", [nome, preco, quantidade, idStock], (error, results, fields) => {
+            conn.query("UPDATE stock set nome = ?, preco = ?, quantidade = ?, statusItens_idstatusItens = ?  where idStock = ?  ", [nome, preco, quantidade, statusProduto, idStock], (error, results, fields) => {
                 if (error) return reject(error);
                 return resolve(results);
             });

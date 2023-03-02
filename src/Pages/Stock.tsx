@@ -28,7 +28,8 @@ import {
     Text,
     Box,
     Stack,
-    InputLeftAddon
+    InputLeftAddon,
+    Switch
 } from '@chakra-ui/react'
 
 import { useDisclosure } from '@chakra-ui/react'
@@ -45,6 +46,7 @@ export default function Simple(props: any) {
     const [idProduto, setIdProduto] = useState('')
     const [quantidade, setQuantidade] = useState('');
     const [preco, setPreco] = useState('');
+    const [statusProdutoHabilitado, setStatusProdutoHabilitado] = useState('');
 
     //CPF mask
     function handleChangeMaskCurrency(event: any) {
@@ -110,11 +112,21 @@ export default function Simple(props: any) {
         a.click(); //Downloaded file
     };
 
+    const handleChangeDropDown = (e: any) => {
+        e.preventDefault()
+        console.log(`console.produto ativado ${e.target.value}`)
+        if (e.target.value === 'Ativado') {
+            setStatusProdutoHabilitado('1')
+        } else {
+            setStatusProdutoHabilitado('2')
+        } 
+    }
+
     // UPDATE PRODUCTS PRICE, QUANTITY, NAME
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
         const updateStatus = async () => {
-            const updateStatusAdminTable = await updateStockProductsAttributes({idStock: idProduto, nome: nomeProduto, preco: preco, quantidade: quantidade})
+            const updateStatusAdminTable = await updateStockProductsAttributes({ idStock: idProduto, nome: nomeProduto, preco: preco, quantidade: quantidade, status: statusProdutoHabilitado })
         }
         updateStatus()
         onClose()
@@ -125,13 +137,11 @@ export default function Simple(props: any) {
     };
 
     //SetStatusIconCircularCollor
-    const setStatusColorIconChakra = (Status: string) => {
-        if (Status === 'Reprovado') {
+    const setStatusColorIconChakra = (status: string) => {
+        if (status === 'Inativo') {
             return 'red.500'
-        } else if (Status === 'Aprovado') {
-            return 'green.500'
         } else {
-            return 'blue.500'
+            return 'green.500'
         }
     }
     //SetStatusIconCircularCollorEND
@@ -151,8 +161,9 @@ export default function Simple(props: any) {
     }
     //Search products end
 
-    const handleOpenModal = (id: string, nome: string, preco: string, quantidade: string) => {
+    const handleOpenModal = (id: string, nome: string, preco: string, quantidade: string, status: string) => {
         setIdProduto(id)
+        setStatusProdutoHabilitado(status)
         setQuantidade(quantidade)
         setPreco(preco)
         setNomeProduto(nome);
@@ -250,7 +261,7 @@ export default function Simple(props: any) {
                             <Th>Nome</Th>
                             <Th>Foto</Th>
                             <Th>R$</Th>
-                            <Th>Quantidade</Th>
+                            <Th>Quant.</Th>
                             <Th>Status</Th>
                             <Th></Th>
                             <Th>Editar</Th>
@@ -273,14 +284,16 @@ export default function Simple(props: any) {
                                     <Td>{post.preco}</Td>
                                     <Td>{post.quantidade}</Td>
                                     <Td>{post.status}</Td>
-                                    <Td><CircleStatus status={setStatusColorIconChakra(post.Status)} /></Td>
-                                    <Td><Button onClick={() => handleOpenModal(post.idStock, post.nome, post.preco, post.quantidade)}><EditIcon /></Button></Td>
+                                    <Td><CircleStatus status={setStatusColorIconChakra(post.status)} /></Td>
+                                    <Td><Button onClick={() => handleOpenModal(post.idStock, post.nome, post.preco, post.quantidade, post.status)}><EditIcon /></Button></Td>
                                     <Td><Button colorScheme='red' onClick={() => handleOpenModalDelete(post.idStock)}> <DeleteIcon /></Button></Td>
                                 </Tr>
                             </Tbody>
                         ))
                     }
                 </Table>
+
+                {/*MODAL CONFIGURAÇÕES PRODUTO*/}
 
                 <Modal isOpen={isOpen} onClose={onClose} >
                     <ModalOverlay />
@@ -313,6 +326,7 @@ export default function Simple(props: any) {
                                             }
                                         />
                                     </InputGroup>
+
                                     <InputGroup>
                                         <InputLeftAddon children='R$         ' />
                                         <Input
@@ -329,7 +343,7 @@ export default function Simple(props: any) {
                                             name={preco}
                                             required
                                             placeholder={'Preço'}
-                                            aria-label={'Seu nome'}
+                                            defaultValue={0}
                                             value={preco}
                                             onChange={handleChangeMaskCurrency}
                                         />
@@ -350,14 +364,18 @@ export default function Simple(props: any) {
                                             type={'quantidade'}
                                             name={quantidade}
                                             required
-                                            placeholder={'Nome Produto'}
-                                            aria-label={'Seu nome'}
+                                            placeholder={'Quantidade'}
                                             value={quantidade}
                                             onChange={(e: ChangeEvent<HTMLInputElement>) =>
                                                 setQuantidade(e.target.value)
                                             }
                                         />
                                     </InputGroup>
+                                    <Select placeholder='Selecione o status' onChange={handleChangeDropDown} >
+                                        <option value='Ativado'>Ativado</option>
+                                        <option value='Inativado'>Inativo</option>
+                                    </Select>
+                                        
                                 </FormControl>
                             </ModalBody>
                             <ModalFooter>
@@ -369,6 +387,8 @@ export default function Simple(props: any) {
                     </form>
                 </Modal>
 
+
+                {/*MODAL DELETAR PRODUTO*/}
                 <Modal isOpen={isOpenDelete} onClose={onCloseDelete} >
                     <ModalOverlay />
                     <form onSubmit={handleSubmit} >
@@ -378,7 +398,6 @@ export default function Simple(props: any) {
                             <ModalBody>
                                 <FormControl >
                                     <Text>Deseja deletar o registro?</Text>
-
                                 </FormControl>
                             </ModalBody>
                             <ModalFooter>
