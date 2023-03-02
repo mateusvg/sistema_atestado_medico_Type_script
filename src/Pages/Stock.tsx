@@ -37,6 +37,7 @@ import { deleteTableRegister } from '../services/Admin/TableAdmin/deleteRegister
 import { updateStockProductsAttributes } from '../services/Admin/Stock/updateStockProductsAttributes'
 import { getAllStockRegistersAdmin } from '../services/Admin/Stock/getAllStockRegistersAdmin'
 import { getTotalProductsStock } from '../services/Admin/Stock/getTotalProductsStock'
+import {getTotalPriceProductsInStock} from '../services/Admin/Stock/getTotalPriceProductsInStock'
 import React, { useContext } from "react";
 import { Context } from "../contexts/Context";
 import { currency } from '../utils/MaskPriceFormater'
@@ -91,6 +92,7 @@ export default function Simple(props: any) {
     const [totalProducts, settotalProducts] = useState<totalProducts[]>([]);
     useEffect(() => {
         getTotalProducts()
+        getTotalPriceProducts()
         console.log(totalProducts)
     }, [])
     let totalProductsMap = totalProducts.map(a => a.totalProdutos)
@@ -98,6 +100,12 @@ export default function Simple(props: any) {
 
     const getTotalProducts = async () => {
         const data1 = await getTotalProductsStock()
+        console.log(`TOTAL REGISTROS ${JSON.stringify(data1)}`)
+        settotalProducts(data1);
+    };
+
+    const getTotalPriceProducts = async () => {
+        const data1 = await getTotalPriceProductsInStock()
         console.log(`TOTAL REGISTROS ${JSON.stringify(data1)}`)
         settotalProducts(data1);
     };

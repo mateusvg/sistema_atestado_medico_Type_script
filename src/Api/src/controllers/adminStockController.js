@@ -12,6 +12,13 @@ exports.getTotalStockProducts = async (req, res, next) => {
     res.status(200).send(data);
 };
 
+exports.getTotalStockProductsPrice = async (req, res, next) => {
+    console.log("countTotalStockProductsPrice")
+    const data = await adminTable.getTotalStockProductsPrice()
+    res.status(200).send(data);
+};
+
+
 exports.updateProductAttributes = async (req, res, next) => {
     console.log("updateProductsStockAttributes")
     let nome = req.body.nome
