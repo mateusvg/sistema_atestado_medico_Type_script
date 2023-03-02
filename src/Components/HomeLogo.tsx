@@ -5,7 +5,7 @@ export default function () {
         <Center >
             <Stack spacing={5} direction='column' justify='center' mt={7}>
                 <Center>
-                    <Text color='tomato' >Sistema de agendamento e atestado médico</Text>
+                    <Text color='tomato' >Sistema de gerenciamento de loja e RH</Text>
                 </Center>
                 <Center>
                     <img src={LogoX} alt="Logo" width={"40%"} />

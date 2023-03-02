@@ -73,7 +73,7 @@ export default function Login() {
                         <Stack spacing={5} direction='row'>
                             <img src={Logo} alt="Logo" />
                             <Text>
-                                Sistema Atestado Médico
+                                Sistema Gerenciamento estoque e RH
                             </Text>
                         </Stack>
                     </Text>
