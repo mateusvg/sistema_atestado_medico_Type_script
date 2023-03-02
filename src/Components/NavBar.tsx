@@ -12,6 +12,8 @@ import {
     useBreakpointValue,
     useDisclosure,
     HStack,
+    Center,
+    Divider,
 } from '@chakra-ui/react';
 import {
     HamburgerIcon,
@@ -92,30 +94,52 @@ export default function WithSubnavigation() {
                                 textDecoration: 'none',
                                 bg: useColorModeValue('gray.200', 'gray.700'),
                             }} >Formulário</Link>
+                        <Center height='90%'>
+                            <Divider orientation='vertical' />
+                        </Center>
                     </HStack>
                 </Flex>
 
-                {context ? <Stack
-                    mr={2}
-                    flex={{ base: 1, md: 0 }}
-                    justify={'flex-end'}
-                    direction={'row'}
-                    spacing={6}>
-                    <Button
-                        onClick={() => navigate('/login/calendar')}
-                        as={'a'}
-                        display={{ base: 'none', md: 'inline-flex' }}
-                        fontSize={'sm'}
-                        fontWeight={600}
-                        color={'white'}
-                        bg={'blue.400'}
-                        href={'#'}
-                        _hover={{
-                            bg: 'blue.300',
-                        }}>
-                        Agendamento
-                    </Button>
-                </Stack> : <> </>}
+                {
+                    context ?
+                        <Stack
+                            mr={5}
+                            flex={{ base: 1, md: 0 }}
+                            justify={'flex-end'}
+                            direction={'row'}
+                            spacing={6}>
+                            <Button
+                                onClick={() => navigate('/login/calendar')}
+                                as={'a'}
+                                display={{ base: 'none', md: 'inline-flex' }}
+                                fontSize={'sm'}
+                                fontWeight={600}
+                                color={'white'}
+                                bg={'blue.400'}
+                                href={'#'}
+                                _hover={{
+                                    bg: 'blue.300',
+                                }}>
+                                Agendamento
+                            </Button>
+                            <Button
+                                onClick={() => navigate('/login/stock')}
+                                as={'a'}
+                                display={{ base: 'none', md: 'inline-flex' }}
+                                fontSize={'sm'}
+                                fontWeight={600}
+                                color={'white'}
+                                bg={'blue.400'}
+                                href={'#'}
+                                _hover={{
+                                    bg: 'blue.300',
+                                }}>
+                                Estoque
+                            </Button>
+                        </Stack> 
+                        :
+                        <> </>
+                }
 
                 <Stack
                     flex={{ base: 1, md: 0 }}
@@ -166,7 +190,7 @@ const MobileNavItem = () => {
     const navigate = useNavigate();
     const { context, setContext } = useContext(Context);
     const color = useColorModeValue('gray.600', 'gray.200')
-    
+
     return (
         <Stack spacing={4} onClick={onToggle}>
             <Flex

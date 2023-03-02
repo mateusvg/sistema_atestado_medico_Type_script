@@ -3,6 +3,7 @@ import { CircleIcon } from '../components/CircleIconStatus'
 import { EditIcon, DownloadIcon, Search2Icon, DeleteIcon } from '@chakra-ui/icons'
 import { Button } from '@chakra-ui/react';
 import { useState, useEffect } from 'react';
+import CircleStatus from '../components/StatusCircleChakra'
 import {
     Modal,
     ModalOverlay,
@@ -105,6 +106,16 @@ export default function Simple(props: any) {
     };
 
     const setStatusColorIcon = (Status: string) => {
+        if (Status === 'Reprovado') {
+            return 'red.500'
+        } else if (Status === 'Aprovado') {
+            return 'green.500'
+        } else {
+            return 'blue.500'
+        }
+    }
+
+    const setStatusColorIconChakra= (Status: string) => {
         if (Status === 'Reprovado') {
             return 'red.500'
         } else if (Status === 'Aprovado') {
@@ -271,7 +282,8 @@ export default function Simple(props: any) {
                                     <Td>{post.nomeMedico}</Td>
                                     <Td>{post.aptidao}</Td>
                                     <Td>{post.Status}</Td>
-                                    <Td><CircleIcon color={`${setStatusColorIcon(post.Status)}`} /></Td>
+                                    <Td><CircleStatus status={setStatusColorIconChakra(post.Status)}/></Td>
+                                    {/* <Td><CircleIcon color={`${setStatusColorIcon(post.Status)}`} /></Td> */}
                                     <Td><Button onClick={() => handleOpenModal(post.cpf, post.Status)}><EditIcon /></Button></Td>
                                     <Td><Button colorScheme='red' onClick={() => handleOpenModalDelete(post.idForm, post.cpf)}> <DeleteIcon /></Button></Td>
                                 </Tr>
