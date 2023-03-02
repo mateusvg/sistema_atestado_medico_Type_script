@@ -29,7 +29,11 @@ import {
     Box,
     Stack,
     InputLeftAddon,
-    Switch
+    NumberInputField,
+    NumberIncrementStepper,
+    NumberInput,
+    NumberInputStepper,
+    NumberDecrementStepper
 } from '@chakra-ui/react'
 
 import { useDisclosure } from '@chakra-ui/react'
@@ -114,7 +118,7 @@ export default function Simple(props: any) {
         getTotalPriceProducts()
         console.log(totalProductsPrice)
     }, [])
-    const [totalPriceProductsGeral ,setTotalPriceProducts] = useState(0)
+    const [totalPriceProductsGeral, setTotalPriceProducts] = useState(0)
     const getTotalPriceProducts = async () => {
         const dataTotalPrice = await getTotalPriceProductsInStock()
         console.log(`TOTAL PRICE ${JSON.stringify(dataTotalPrice)}`)
@@ -279,7 +283,7 @@ export default function Simple(props: any) {
             </Center>
             <TableContainer m={2}>
                 <Table variant='simple' colorScheme='#E6FFFA' size='sm'>
-                    <TableCaption>Pacientes</TableCaption>
+                    <TableCaption>Produtos</TableCaption>
                     <Thead>
                         <Tr>
                             <Th>ID</Th>
@@ -353,7 +357,7 @@ export default function Simple(props: any) {
                                     </InputGroup>
 
                                     <InputGroup>
-                                        <InputLeftAddon children='R$         ' />
+                                        <InputLeftAddon children='R$' />
                                         <Input
                                             mb={2}
                                             variant={'solid'}
@@ -376,7 +380,18 @@ export default function Simple(props: any) {
 
                                     <InputGroup>
                                         <InputLeftAddon children='Quant.' />
-                                        <Input
+                                        <NumberInput value={quantidade} onChange={e => setQuantidade(e) }  >
+                                            <NumberInputField  />
+                                            <NumberInputStepper >
+                                                <NumberIncrementStepper
+                                                    onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                                                        setQuantidade(e.target.value)
+                                                    } />
+                                                <NumberDecrementStepper
+                                 />
+                                            </NumberInputStepper>
+                                        </NumberInput>
+                                        {/*<Input
                                             mb={2}
                                             variant={'solid'}
                                             borderWidth={1}
@@ -394,7 +409,7 @@ export default function Simple(props: any) {
                                             onChange={(e: ChangeEvent<HTMLInputElement>) =>
                                                 setQuantidade(e.target.value)
                                             }
-                                        />
+                                        />*/}
                                     </InputGroup>
                                     <Select placeholder='Selecione o status' onChange={handleChangeDropDown} >
                                         <option value='Ativado'>Ativado</option>
