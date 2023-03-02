@@ -1,9 +1,13 @@
-import { Center, FormControl, Input, InputLeftElement } from '@chakra-ui/react';
+import { useState, useEffect, ChangeEvent } from 'react';
 import { EditIcon, DownloadIcon, Search2Icon, DeleteIcon } from '@chakra-ui/icons'
-import { Button } from '@chakra-ui/react';
-import { useState, useEffect } from 'react';
 import CircleStatus from '../components/StatusCircleChakra'
 import {
+    Button,
+    Center,
+    FormControl,
+    Input,
+    InputLeftElement,
+    useColorModeValue,
     Modal,
     ModalOverlay,
     ModalContent,
@@ -23,7 +27,8 @@ import {
     InputGroup,
     Text,
     Box,
-    Stack
+    Stack,
+    InputLeftAddon
 } from '@chakra-ui/react'
 
 import { useDisclosure } from '@chakra-ui/react'
@@ -33,8 +38,25 @@ import { getAllStockRegistersAdmin } from '../services/Admin/Stock/getAllStockRe
 import { getStatusCountRegistersAdmin } from '../services/Admin/TableAdmin/getStatusCountAdminTable'
 import React, { useContext } from "react";
 import { Context } from "../contexts/Context";
+import { currency } from '../utils/MaskPriceFormater'
 
 export default function Simple(props: any) {
+    const [nomeProduto, setNomeProduto] = useState('');
+    const [idProduto, setIdProduto] = useState('')
+    const [quantidade, setQuantidade] = useState('');
+    const [preco, setPreco] = useState('');
+
+    //CPF mask
+    function handleChangeMaskCurrency(event: any) {
+        const { value } = event.target
+        console.log(value)
+        if (value === "NaN") {
+            setPreco('0')
+        } else {
+            setPreco(currency(value))
+
+        }
+    }
 
     //Modal
     const { isOpen, onOpen: onOpenModal, onClose } = useDisclosure()
@@ -93,7 +115,7 @@ export default function Simple(props: any) {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
         const updateStatus = async () => {
-            const updateStatusAdminTable = await updateStatusTableAdmin({ status: status, cpf: cpf })
+            const updateStatusAdminTable = await updateStatusTableAdmin({})
         }
         updateStatus()
         onClose()
@@ -114,6 +136,7 @@ export default function Simple(props: any) {
         }
     }
 
+    //Search products
     const [searchInput, setSearchInput] = useState("")
     const handleChange = (e: any) => {
         e.preventDefault()
@@ -127,21 +150,11 @@ export default function Simple(props: any) {
         })
     }
 
-    const [status, setStatusDropDown] = useState('')
-    const [cpf, setCpf] = useState('')
-    const handleChangeDropDown = (e: any) => {
-        e.preventDefault()
-        if (e.target.value === 'Em processamento') {
-            setStatusDropDown('1')
-        } else if (e.target.value === 'Aprovado') {
-            setStatusDropDown('2')
-        } else {
-            setStatusDropDown('3')
-        }
-    }
-    const handleOpenModal = (cpf: string, Status: string) => {
-        setStatusDropDown(Status)
-        setCpf(cpf);
+    const handleOpenModal = (id: string, nome: string, preco: string, quantidade: string) => {
+        setIdProduto(id)
+        setQuantidade(quantidade)
+        setPreco(preco)
+        setNomeProduto(nome);
         onOpenModal();
     }
 
@@ -260,7 +273,7 @@ export default function Simple(props: any) {
                                     <Td>{post.quantidade}</Td>
                                     <Td>{post.status}</Td>
                                     <Td><CircleStatus status={setStatusColorIconChakra(post.Status)} /></Td>
-                                    <Td><Button onClick={() => handleOpenModal(post.idStock, post.Status)}><EditIcon /></Button></Td>
+                                    <Td><Button onClick={() => handleOpenModal(post.idStock, post.nome, post.preco, post.quantidade)}><EditIcon /></Button></Td>
                                     <Td><Button colorScheme='red' onClick={() => handleOpenModalDelete(post.idStock)}> <DeleteIcon /></Button></Td>
                                 </Tr>
                             </Tbody>
@@ -276,12 +289,74 @@ export default function Simple(props: any) {
                             <ModalCloseButton />
                             <ModalBody>
                                 <FormControl >
-                                    <Text>{cpf}</Text>
-                                    <Select placeholder='Selecione o status' onChange={handleChangeDropDown} >
-                                        <option value='Em processamento'>Em processamento</option>
-                                        <option value='Aprovado'>Aprovado</option>
-                                        <option value='Reprovado'>Reprovado</option>
-                                    </Select>
+                                    <InputGroup>
+                                        <InputLeftAddon children='Nome' />
+                                        <Input
+                                            mb={2}
+                                            variant={'solid'}
+                                            borderWidth={1}
+                                            color={'gray.800'}
+                                            _placeholder={{
+                                                color: 'gray.400',
+                                            }}
+                                            borderColor={useColorModeValue('gray.300', 'gray.700')}
+                                            id={'nomeProduto'}
+                                            type={'nomeProduto'}
+                                            name={nomeProduto}
+                                            required
+                                            placeholder={'Nome Produto'}
+                                            aria-label={'Seu nome'}
+                                            value={nomeProduto}
+                                            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                                                setNomeProduto(e.target.value)
+                                            }
+                                        />
+                                    </InputGroup>
+                                    <InputGroup>
+                                        <InputLeftAddon children='R$         ' />
+                                        <Input
+                                            mb={2}
+                                            variant={'solid'}
+                                            borderWidth={1}
+                                            color={'gray.800'}
+                                            _placeholder={{
+                                                color: 'gray.400',
+                                            }}
+                                            borderColor={useColorModeValue('gray.300', 'gray.700')}
+                                            id={'preco'}
+                                            type={'preco'}
+                                            name={preco}
+                                            required
+                                            placeholder={'Preço'}
+                                            aria-label={'Seu nome'}
+                                            value={preco}
+                                            onChange={handleChangeMaskCurrency}
+                                        />
+                                    </InputGroup>
+
+                                    <InputGroup>
+                                        <InputLeftAddon children='Quant.' />
+                                        <Input
+                                            mb={2}
+                                            variant={'solid'}
+                                            borderWidth={1}
+                                            color={'gray.800'}
+                                            _placeholder={{
+                                                color: 'gray.400',
+                                            }}
+                                            borderColor={useColorModeValue('gray.300', 'gray.700')}
+                                            id={'quantidade'}
+                                            type={'quantidade'}
+                                            name={quantidade}
+                                            required
+                                            placeholder={'Nome Produto'}
+                                            aria-label={'Seu nome'}
+                                            value={quantidade}
+                                            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                                                setQuantidade(e.target.value)
+                                            }
+                                        />
+                                    </InputGroup>
                                 </FormControl>
                             </ModalBody>
                             <ModalFooter>
@@ -302,7 +377,7 @@ export default function Simple(props: any) {
                             <ModalBody>
                                 <FormControl >
                                     <Text>Deseja deletar o registro?</Text>
-                                    <Text>{cpf}</Text>
+
                                 </FormControl>
                             </ModalBody>
                             <ModalFooter>
