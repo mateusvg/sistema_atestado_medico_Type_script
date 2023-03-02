@@ -17,7 +17,39 @@ async function viewAllRegistersStock() {
 
 }
 
+async function viewAllProductsStock() {
+    try {
+        const result = await new Promise((resolve, reject) => {
+            conn.query('SELECT count (*) as totalProdutos FROM stock', (error, results, fields) => {
+                if (error) return reject(error);
+                return resolve(results);
+            });
+        });
+        console.log(result)
+        let tratado = JSON.stringify(result)
+        return tratado
+    } catch (err) {
+        console.log(err)
+    }
 
-module.exports = { viewAllRegistersStock}
+}
+
+async function updateProductAttributes(nome, preco, quantidade, idStock) {
+    try {
+        const result = await new Promise((resolve, reject) => {
+            conn.query("UPDATE stock set nome = ?, preco = ?, quantidade = ? where idStock = ?  ", [nome, preco, quantidade, idStock], (error, results, fields) => {
+                if (error) return reject(error);
+                return resolve(results);
+            });
+        });
+        console.log(result)
+        return result
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+
+module.exports = { viewAllRegistersStock, viewAllProductsStock , updateProductAttributes}
 
 // SELECT * FROM `form` INNER JOIN `statusporcpf` ON `statusporcpf`.`idtable1` = `form`.`status` WHERE `form`.`CPF` ='787.571.100-26'

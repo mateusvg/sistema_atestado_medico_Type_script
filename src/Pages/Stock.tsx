@@ -33,9 +33,9 @@ import {
 
 import { useDisclosure } from '@chakra-ui/react'
 import { deleteTableRegister } from '../services/Admin/TableAdmin/deleteRegisterTable'
-import { updateStatusTableAdmin } from '../services/Admin/TableAdmin/updateStatusTable'
+import { updateStockProductsAttributes } from '../services/Admin/Stock/updateStockProductsAttributes'
 import { getAllStockRegistersAdmin } from '../services/Admin/Stock/getAllStockRegistersAdmin'
-import { getStatusCountRegistersAdmin } from '../services/Admin/TableAdmin/getStatusCountAdminTable'
+import { getTotalProductsStock } from '../services/Admin/Stock/getTotalProductsStock'
 import React, { useContext } from "react";
 import { Context } from "../contexts/Context";
 import { currency } from '../utils/MaskPriceFormater'
@@ -49,13 +49,9 @@ export default function Simple(props: any) {
     //CPF mask
     function handleChangeMaskCurrency(event: any) {
         const { value } = event.target
+        setPreco(currency(value))
         console.log(value)
-        if (value === "NaN") {
-            setPreco('0')
-        } else {
-            setPreco(currency(value))
 
-        }
     }
 
     //Modal
@@ -73,32 +69,35 @@ export default function Simple(props: any) {
     }
     //Get all registers
     const [result, setResult] = useState<resultProps[]>([]);
-    const getAllRegisters = async () => {
+    const getAllRegistersStockProducts = async () => {
         const data = await getAllStockRegistersAdmin()
         setResult(data)
     }
 
     const { context, setContext } = useContext(Context)
     useEffect(() => {
-        getAllRegisters()
+        getAllRegistersStockProducts()
         setContext(true)
         console.log(`context table ${context}`)
     }, [])
 
-    type allStatus = {
-        status: string
+
+    // GET TOTAL PRODUCTS
+    type totalProducts = {
+        totalProdutos: string
     }
-    const [allStatus, setAllStatus] = useState<allStatus[]>([]);
+    const [totalProducts, settotalProducts] = useState<totalProducts[]>([]);
     useEffect(() => {
-        getAllStatus()
-        console.log(allStatus)
+        getTotalProducts()
+        console.log(totalProducts)
     }, [])
-    let allStatusMap = allStatus.map(a => a.status)
+    let totalProductsMap = totalProducts.map(a => a.totalProdutos)
 
 
-    const getAllStatus = async () => {
-        const data1 = await getStatusCountRegistersAdmin()
-        setAllStatus(data1);
+    const getTotalProducts = async () => {
+        const data1 = await getTotalProductsStock()
+        console.log(`TOTAL REGISTROS ${JSON.stringify(data1)}`)
+        settotalProducts(data1);
     };
 
     const handleDownload = (anexo: any) => {
@@ -111,21 +110,21 @@ export default function Simple(props: any) {
         a.click(); //Downloaded file
     };
 
-    // Post form update status
+    // UPDATE PRODUCTS PRICE, QUANTITY, NAME
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
         const updateStatus = async () => {
-            const updateStatusAdminTable = await updateStatusTableAdmin({})
+            const updateStatusAdminTable = await updateStockProductsAttributes({idStock: idProduto, nome: nomeProduto, preco: preco, quantidade: quantidade})
         }
         updateStatus()
         onClose()
         setTimeout(() => {
-            getAllRegisters()
-            getAllStatus()
+            getAllRegistersStockProducts()
+            getTotalProducts()
         }, 100)
     };
 
-
+    //SetStatusIconCircularCollor
     const setStatusColorIconChakra = (Status: string) => {
         if (Status === 'Reprovado') {
             return 'red.500'
@@ -135,6 +134,7 @@ export default function Simple(props: any) {
             return 'blue.500'
         }
     }
+    //SetStatusIconCircularCollorEND
 
     //Search products
     const [searchInput, setSearchInput] = useState("")
@@ -149,6 +149,7 @@ export default function Simple(props: any) {
             return data.nome.includes(searchInput)
         })
     }
+    //Search products end
 
     const handleOpenModal = (id: string, nome: string, preco: string, quantidade: string) => {
         setIdProduto(id)
@@ -171,8 +172,8 @@ export default function Simple(props: any) {
         deleteSchedule()
         onCloseDelete()
         setTimeout(() => {
-            getAllRegisters()
-            getAllStatus()
+            getAllRegistersStockProducts()
+            getTotalProducts()
         }, 100)
     }
 
@@ -207,7 +208,7 @@ export default function Simple(props: any) {
         <>
             <Stack spacing={5} direction='row' justify='center' mt={4}>
                 <Box maxW='sm' borderWidth='1px' borderRadius='lg' overflow='hidden' shadow='sm' p={3}>
-                    Total produtos: {allStatusMap[2] + allStatusMap[0] + allStatusMap[1]}
+                    Total produtos: {totalProductsMap[0]}
                 </Box>
             </Stack>
             <Center m={4}>
@@ -285,7 +286,7 @@ export default function Simple(props: any) {
                     <ModalOverlay />
                     <form onSubmit={handleSubmit} >
                         <ModalContent>
-                            <ModalHeader>Alterar configurações de status</ModalHeader>
+                            <ModalHeader>Alterar configurações de produto</ModalHeader>
                             <ModalCloseButton />
                             <ModalBody>
                                 <FormControl >
