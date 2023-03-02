@@ -7,6 +7,7 @@ import Status from './pages/Status'
 import Home from './pages/Home'
 import Calendar from './pages/Calendar'
 import Settings from './pages/Settings'
+import Stock from './pages/Stock'
 import { useState } from 'react';
 
 import { Context } from "./contexts/Context";
@@ -29,6 +30,7 @@ const App = () => {
         <Route path="/status" element={<Status />} />
         <Route path="/form/status" element={<Status />} />
         <Route path="/login/settings" element={<Settings />} />
+        <Route path="/login/stock" element={<Stock/>} />
       </Routes>
     </Context.Provider>
     </>
