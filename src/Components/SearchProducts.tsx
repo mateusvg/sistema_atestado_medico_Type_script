@@ -63,7 +63,7 @@ export default function PlacementExample(props: any) {
         })
     }
     function handleSendParent(idStock: any, nome: any, preco: any, quantidade: any){
-        props.func(idStock, nome, preco, quantidade)
+        props.func({idStock: idStock, nome:nome, preco:preco, quantidade:quantidade})
         onClose()
     }
 
