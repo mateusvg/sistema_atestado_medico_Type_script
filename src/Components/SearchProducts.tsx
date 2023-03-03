@@ -22,7 +22,7 @@ import { Context } from '../contexts/Context'
 import { getAllStockRegistersAdmin } from '../services/Admin/Stock/getAllStockRegistersAdmin'
 
 
-export default function PlacementExample() {
+export default function PlacementExample(props: any) {
     const { isOpen, onOpen, onClose } = useDisclosure()
 
     //Get all registers products
@@ -61,6 +61,10 @@ export default function PlacementExample() {
             console.log(`dados: ${data.nome}`)
             return data.nome.includes(searchInput)
         })
+    }
+    function handleSendParent(idStock: any, nome: any, preco: any, quantidade: any){
+        props.func(idStock, nome, preco, quantidade)
+        onClose()
     }
 
     return (
@@ -121,7 +125,7 @@ export default function PlacementExample() {
                                             <Td>
                                                 <Button
                                                     size="md" 
-                                                    onClick={onClose}
+                                                    onClick={()=>{handleSendParent(post.idStock, post.nome, post.preco, post.quantidade)}}
                                                     >
                                                     Add
                                                 </Button>

@@ -13,12 +13,38 @@ import {
     useDisclosure,
 } from '@chakra-ui/react';
 import { Search2Icon } from '@chakra-ui/icons'
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import SearchProducts from '../components/SearchProducts'
 
 
 const ThreeTierPricingHorizontal = () => {
-    
+
+    type resultProps = {
+        idStock: number
+        nome: string
+        preco: any
+        quantidade: number
+    }
+    const [cart, setCart] = useState<resultProps[]>([])
+    const fetchCart = (...data: any) => {
+        console.log(JSON.stringify(data))
+        setCart([{
+            idStock: 1,
+            nome: "nome carrinho",
+            preco: 12,
+            quantidade: 0,
+        }, {
+            idStock: 1,
+            nome: "nome carrinho",
+            preco: 12,
+            quantidade: 0,
+        }]);
+    }
+
+    useEffect(() => {
+        fetchCart(cart);
+    }, []);
+
     return (
         <Box py={6} px={5} >
             <Stack spacing={4} width={'100%'} direction={'column'}>
@@ -40,7 +66,7 @@ const ThreeTierPricingHorizontal = () => {
                         }}
                         textAlign={'center'}>
                         <Heading size={'lg'}>
-                           <Search2Icon /> <Text color="purple.400">Produtos</Text>
+                            <Search2Icon /> <Text color="purple.400">Produtos</Text>
                         </Heading>
                     </Stack>
                     <Stack
@@ -48,49 +74,54 @@ const ThreeTierPricingHorizontal = () => {
                             base: '100%',
                             md: '60%',
                         }}>
-<SearchProducts/> 
+                        <SearchProducts func={fetchCart} />
                     </Stack>
                 </Stack>
                 <Divider />
-                <Stack
-                    p={3}
-                    py={3}
-                    justifyContent={{
-                        base: 'flex-start',
-                        md: 'space-around',
-                    }}
-                    direction={{
-                        base: 'column',
-                        md: 'row',
-                    }}
-                    alignItems={{ md: 'center' }}>
-                    <Heading size={'md'}>Nome produto</Heading>
-                    <List spacing={3} textAlign="start">
+                {cart.map((product: any) => (
+                    <Stack
+                        p={3}
+                        py={3}
+                        justifyContent={{
+                            base: 'flex-start',
+                            md: 'space-around',
+                        }}
+                        direction={{
+                            base: 'column',
+                            md: 'row',
+                        }}
+                        alignItems={{ md: 'center' }}>
 
-                        <ListItem >
+                        <Heading size={'md'}>{product.nome}</Heading>
+                        <List spacing={3} textAlign="start">
 
-                            <Input
-                                placeholder="Quant"
-                                value={1}
-                                variant={'solid'}
-                                borderWidth={1}
-                                color={'gray.800'}
-                                _placeholder={{
-                                    color: 'gray.400',
-                                }}
-                                type="search"
-                                id="outlined-basic"
+                            <ListItem >
 
-                            />
-                        </ListItem>
+                                <Input
+                                    placeholder="Quant"
+                                    value={1}
+                                    variant={'solid'}
+                                    borderWidth={1}
+                                    color={'gray.800'}
+                                    _placeholder={{
+                                        color: 'gray.400',
+                                    }}
+                                    type="search"
+                                    id="outlined-basic"
 
-                    </List>
-                    <Heading size={'xl'}>R$ 1.00</Heading>
+                                />
+                            </ListItem>
 
-                </Stack>
+                        </List>
+                        <Heading size={'xl'}>R$ {product.preco}</Heading>
+                    </Stack>
+                ))}
                 <Divider />
                 <Heading size={'xl'}>Total:</Heading>
-                <Heading size={'xl'}>R$ 1.00</Heading>
+                {/* <Heading size={'xl'}>R$ {Object.values(cart).reduce((t, {preco}) => t + preco, 0)}
+                </Heading> */}
+                <Heading size={'xl'}>R$ {Object.values(cart).reduce((t, {preco}) => t + preco, 0)}
+                </Heading>
                 <Button
                     size="md">
                     Finalizar
