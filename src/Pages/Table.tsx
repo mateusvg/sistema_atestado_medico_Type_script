@@ -41,6 +41,7 @@ export default function Simple(props: any) {
     const { isOpen, onOpen: onOpenModal, onClose } = useDisclosure()
     const { isOpen: isOpenDelete, onOpen: onOpenDelete, onClose: onCloseDelete } = useDisclosure()
 
+    //Get all registers products
     type resultProps = {
         idForm: string
         nomePaciente: string
@@ -51,7 +52,6 @@ export default function Simple(props: any) {
         aptidao: string
         Status: string
     }
-    //Get all registers
     const [result, setResult] = useState<resultProps[]>([]);
     const getAllRegisters = async () => {
         const data = await getAllRegistersAdmin()
@@ -64,6 +64,7 @@ export default function Simple(props: any) {
         setContext(true)
         console.log(`context table ${context}`)
     }, [])
+    //Get All registers products END
 
     type allStatus = {
         status: string

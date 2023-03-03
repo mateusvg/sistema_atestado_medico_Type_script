@@ -10,12 +10,15 @@ import {
     Stack,
     Text,
     useColorModeValue,
+    useDisclosure,
 } from '@chakra-ui/react';
 import { Search2Icon } from '@chakra-ui/icons'
-
+import React from 'react';
+import SearchProducts from '../components/SearchProducts'
 
 
 const ThreeTierPricingHorizontal = () => {
+    
     return (
         <Box py={6} px={5} >
             <Stack spacing={4} width={'100%'} direction={'column'}>
@@ -37,7 +40,7 @@ const ThreeTierPricingHorizontal = () => {
                         }}
                         textAlign={'center'}>
                         <Heading size={'lg'}>
-                            <Search2Icon /> <Text color="purple.400">Produtos</Text>
+                           <Search2Icon /> <Text color="purple.400">Produtos</Text>
                         </Heading>
                     </Stack>
                     <Stack
@@ -45,20 +48,7 @@ const ThreeTierPricingHorizontal = () => {
                             base: '100%',
                             md: '60%',
                         }}>
-                        <Input
-                            placeholder="ID ou Nome do Produto"
-                            mb={5}
-                            mt={3}
-                            variant={'solid'}
-                            borderWidth={1}
-                            color={'gray.800'}
-                            _placeholder={{
-                                color: 'gray.400',
-                            }}
-                            type="search"
-                            id="outlined-basic"
-
-                        />
+<SearchProducts/> 
                     </Stack>
                 </Stack>
                 <Divider />
@@ -96,12 +86,7 @@ const ThreeTierPricingHorizontal = () => {
 
                     </List>
                     <Heading size={'xl'}>R$ 1.00</Heading>
-                    <Stack>
-                        <Button
-                            size="md">
-                            Add
-                        </Button>
-                    </Stack>
+
                 </Stack>
                 <Divider />
                 <Heading size={'xl'}>Total:</Heading>
