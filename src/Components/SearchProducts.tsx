@@ -58,7 +58,7 @@ export default function PlacementExample(props: any) {
     }
     if (searchInput.length > 0) {
         result.filter((data) => {
-            console.log(`dados: ${data.nome}`)
+            console.log(`Nome produto: ${data.nome}`)
             return data.nome.includes(searchInput)
         })
     }
