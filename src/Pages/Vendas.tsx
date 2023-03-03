@@ -1,19 +1,15 @@
 import {
     Box,
     Button,
-    Center,
     Divider,
     Heading,
     Input,
     List,
-    ListIcon,
     ListItem,
     Stack,
     Text,
-    useColorModeValue,
-    useDisclosure,
 } from '@chakra-ui/react';
-import { Search2Icon } from '@chakra-ui/icons'
+import { Search2Icon, DeleteIcon } from '@chakra-ui/icons'
 import React, { useEffect, useState } from 'react';
 import SearchProducts from '../components/SearchProducts'
 
@@ -21,24 +17,18 @@ import SearchProducts from '../components/SearchProducts'
 const ThreeTierPricingHorizontal = () => {
 
     type resultProps = {
+        [x: string]: any;
         idStock: number
         nome: string
         preco: any
         quantidade: number
     }
     const [cart, setCart] = useState<resultProps[]>([])
-    console.log(`tamanho do carrinho ${cart.length}`)
-    console.log(JSON.stringify(cart))
     const fetchCart = (...data: any) => {
-        console.log(JSON.stringify(data))
-        setCart([...cart, data]);
+            setCart([ ...cart,data]);
     }
-
-    let totalProductsMap = cart.map((item, index) => item.nome)
-    
     useEffect(() => {
-        fetchCart(cart);
-    }, []);
+    }, [cart]);
 
     return (
         <Box py={6} px={5} >
@@ -105,6 +95,7 @@ const ThreeTierPricingHorizontal = () => {
                                 </ListItem>
                             </List>
                             <Heading size={'xl'}>R$ {product.preco}</Heading>
+                            <Heading><Button colorScheme='red' > <DeleteIcon /></Button></Heading>
                         </Stack>
                     ))}
                 </Stack>
