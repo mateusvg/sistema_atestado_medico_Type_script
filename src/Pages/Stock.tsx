@@ -127,7 +127,7 @@ export default function Simple(props: any) {
     const getTotalPriceProducts = async () => {
         const dataTotalPrice = await getTotalPriceProductsInStock()
         console.log(`TOTAL PRICE ${JSON.stringify(dataTotalPrice)}`)
-        let soma = dataTotalPrice[0].precoTotal * dataTotalPrice[0].quantTotal
+        let soma = dataTotalPrice[0].precoTotal
         setTotalPriceProducts(soma)
     };
     // GET TOTAL PRODUCTS PRICE END
@@ -263,6 +263,9 @@ export default function Simple(props: any) {
             getAllRegistersStockProducts()
             getTotalProducts()
         }, 100)
+        setNomeProduto('')
+        setQuantidade(0)
+        setPreco(0)
     }
 
 
@@ -570,7 +573,7 @@ export default function Simple(props: any) {
                             </ModalBody>
                             <ModalFooter>
                                 <Button colorScheme='blue' mr={'25%'} w={'50%'} type='submit' onClick={onCloseAddProduct}>
-                                    Atualizar
+                                    ADD
                                 </Button>
                             </ModalFooter>
                         </ModalContent>
