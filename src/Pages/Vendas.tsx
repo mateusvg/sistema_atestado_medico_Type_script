@@ -36,9 +36,40 @@ const ThreeTierPricingHorizontal = () => {
         setTotalValue([...totalValue, data[0].preco])
     }
     useEffect(() => {
-    }, [cart]);
+    }, [cart, totalValue]);
     let totalRound = totalValue.reduce((t: any, preco: any) => t + preco, 0)
 
+    function handlePushProductFromArray(idParan: any) {
+
+
+        let pushProduct = cart.find((product, index) => {
+            let obj = product.find((prod: any) => {
+
+                if (prod.idStock === idParan) {
+                    console.log(`index é ${index}`)
+                    console.log(`produto = ${JSON.stringify(prod)}`)
+                    console.log(`${prod.idStock}`)
+                    console.log(`${idParan}`)
+
+                    if (prod.idStock === idParan) {
+                        console.log(cart[index])
+                        delete cart[index]
+                        fetchCart()
+                        //setCart([...cart]);
+                        //console.log('teate')
+                        //prod.splice([index]);
+                    }
+                }
+            });
+        });
+
+
+    }
+
+    function handleClearArray(){
+        setCart([])
+        setTotalValue([])
+    }
     return (
         <Box py={6} px={5} >
             <Stack spacing={4} width={'100%'} direction={'column'}>
@@ -74,7 +105,7 @@ const ThreeTierPricingHorizontal = () => {
                 <Divider />
                 {cart.length > 0 ? cart.map((carts) => {
                     return <Stack>
-                        {carts.map((product: any) => (
+                        {carts?.map((product: any) => (
                             <Stack
                                 p={3}
                                 py={3}
@@ -104,7 +135,7 @@ const ThreeTierPricingHorizontal = () => {
                                     </ListItem>
                                 </List>
                                 <Heading size={'xl'}>R$ {product.preco}</Heading>
-                                <Heading><Button colorScheme='red' > <DeleteIcon /></Button></Heading>
+                                <Heading><Button colorScheme='red' onClick={() => { handlePushProductFromArray(product.idStock) }}> <DeleteIcon /></Button></Heading>
                             </Stack>
                         ))}
                     </Stack>
@@ -112,6 +143,11 @@ const ThreeTierPricingHorizontal = () => {
                 <Divider />
                 <Heading size={'xl'}>Total:</Heading>
                 <Heading size={'xl'}>R$ {totalRound.toFixed(2)}
+                <Button
+                onClick={handleClearArray }
+                    size="md" ml ={20}>
+                    Limpar produtos
+                </Button>
                 </Heading>
                 <Button
                     size="md">
