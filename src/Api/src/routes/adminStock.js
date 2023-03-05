@@ -7,5 +7,6 @@ router.get('/products', controller.getTotalStockProducts);
 router.get('/products/total', controller.getTotalStockProductsPrice);
 router.put('/products/update', controller.updateProductAttributes)
 router.post('/products/add', controller.insertProductStock)
+router.delete('/products/delete', controller.deleteProductStock)
 
 module.exports = router;

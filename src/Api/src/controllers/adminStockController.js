@@ -41,3 +41,10 @@ exports.insertProductStock = async (req, res, next) => {
     const data = await adminStock.insertProductStock(nome, foto, preco, quantidade, statusProduto)
     res.status(200).send(data);
 };
+
+exports.deleteProductStock = async (req, res, next) => {
+    console.log("deleteProductStock")
+    let id = req.body.id
+    const data = await adminStock.deleteProductStock(id)
+    res.status(200).send(data);
+};

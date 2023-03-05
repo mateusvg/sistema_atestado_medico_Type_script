@@ -37,7 +37,7 @@ import {
     Text
 } from '@chakra-ui/react'
 
-import { deleteTableRegister } from '../services/Admin/TableAdmin/deleteRegisterTable'
+import { deleteProductsStock } from '../services/Admin/Stock/deleteStockProduct'
 import { updateStockProductsAttributes } from '../services/Admin/Stock/updateStockProductsAttributes'
 import { getAllStockRegistersAdmin } from '../services/Admin/Stock/getAllStockRegistersAdmin'
 import { getTotalProductsStock } from '../services/Admin/Stock/getTotalProductsStock'
@@ -255,7 +255,7 @@ export default function Simple(props: any) {
     function handleDelete(e: any) {
         e.preventDefault()
         const deleteSchedule = async () => {
-            const deleteTableById = await deleteTableRegister({ id: idDelete })
+            const deleteTableById = await deleteProductsStock({ id: idDelete })
         }
         deleteSchedule()
         onCloseDelete()

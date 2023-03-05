@@ -82,7 +82,23 @@ async function insertProductStock(nome, foto, preco, quantidade, statusProduto) 
     }
 }
 
+async function deleteProductStock(id) {
+    try {
+        const result = await new Promise((resolve, reject) => {
+            console.log("id product"+ id)
+            conn.query("DELETE FROM stock WHERE idStock = ?  ", [id], (error, results, fields) => {
+                if (error) return reject(error);
+                return resolve(results);
+            });
+        });
+        console.log(result)
+        return result
+    } catch (err) {
+        console.log(err)
+    }
+}
 
-module.exports = { viewAllRegistersStock, viewAllProductsStock, updateProductAttributes, getTotalStockProductsPrice, insertProductStock }
+
+module.exports = { viewAllRegistersStock, viewAllProductsStock, updateProductAttributes, getTotalStockProductsPrice, insertProductStock, deleteProductStock }
 
 // SELECT * FROM `form` INNER JOIN `statusporcpf` ON `statusporcpf`.`idtable1` = `form`.`status` WHERE `form`.`CPF` ='787.571.100-26'
