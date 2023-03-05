@@ -39,27 +39,22 @@ const ThreeTierPricingHorizontal = () => {
     }, [cart, totalValue]);
     let totalRound = totalValue.reduce((t: any, preco: any) => t + preco, 0)
 
+    
     function handlePushProductFromArray(idParan: any) {
-
-
         let pushProduct = cart.find((product, index) => {
-            let obj = product.find((prod: any) => {
+            let obj = product?.find((prod: any) => {
 
-                if (prod.idStock === idParan) {
-                    console.log(`index é ${index}`)
-                    console.log(`produto = ${JSON.stringify(prod)}`)
-                    console.log(`${prod.idStock}`)
-                    console.log(`${idParan}`)
+     
+                    // console.log(`index é ${index}`)
+                    // console.log(`produto = ${JSON.stringify(prod)}`)
+                    // console.log(`${prod.idStock}`)
+                    // console.log(`${idParan}`)
 
                     if (prod.idStock === idParan) {
-                        console.log(cart[index])
+                        console.log(`o index ${JSON.stringify(cart[index])}`)
                         delete cart[index]
-                        fetchCart()
-                        //setCart([...cart]);
-                        //console.log('teate')
-                        //prod.splice([index]);
+                        setCart([...cart]);
                     }
-                }
             });
         });
 
