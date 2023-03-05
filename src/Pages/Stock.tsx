@@ -127,7 +127,7 @@ export default function Simple(props: any) {
     const getTotalPriceProducts = async () => {
         const dataTotalPrice = await getTotalPriceProductsInStock()
         console.log(`TOTAL PRICE ${JSON.stringify(dataTotalPrice)}`)
-        let soma = dataTotalPrice[0].precoTotal
+        let soma = dataTotalPrice[0].precoTotal * dataTotalPrice[0].quantTotal
         setTotalPriceProducts(soma)
     };
     // GET TOTAL PRODUCTS PRICE END
@@ -245,7 +245,6 @@ export default function Simple(props: any) {
     }
 
 
-
     const [idDelete, setIdDelete] = useState('')
     const handleOpenModalDelete = (id: any, nome: any) => {
         onOpenDelete();
@@ -261,6 +260,7 @@ export default function Simple(props: any) {
         onCloseDelete()
         setTimeout(() => {
             getAllRegistersStockProducts()
+            getTotalPriceProducts()
             getTotalProducts()
         }, 100)
         setNomeProduto('')

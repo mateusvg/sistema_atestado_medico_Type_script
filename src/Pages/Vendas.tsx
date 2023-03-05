@@ -39,29 +39,28 @@ const ThreeTierPricingHorizontal = () => {
     }, [cart, totalValue]);
     let totalRound = totalValue.reduce((t: any, preco: any) => t + preco, 0)
 
-    
+
     function handlePushProductFromArray(idParan: any) {
-        let pushProduct = cart.find((product, index) => {
-            let obj = product?.find((prod: any) => {
+        cart.find((product, index) => {
+            product?.find((prod: any) => {
 
-     
-                    // console.log(`index é ${index}`)
-                    // console.log(`produto = ${JSON.stringify(prod)}`)
-                    // console.log(`${prod.idStock}`)
-                    // console.log(`${idParan}`)
+                // console.log(`index é ${index}`)
+                // console.log(`produto = ${JSON.stringify(prod)}`)
+                // console.log(`${prod.idStock}`)
+                // console.log(`${idParan}`)
 
-                    if (prod.idStock === idParan) {
-                        console.log(`o index ${JSON.stringify(cart[index])}`)
-                        delete cart[index]
-                        setCart([...cart]);
-                    }
+                if (prod.idStock === idParan) {
+                    console.log(`o index ${JSON.stringify(cart[index])}`)
+                    delete cart[index]
+                    setCart([...cart]);
+                }
             });
         });
 
 
     }
 
-    function handleClearArray(){
+    function handleClearArray() {
         setCart([])
         setTotalValue([])
     }
@@ -138,11 +137,11 @@ const ThreeTierPricingHorizontal = () => {
                 <Divider />
                 <Heading size={'xl'}>Total:</Heading>
                 <Heading size={'xl'}>R$ {totalRound.toFixed(2)}
-                <Button
-                onClick={handleClearArray }
-                    size="md" ml ={20}>
-                    Limpar produtos
-                </Button>
+                    <Button
+                        onClick={handleClearArray}
+                        size="md" ml={20}>
+                        Limpar produtos
+                    </Button>
                 </Heading>
                 <Button
                     size="md">
