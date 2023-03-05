@@ -2,9 +2,9 @@ import { relativeURI } from '../../../helpers/RelativeURI'
 const uriRelative = relativeURI()
 export const updateStockProductsAttributes = async (...props: any) => {
     if (props[0].status === 'Ativo') {
-        props[0].status = '1'
+        props[0].status = 1
       } else if (props[0].status === 'Inativo'){
-        props[0].status = '2'
+        props[0].status = 2
       }
     console.log(JSON.stringify(props[0].status) + "propriedades")
     const uri = `${uriRelative}admin/stock/products/update`

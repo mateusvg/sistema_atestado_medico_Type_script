@@ -25,7 +25,7 @@ const ThreeTierPricingHorizontal = () => {
         quantidade: number
     }
     const [cart, setCart] = useState<resultProps[]>([])
-    interface valorTotal  {
+    interface valorTotal {
         preco: number
     }
     const [totalValue, setTotalValue] = useState<valorTotal[]>([])
@@ -37,7 +37,7 @@ const ThreeTierPricingHorizontal = () => {
     }
     useEffect(() => {
     }, [cart]);
-    
+    let totalRound = totalValue.reduce((t: any, preco: any) => t + preco, 0)
 
     return (
         <Box py={6} px={5} >
@@ -111,7 +111,7 @@ const ThreeTierPricingHorizontal = () => {
                 }) : <Center>Carrinho vazio</Center>}
                 <Divider />
                 <Heading size={'xl'}>Total:</Heading>
-                <Heading size={'xl'}>R$ {totalValue.reduce((t: any,  preco : any) => t + preco, 0)}
+                <Heading size={'xl'}>R$ {totalRound.toFixed(2)}
                 </Heading>
                 <Button
                     size="md">

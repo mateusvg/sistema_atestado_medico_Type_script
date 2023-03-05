@@ -1,5 +1,5 @@
 import { useState, useEffect, ChangeEvent } from 'react';
-import { EditIcon, DownloadIcon, Search2Icon, DeleteIcon } from '@chakra-ui/icons'
+import { EditIcon, DownloadIcon, Search2Icon, DeleteIcon, AddIcon } from '@chakra-ui/icons'
 import CircleStatus from '../components/StatusCircleChakra'
 import {
     Button,
@@ -49,28 +49,31 @@ import { currency } from '../utils/MaskPriceFormater'
 export default function Simple(props: any) {
     const [nomeProduto, setNomeProduto] = useState('');
     const [idProduto, setIdProduto] = useState('')
-    const [quantidade, setQuantidade] = useState('');
-    const [preco, setPreco] = useState('');
+    const [quantidade, setQuantidade] = useState<number>(0)
+    const [preco, setPreco] = useState<number>(0)
     const [statusProdutoHabilitado, setStatusProdutoHabilitado] = useState('');
+    const [postImage, setPostImage] = useState({
+        myFile: '',
+    });
+    //Currency, moeda mask
+    // function handleChangeMaskCurrency(event: any) {
+    //     const { value } = event.target
+    //     setPreco(currency(value))
+    //     console.log(value)
 
-    //CPF mask
-    function handleChangeMaskCurrency(event: any) {
-        const { value } = event.target
-        setPreco(currency(value))
-        console.log(value)
-
-    }
+    // }
 
     //Modal
     const { isOpen, onOpen: onOpenModal, onClose } = useDisclosure()
     const { isOpen: isOpenDelete, onOpen: onOpenDelete, onClose: onCloseDelete } = useDisclosure()
+    const { isOpen: isOpenAddProduct, onOpen: onOpenAddProduct, onClose: onCloseAddProduct } = useDisclosure()
 
     type resultProps = {
         idStock: string
         nome: string
         foto: string
-        preco: any
-        quantidade: string
+        preco: number
+        quantidade: number
         status: string
         Status: string
     }
@@ -91,7 +94,7 @@ export default function Simple(props: any) {
 
     // GET TOTAL PRODUCTS
     type totalProducts = {
-        total: string
+        total: number
     }
     const [totalProducts, settotalProducts] = useState<totalProducts[] | []>([]);
     useEffect(() => {
@@ -147,6 +150,42 @@ export default function Simple(props: any) {
         }
     }
 
+
+
+    // INSERT PRODUCTS PRICE, QUANTITY, NAME
+    const handleSubmitAddProduct = (e: React.FormEvent<HTMLFormElement>): void => {
+        e.preventDefault();
+        const updateProductAttributes = async () => {
+            const updateProductsAttributes = await updateStockProductsAttributes({ idStock: idProduto, nome: nomeProduto, preco: preco, quantidade: quantidade, status: statusProdutoHabilitado })
+        }
+        updateProductAttributes()
+        onClose()
+        setTimeout(() => {
+            getAllRegistersStockProducts()
+            getTotalProducts()
+            getTotalPriceProducts()
+        }, 100)
+    };
+
+    // Convert to base64
+    const convertToBase64 = (file: any) => {
+        return new Promise((resolve, reject) => {
+            const fileReader = new FileReader();
+            fileReader.readAsDataURL(file);
+            fileReader.onload = () => {
+                resolve(fileReader.result);
+            };
+            fileReader.onerror = (error) => {
+                reject(error);
+            };
+        });
+    };
+    const handleFileUpload = async (e: any) => {
+        const file = e.target.files[0];
+        const base64 = await convertToBase64(file);
+        setPostImage({ ...postImage, myFile: `${base64}` });
+    };
+
     // UPDATE PRODUCTS PRICE, QUANTITY, NAME
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
@@ -187,7 +226,7 @@ export default function Simple(props: any) {
     }
     //Search products end
 
-    const handleOpenModal = (id: string, nome: string, preco: string, quantidade: string, status: string) => {
+    const handleOpenModal = (id: string, nome: string, preco: number, quantidade: number, status: string) => {
         setIdProduto(id)
         setStatusProdutoHabilitado(status)
         setQuantidade(quantidade)
@@ -195,6 +234,8 @@ export default function Simple(props: any) {
         setNomeProduto(nome);
         onOpenModal();
     }
+
+
 
     const [idDelete, setIdDelete] = useState('')
     const handleOpenModalDelete = (id: any) => {
@@ -280,6 +321,25 @@ export default function Simple(props: any) {
                         <option value='TXT'>TXT</option>
                     </Select>
                 </Stack>
+
+                <Stack ml={4} mb={2}>
+                    <Button
+
+                        as={'a'}
+                        display={{ base: 'none', md: 'inline-flex' }}
+                        fontSize={'sm'}
+                        fontWeight={600}
+                        color={'white'}
+                        bg={'blue.400'}
+                        href={'#'}
+                        _hover={{
+                            bg: 'blue.300',
+                        }}
+                        onClick={() => { onOpenAddProduct() }}
+                    > Adicionar Produto
+                        <AddIcon ml={3} />
+                    </Button>
+                </Stack>
             </Center>
             <TableContainer m={2}>
                 <Table variant='simple' colorScheme='#E6FFFA' size='sm'>
@@ -322,8 +382,8 @@ export default function Simple(props: any) {
                     }
                 </Table>
 
-                {/*MODAL CONFIGURAÇÕES PRODUTO*/}
 
+                {/*MODAL CONFIGURAÇÕES PRODUTO*/}
                 <Modal isOpen={isOpen} onClose={onClose} >
                     <ModalOverlay />
                     <form onSubmit={handleSubmit} >
@@ -369,53 +429,35 @@ export default function Simple(props: any) {
                                             borderColor={useColorModeValue('gray.300', 'gray.700')}
                                             id={'preco'}
                                             type={'preco'}
-                                            name={preco}
                                             required
                                             placeholder={'Preço'}
-                                            defaultValue={0}
                                             value={preco}
-                                            onChange={handleChangeMaskCurrency}
+                                            onChange={(val) => {
+                                                setPreco(Number(val.target.value));
+                                            }}
                                         />
                                     </InputGroup>
 
                                     <InputGroup>
                                         <InputLeftAddon children='Quant.' />
-                                        <NumberInput value={quantidade} onChange={e => setQuantidade(e) }  >
-                                            <NumberInputField  />
+                                        <NumberInput value={quantidade}
+                                            onChange={(val) => {
+                                                setQuantidade(Number(val));
+                                            }} >
+                                            <NumberInputField />
                                             <NumberInputStepper >
                                                 <NumberIncrementStepper
-                                                    onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                                                        setQuantidade(e.target.value)
-                                                    } />
-                                                <NumberDecrementStepper
-                                 />
+                                                    onChange={(val) => {
+                                                        setQuantidade(Number(val.target));
+                                                    }} />
+                                                <NumberDecrementStepper />
                                             </NumberInputStepper>
                                         </NumberInput>
-                                        {/*<Input
-                                            mb={2}
-                                            variant={'solid'}
-                                            borderWidth={1}
-                                            color={'gray.800'}
-                                            _placeholder={{
-                                                color: 'gray.400',
-                                            }}
-                                            borderColor={useColorModeValue('gray.300', 'gray.700')}
-                                            id={'quantidade'}
-                                            type={'quantidade'}
-                                            name={quantidade}
-                                            required
-                                            placeholder={'Quantidade'}
-                                            value={quantidade}
-                                            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                                                setQuantidade(e.target.value)
-                                            }
-                                        />*/}
                                     </InputGroup>
                                     <Select placeholder='Selecione o status' onChange={handleChangeDropDown} >
                                         <option value='Ativado'>Ativado</option>
                                         <option value='Inativado'>Inativo</option>
                                     </Select>
-
                                 </FormControl>
                             </ModalBody>
                             <ModalFooter>
@@ -428,26 +470,103 @@ export default function Simple(props: any) {
                 </Modal>
 
 
-                {/*MODAL DELETAR PRODUTO*/}
-                <Modal isOpen={isOpenDelete} onClose={onCloseDelete} >
+                {/*MODAL ADD PRODUTO*/}
+                <Modal isOpen={isOpenAddProduct} onClose={onCloseAddProduct} >
                     <ModalOverlay />
-                    <form onSubmit={handleSubmit} >
+                    <form onSubmit={handleSubmitAddProduct} >
                         <ModalContent>
-                            <ModalHeader>Deletar registro</ModalHeader>
+                            <ModalHeader>Add de produto</ModalHeader>
                             <ModalCloseButton />
                             <ModalBody>
                                 <FormControl >
-                                    <Text>Deseja deletar o registro?</Text>
+                                    <InputGroup>
+                                        <InputLeftAddon children='Nome' />
+                                        <Input
+                                            mb={2}
+                                            variant={'solid'}
+                                            borderWidth={1}
+                                            color={'gray.800'}
+                                            _placeholder={{
+                                                color: 'gray.400',
+                                            }}
+                                            borderColor={useColorModeValue('gray.300', 'gray.700')}
+                                            id={'nomeProduto'}
+                                            type={'nomeProduto'}
+                                            name={nomeProduto}
+                                            required
+                                            placeholder={'Nome Produto'}
+                                            aria-label={'Seu nome'}
+                                            value={nomeProduto}
+                                            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                                                setNomeProduto(e.target.value)
+                                            }
+                                        />
+                                    </InputGroup>
+                                    <Input
+                                        borderWidth={0}
+                                        mb={2}
+                                        size="md"
+                                        name='myFile'
+                                        type="file"
+                                        placeholder={'Foto Produto'}
+                                        required
+                                        id=''
+                                        accept="image/png, image/jpeg"
+                                        onChange={(e) => handleFileUpload(e)}
+                                    />
+                                    <InputGroup>
+                                        <InputLeftAddon children='R$' />
+                                        <Input
+                                            mb={2}
+                                            variant={'solid'}
+                                            borderWidth={1}
+                                            color={'gray.800'}
+                                            _placeholder={{
+                                                color: 'gray.400',
+                                            }}
+                                            borderColor={useColorModeValue('gray.300', 'gray.700')}
+                                            id={'preco'}
+                                            type={'preco'}
+                                            required
+                                            placeholder={'Preço'}
+                                            value={preco}
+                                            onChange={(val) => {
+                                                setPreco(Number(val.target.value));
+                                            }}
+                                        />
+                                    </InputGroup>
+
+                                    <InputGroup>
+                                        <InputLeftAddon children='Quant.' />
+                                        <NumberInput value={quantidade}
+                                            onChange={(val) => {
+                                                setQuantidade(Number(val));
+                                            }} >
+                                            <NumberInputField />
+                                            <NumberInputStepper >
+                                                <NumberIncrementStepper
+                                                    onChange={(val) => {
+                                                        setQuantidade(Number(val.target));
+                                                    }} />
+                                                <NumberDecrementStepper />
+                                            </NumberInputStepper>
+                                        </NumberInput>
+                                    </InputGroup>
+                                    <Select placeholder='Selecione o status' onChange={handleChangeDropDown} >
+                                        <option value='Ativado'>Ativado</option>
+                                        <option value='Inativado'>Inativo</option>
+                                    </Select>
                                 </FormControl>
                             </ModalBody>
                             <ModalFooter>
-                                <Button colorScheme='red' mr={'25%'} w={'50%'} type='submit' onClick={(event => handleDelete(event))}>
-                                    Deletar
+                                <Button colorScheme='blue' mr={'25%'} w={'50%'} type='submit' onClick={onCloseAddProduct}>
+                                    Atualizar
                                 </Button>
                             </ModalFooter>
                         </ModalContent>
                     </form>
                 </Modal>
+
             </TableContainer>
         </>
     )
