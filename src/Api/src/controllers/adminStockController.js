@@ -1,20 +1,20 @@
-const adminTable = require('../models/adminStockModel')
+const adminStock = require('../models/adminStockModel')
 
 exports.get = async (req, res, next) => {
     console.log("stockTableController")
-    const data = await adminTable.viewAllRegistersStock()
+    const data = await adminStock.viewAllRegistersStock()
     res.status(200).send(data);
 };
 
 exports.getTotalStockProducts = async (req, res, next) => {
     console.log("countTotalStockProducts")
-    const data = await adminTable.viewAllProductsStock()
+    const data = await adminStock.viewAllProductsStock()
     res.status(200).send(data);
 };
 
 exports.getTotalStockProductsPrice = async (req, res, next) => {
     console.log("countTotalStockProductsPrice")
-    const data = await adminTable.getTotalStockProductsPrice()
+    const data = await adminStock.getTotalStockProductsPrice()
     res.status(200).send(data);
 };
 
@@ -27,6 +27,17 @@ exports.updateProductAttributes = async (req, res, next) => {
     let idStock = req.body.idStock
     let statusProduto = req.body.status
     console.log(`o STATUS DO PRODUTO E ${statusProduto}`)
-    const data = await adminTable.updateProductAttributes(nome, preco, quantidade, idStock, statusProduto)
+    const data = await adminStock.updateProductAttributes(nome, preco, quantidade, idStock, statusProduto)
+    res.status(200).send(data);
+};
+
+exports.insertProductStock = async (req, res, next) => {
+    console.log("insertProductsStockAttributes")
+    let nome = req.body.nome
+    let foto = req.body.foto
+    let preco = req.body.preco
+    let quantidade = req.body.quantidade
+    let statusProduto = req.body.status
+    const data = await adminStock.insertProductStock(nome, foto, preco, quantidade, statusProduto)
     res.status(200).send(data);
 };

@@ -66,7 +66,23 @@ async function updateProductAttributes(nome, preco, quantidade, idStock, statusP
     }
 }
 
+async function insertProductStock(nome, foto, preco, quantidade, statusProduto) {
+    let IdStock = ''
+    try {
+        const result = await new Promise((resolve, reject) => {
+            conn.query("INSERT INTO stock VALUES (?, ?, ?, ?, ?, ?)", [IdStock, nome, foto, preco, quantidade, statusProduto], (error, results, fields) => {
+                if (error) return reject(error);
+                return resolve(results);
+            });
+        });
+        console.log(result)
+        return result
+    } catch (err) {
+        console.log(err)
+    }
+}
 
-module.exports = { viewAllRegistersStock, viewAllProductsStock , updateProductAttributes, getTotalStockProductsPrice}
+
+module.exports = { viewAllRegistersStock, viewAllProductsStock, updateProductAttributes, getTotalStockProductsPrice, insertProductStock }
 
 // SELECT * FROM `form` INNER JOIN `statusporcpf` ON `statusporcpf`.`idtable1` = `form`.`status` WHERE `form`.`CPF` ='787.571.100-26'

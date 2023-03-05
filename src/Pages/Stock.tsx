@@ -25,7 +25,6 @@ import {
     TableCaption,
     TableContainer,
     InputGroup,
-    Text,
     Box,
     Stack,
     InputLeftAddon,
@@ -33,15 +32,18 @@ import {
     NumberIncrementStepper,
     NumberInput,
     NumberInputStepper,
-    NumberDecrementStepper
+    NumberDecrementStepper,
+    useDisclosure,
+    Text
 } from '@chakra-ui/react'
 
-import { useDisclosure } from '@chakra-ui/react'
 import { deleteTableRegister } from '../services/Admin/TableAdmin/deleteRegisterTable'
 import { updateStockProductsAttributes } from '../services/Admin/Stock/updateStockProductsAttributes'
 import { getAllStockRegistersAdmin } from '../services/Admin/Stock/getAllStockRegistersAdmin'
 import { getTotalProductsStock } from '../services/Admin/Stock/getTotalProductsStock'
 import { getTotalPriceProductsInStock } from '../services/Admin/Stock/getTotalPriceProductsInStock'
+import { insertStockProducts } from '../services/Admin/Stock/insertStockProduct'
+
 import React, { useContext } from "react";
 import { Context } from "../contexts/Context";
 import { currency } from '../utils/MaskPriceFormater'
@@ -53,7 +55,7 @@ export default function Simple(props: any) {
     const [preco, setPreco] = useState<number>(0)
     const [statusProdutoHabilitado, setStatusProdutoHabilitado] = useState('');
     const [postImage, setPostImage] = useState({
-        myFile: '',
+        foto: '',
     });
     //Currency, moeda mask
     // function handleChangeMaskCurrency(event: any) {
@@ -155,16 +157,19 @@ export default function Simple(props: any) {
     // INSERT PRODUCTS PRICE, QUANTITY, NAME
     const handleSubmitAddProduct = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
-        const updateProductAttributes = async () => {
-            const updateProductsAttributes = await updateStockProductsAttributes({ idStock: idProduto, nome: nomeProduto, preco: preco, quantidade: quantidade, status: statusProdutoHabilitado })
+        const insertProductStock = async () => {
+            const insertProductsAttributes = await insertStockProducts({ nome: nomeProduto, foto: postImage, preco: preco, quantidade: quantidade, status: statusProdutoHabilitado })
         }
-        updateProductAttributes()
+        insertProductStock()
         onClose()
         setTimeout(() => {
             getAllRegistersStockProducts()
             getTotalProducts()
             getTotalPriceProducts()
         }, 100)
+        setNomeProduto('')
+        setQuantidade(0)
+        setPreco(0)
     };
 
     // Convert to base64
@@ -183,7 +188,7 @@ export default function Simple(props: any) {
     const handleFileUpload = async (e: any) => {
         const file = e.target.files[0];
         const base64 = await convertToBase64(file);
-        setPostImage({ ...postImage, myFile: `${base64}` });
+        setPostImage({ ...postImage, foto: `${base64}` });
     };
 
     // UPDATE PRODUCTS PRICE, QUANTITY, NAME
@@ -199,6 +204,9 @@ export default function Simple(props: any) {
             getTotalProducts()
             getTotalPriceProducts()
         }, 100)
+        setNomeProduto('')
+        setQuantidade(0)
+        setPreco(0)
     };
 
     //SetStatusIconCircularCollor
@@ -226,6 +234,7 @@ export default function Simple(props: any) {
     }
     //Search products end
 
+    //UPDATE PRODUCTS
     const handleOpenModal = (id: string, nome: string, preco: number, quantidade: number, status: string) => {
         setIdProduto(id)
         setStatusProdutoHabilitado(status)
@@ -238,9 +247,10 @@ export default function Simple(props: any) {
 
 
     const [idDelete, setIdDelete] = useState('')
-    const handleOpenModalDelete = (id: any) => {
+    const handleOpenModalDelete = (id: any, nome: any) => {
         onOpenDelete();
         setIdDelete(id)
+        setNomeProduto(nome)
     }
     function handleDelete(e: any) {
         e.preventDefault()
@@ -375,7 +385,7 @@ export default function Simple(props: any) {
                                     <Td>{post.status}</Td>
                                     <Td><CircleStatus status={setStatusColorIconChakra(post.status)} /></Td>
                                     <Td><Button onClick={() => handleOpenModal(post.idStock, post.nome, post.preco, post.quantidade, post.status)}><EditIcon /></Button></Td>
-                                    <Td><Button colorScheme='red' onClick={() => handleOpenModalDelete(post.idStock)}> <DeleteIcon /></Button></Td>
+                                    <Td><Button colorScheme='red' onClick={() => handleOpenModalDelete(post.idStock, post.nome)}> <DeleteIcon /></Button></Td>
                                 </Tr>
                             </Tbody>
                         ))
@@ -561,6 +571,29 @@ export default function Simple(props: any) {
                             <ModalFooter>
                                 <Button colorScheme='blue' mr={'25%'} w={'50%'} type='submit' onClick={onCloseAddProduct}>
                                     Atualizar
+                                </Button>
+                            </ModalFooter>
+                        </ModalContent>
+                    </form>
+                </Modal>
+
+
+                {/* MODAL DELETE PRODUCT */}
+                <Modal isOpen={isOpenDelete} onClose={onCloseDelete} >
+                    <ModalOverlay />
+                    <form onSubmit={handleSubmit} >
+                        <ModalContent>
+                            <ModalHeader>Deletar produto</ModalHeader>
+                            <ModalCloseButton />
+                            <ModalBody>
+                                <FormControl >
+                                    <Text>Deseja deletar o produto?</Text>
+                                    <Text>{nomeProduto}</Text>
+                                </FormControl>
+                            </ModalBody>
+                            <ModalFooter>
+                                <Button colorScheme='red' mr={'25%'} w={'50%'} type='submit' onClick={(event => handleDelete(event))}>
+                                    Deletar
                                 </Button>
                             </ModalFooter>
                         </ModalContent>
