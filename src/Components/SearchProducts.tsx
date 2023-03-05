@@ -20,7 +20,7 @@ import {
 import { useContext, useEffect, useState } from 'react'
 import { Context } from '../contexts/Context'
 import { getAllStockRegistersAdmin } from '../services/Admin/Stock/getAllStockRegistersAdmin'
-
+import { CloseIcon } from '@chakra-ui/icons'
 
 export default function PlacementExample(props: any) {
     const { isOpen, onOpen, onClose } = useDisclosure()
@@ -78,7 +78,6 @@ export default function PlacementExample(props: any) {
                     <DrawerHeader borderBottomWidth='1px'>Procurar produtos
                         <InputGroup >
                             <InputLeftElement >
-
                             </InputLeftElement>
                             <Input
                                 placeholder="Procurar produto"
@@ -95,7 +94,9 @@ export default function PlacementExample(props: any) {
                                 onChange={handleChange}
                                 value={searchInput}
                             />
+                        <Button ml={3}  mt={3} onClick={onClose} ><CloseIcon /></Button>
                         </InputGroup>
+                        
                     </DrawerHeader>
                     <DrawerBody>
                         <Table>
