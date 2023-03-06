@@ -3,19 +3,30 @@ import {
     Button,
     Center,
     Divider,
+    FormControl,
     Heading,
     Input,
     List,
     ListItem,
+    Modal,
+    ModalBody,
+    ModalCloseButton,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay,
     Stack,
     Text,
+    useDisclosure,
 } from '@chakra-ui/react';
 import { Search2Icon, DeleteIcon } from '@chakra-ui/icons'
 import React, { useEffect, useState } from 'react';
 import SearchProducts from '../components/SearchProducts'
+import { updateStockProductsAttributes } from '../services/Admin/Stock/updateStockProductsAttributes'
 
 
 const ThreeTierPricingHorizontal = () => {
+    const { isOpen: isOpenFinalSale, onOpen: onOpenFinalSale, onClose: onCloseFinalSale } = useDisclosure()
 
     type resultProps = {
         [x: string]: any;
@@ -37,7 +48,7 @@ const ThreeTierPricingHorizontal = () => {
     }
     let totalRound = totalValue?.reduce((t: any, preco: any) => t + preco, 0)
     useEffect(() => {
-    }, [cart ]);
+    }, [cart]);
 
 
     function handlePushProductFromArray(idParan: any) {
@@ -68,6 +79,26 @@ const ThreeTierPricingHorizontal = () => {
         setCart([])
         setTotalValue([])
     }
+
+    function handleCloseSale(...cart: any) {
+        onOpenFinalSale()
+        console.log(`CARRINHO FINAL ${JSON.stringify(cart)}`)
+    }
+
+    // UPDATE PRODUCTS PRICE, QUANTITY, NAME
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>, ...cart:any): void => {
+        e.preventDefault();
+        const updateProductAttributes = async () => {
+            const updateProductsAttributes = await updateStockProductsAttributes()
+        }
+        updateProductAttributes()
+        onCloseFinalSale()
+        setTimeout(() => {
+
+        }, 100)
+
+    };
+
     return (
         <Box py={6} px={5} >
             <Stack spacing={4} width={'100%'} direction={'column'}>
@@ -148,11 +179,34 @@ const ThreeTierPricingHorizontal = () => {
                     </Button>
                 </Heading>
                 <Button
-                    size="md">
+                    size="md" onClick={() => { handleCloseSale(cart) }}>
                     Finalizar
                 </Button>
             </Stack>
+            
+                {/* MODAL DELETE PRODUCT */}
+                <Modal isOpen={isOpenFinalSale} onClose={onCloseFinalSale} >
+                    <ModalOverlay />
+                    <form onSubmit={handleSubmit} >
+                        <ModalContent>
+                            <ModalHeader>Finalizar compra</ModalHeader>
+                            <ModalCloseButton />
+                            <ModalBody>
+                                <FormControl >
+                                    <Text>Deseja finalizar a compra?</Text>
+                                    <Text>R$ {totalRound.toFixed(2)}</Text>
+                                </FormControl>
+                            </ModalBody>
+                            <ModalFooter>
+                                <Button colorScheme='blue' mr={'25%'} w={'50%'} type='submit'>
+                                    Finalizar compra
+                                </Button>
+                            </ModalFooter>
+                        </ModalContent>
+                    </form>
+                </Modal>
         </Box>
+        
     );
 };
 
