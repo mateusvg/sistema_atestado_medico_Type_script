@@ -45,10 +45,14 @@ const ThreeTierPricingHorizontal = () => {
         console.log(`data : ${JSON.stringify(data)}`)
         setCart([...cart, data]);
         setTotalValue([...totalValue, data[0].preco])
+        setIdProductInCart([...idProductInCart, data[0].idStock])
     }
     let totalRound = totalValue?.reduce((t: any, preco: any) => t + preco, 0)
     useEffect(() => {
     }, [cart]);
+
+    const [idProductInCart, setIdProductInCart] = useState<valorTotal[]>([])
+
 
 
     function handlePushProductFromArray(idParan: any) {
@@ -82,10 +86,10 @@ const ThreeTierPricingHorizontal = () => {
 
     function handleCloseSale(...cart: any) {
         onOpenFinalSale()
-        console.log(`CARRINHO FINAL ${JSON.stringify(cart)}`)
+        console.log(`CARRINHO FINAL ${JSON.stringify(cart[0])}`)
     }
 
-    // UPDATE PRODUCTS PRICE, QUANTITY, NAME
+    // CLOSE FINAL SALE
     const handleSubmit = (e: any): void => {
         e.preventDefault()
         const closeFinalSale = async () => {
@@ -179,7 +183,7 @@ const ThreeTierPricingHorizontal = () => {
                     </Button>
                 </Heading>
                 <Button
-                    size="md" onClick={() => { handleCloseSale(cart) }}>
+                    size="md" onClick={() => { handleCloseSale(idProductInCart) }}>
                     Finalizar
                 </Button>
             </Stack>
