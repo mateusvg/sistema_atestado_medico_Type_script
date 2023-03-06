@@ -268,7 +268,7 @@ const MobileNavItem = () => {
                         m={2}
                         fontWeight={600}
                         color={color}
-                        onClick={() => navigate('/login/vendas')}
+                        onClick={() => navigate('/login/reports')}
                     >
                         Relatórios
                     </Text>
