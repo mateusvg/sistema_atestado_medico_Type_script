@@ -108,7 +108,7 @@ export default function WithSubnavigation() {
                             justify={'flex-end'}
                             direction={'row'}
                             spacing={6}>
-                                                            <Button
+                            <Button
                                 onClick={() => navigate('/login/reports')}
                                 as={'a'}
                                 display={{ base: 'none', md: 'inline-flex' }}
@@ -247,31 +247,31 @@ const MobileNavItem = () => {
                             Agendamento
                         </Text>
                         <Text
-                        m={2}
-                        fontWeight={600}
-                        color={color}
-                        onClick={() => navigate('/login/stock')}
-                    >
-                        Estoque
-                    </Text>
+                            m={2}
+                            fontWeight={600}
+                            color={color}
+                            onClick={() => navigate('/login/stock')}
+                        >
+                            Estoque
+                        </Text>
 
-                    <Text
-                        m={2}
-                        fontWeight={600}
-                        color={color}
-                        onClick={() => navigate('/login/vendas')}
-                    >
-                        Vendas
-                    </Text>
+                        <Text
+                            m={2}
+                            fontWeight={600}
+                            color={color}
+                            onClick={() => navigate('/login/vendas')}
+                        >
+                            Vendas
+                        </Text>
 
-                    <Text
-                        m={2}
-                        fontWeight={600}
-                        color={color}
-                        onClick={() => navigate('/login/reports')}
-                    >
-                        Relatórios
-                    </Text>
+                        <Text
+                            m={2}
+                            fontWeight={600}
+                            color={color}
+                            onClick={() => navigate('/login/reports')}
+                        >
+                            Relatórios
+                        </Text>
                     </>
                     : <></>}
                 <Text

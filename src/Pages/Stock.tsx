@@ -158,6 +158,7 @@ export default function Simple(props: any) {
     const handleSubmitAddProduct = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
         const insertProductStock = async () => {
+            console.log(`base64 foto = ${JSON.stringify(postImage)}`)
             const insertProductsAttributes = await insertStockProducts({ nome: nomeProduto, foto: postImage, preco: preco, quantidade: quantidade, status: statusProdutoHabilitado })
         }
         insertProductStock()
@@ -382,7 +383,7 @@ export default function Simple(props: any) {
                                 <Tr>
                                     <Td>{post.idStock}</Td>
                                     <Td>{post.nome}</Td>
-                                    <Td><Button onClick={() => handleDownload(post.foto)}><DownloadIcon /></Button></Td>
+                                    <Td > <img title={post.nome} src={post.foto} width='10%'/></Td>
                                     <Td>{post.preco}</Td>
                                     <Td>{post.quantidade}</Td>
                                     <Td>{post.status}</Td>

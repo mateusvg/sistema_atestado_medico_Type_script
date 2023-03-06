@@ -34,7 +34,8 @@ exports.updateProductAttributes = async (req, res, next) => {
 exports.insertProductStock = async (req, res, next) => {
     console.log("insertProductsStockAttributes")
     let nome = req.body.nome
-    let foto = req.body.foto
+    let foto = req.body.foto.foto
+    console.log(foto)
     let preco = req.body.preco
     let quantidade = req.body.quantidade
     let statusProduto = req.body.status
