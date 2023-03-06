@@ -383,7 +383,7 @@ export default function Simple(props: any) {
                                 <Tr>
                                     <Td>{post.idStock}</Td>
                                     <Td>{post.nome}</Td>
-                                    <Td > <img title={post.nome} src={post.foto} width='10%'/></Td>
+                                    <Td > <img title={post.nome} src={post.foto} width='45px'/></Td>
                                     <Td>{post.preco}</Td>
                                     <Td>{post.quantidade}</Td>
                                     <Td>{post.status}</Td>
