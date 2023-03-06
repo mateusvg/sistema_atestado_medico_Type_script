@@ -35,12 +35,9 @@ const ThreeTierPricingHorizontal = () => {
         setCart([...cart, data]);
         setTotalValue([...totalValue, data[0].preco])
     }
-    let totalRound = totalValue.reduce((t: any, preco: any) => t + preco, 0)
+    let totalRound = totalValue?.reduce((t: any, preco: any) => t + preco, 0)
     useEffect(() => {
     }, [cart ]);
-
-    useEffect(() => {
-    }, [totalValue ]);
 
 
     function handlePushProductFromArray(idParan: any) {
@@ -53,13 +50,15 @@ const ThreeTierPricingHorizontal = () => {
                 // console.log(`${idParan}`)
 
                 if (prod.idStock === idParan) {
-                    console.log(`o index ${JSON.stringify(cart[index])}`)
+                    //console.log(`o index ${JSON.stringify(cart[index])}`)
                     delete cart[index]
                     setCart([...cart])
-                    // delete totalValue[index]
-                    // setTotalValue([...totalValue])
-                    console.log('valor total'+JSON.stringify(totalValue[index]))
+                    delete totalValue[index]
+                    //setTotalValue([...totalValue])
+                    //console.log('valor total'+JSON.stringify(totalValue[index]))
+                    console.log(`tamanho total value ${totalValue.length}`)
                 }
+
             });
         });
         fetchCart()

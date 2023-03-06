@@ -272,10 +272,10 @@ export default function Simple(props: any) {
     // Download file report XLS OR TXT
     function downloadFile(e: any) {
         const element = document.createElement("a")
-        let novoArray: any = ["ID"]
+        let novoArray: any = ["ID", "NOME", "PRECO", "QUANTIDADE"]
         let arraySemAnexo: any = []
         result.map(function (item, indice, array) {
-            arraySemAnexo.push(` \n ${result[indice]['idStock']}}`)
+            arraySemAnexo.push(` \n ${result[indice]['idStock']}, ${result[indice]['nome']} ,${result[indice]['preco']} , ${result[indice]['quantidade']}`)
             console.log(item)
         });
 
