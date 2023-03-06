@@ -42,14 +42,15 @@ export default function Login() {
                 console.log(`context table${context}`)
                 const parsedValue = await getLoginUserAdmin({ user: user, password: password })
                 console.log(`valor parsed ${JSON.stringify(parsedValue[0])}`)
-                const response = await parsedValue[0].AdminUserEmail
-                const senha = await parsedValue[0].AdminUserPassword
+                const response = await parsedValue[0]?.AdminUserEmail
+                const senha = await parsedValue[0]?.AdminUserPassword
                 console.log(`responsta e :${response}`)
                 if (response === user && senha === password ) {
                     setContext(true)
                     navigate('table')
                 } else {
                     console.log('não autenticado')
+                    setWrongText('Usuario ou senha não cadastrados')
                 }
 
             } catch (err) {
@@ -57,7 +58,7 @@ export default function Login() {
             }
         }
         authUser()
-        setWrongText('Usuario ou senha não cadastrados')
+    
     };
 
     return (
