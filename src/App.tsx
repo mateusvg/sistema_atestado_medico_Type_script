@@ -9,6 +9,7 @@ import Calendar from './pages/Calendar'
 import Settings from './pages/Settings'
 import Stock from './pages/Stock'
 import Vendas from './pages/Vendas'
+import Reports from './pages/Reports'
 
 import { useState } from 'react';
 
@@ -34,6 +35,7 @@ const App = () => {
         <Route path="/login/settings" element={<Settings />} />
         <Route path="/login/stock" element={<Stock/>} />
         <Route path="/login/vendas" element={<Vendas/>} />
+        <Route path="/login/reports" element={<Reports/>} />
       </Routes>
     </Context.Provider>
     </>

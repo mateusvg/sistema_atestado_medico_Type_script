@@ -108,6 +108,20 @@ export default function WithSubnavigation() {
                             justify={'flex-end'}
                             direction={'row'}
                             spacing={6}>
+                                                            <Button
+                                onClick={() => navigate('/login/reports')}
+                                as={'a'}
+                                display={{ base: 'none', md: 'inline-flex' }}
+                                fontSize={'sm'}
+                                fontWeight={600}
+                                color={'white'}
+                                bg={'blue.400'}
+                                href={'#'}
+                                _hover={{
+                                    bg: 'blue.300',
+                                }}>
+                                Relatórios
+                            </Button>
                             <Button
                                 onClick={() => navigate('/login/vendas')}
                                 as={'a'}
@@ -224,14 +238,42 @@ const MobileNavItem = () => {
                     Admin
                 </Text>
                 {context ?
+                    <>
+                        <Text
+                            m={2}
+                            fontWeight={600}
+                            color={color}
+                            onClick={() => navigate('/login/calendar')}>
+                            Agendamento
+                        </Text>
+                        <Text
+                        m={2}
+                        fontWeight={600}
+                        color={color}
+                        onClick={() => navigate('/login/stock')}
+                    >
+                        Estoque
+                    </Text>
+
                     <Text
                         m={2}
                         fontWeight={600}
                         color={color}
-                        onClick={() => navigate('/login/calendar')}
+                        onClick={() => navigate('/login/vendas')}
                     >
-                        Agendamento
-                    </Text> : <></>}
+                        Vendas
+                    </Text>
+
+                    <Text
+                        m={2}
+                        fontWeight={600}
+                        color={color}
+                        onClick={() => navigate('/login/vendas')}
+                    >
+                        Relatórios
+                    </Text>
+                    </>
+                    : <></>}
                 <Text
                     m={2}
                     fontWeight={600}
