@@ -6,6 +6,8 @@ import {
     FormControl,
     Heading,
     Input,
+    InputGroup,
+    InputLeftAddon,
     List,
     ListItem,
     Modal,
@@ -15,6 +17,11 @@ import {
     ModalFooter,
     ModalHeader,
     ModalOverlay,
+    NumberDecrementStepper,
+    NumberIncrementStepper,
+    NumberInput,
+    NumberInputField,
+    NumberInputStepper,
     Stack,
     Text,
     useDisclosure,
@@ -52,8 +59,15 @@ const ThreeTierPricingHorizontal = () => {
     }, [cart]);
 
     const [idProductInCart, setIdProductInCart] = useState<valorTotal[]>([])
-
-
+    
+    const [inputValues, setInputValues] = useState({})
+    const handleChange = ({ target }: any) => {
+  
+      setInputValues({
+        ...inputValues,
+        [target?.id]: target?.value
+      })
+    }
 
     function handlePushProductFromArray(idParan: any) {
         cart.find((product, index) => {
@@ -153,19 +167,19 @@ const ThreeTierPricingHorizontal = () => {
                                 alignItems={{ md: 'center' }}>
                                 <Heading size={'md'}>{product.nome}</Heading>
                                 <List spacing={3} textAlign="start">
-                                    <ListItem >
-                                        <Input
-                                            placeholder="Quant"
-                                            variant={'solid'}
-                                            borderWidth={1}
-                                            color={'gray.800'}
-                                            _placeholder={{
-                                                color: 'gray.400',
-                                            }}
-                                            type="search"
-                                            id="outlined-basic"
-                                        />
-                                    </ListItem>
+              
+                                    <InputGroup>
+                                        <InputLeftAddon children='Quant.' />
+                                        <NumberInput  
+                                            onChange={handleChange}>
+                                            <NumberInputField />
+                                            <NumberInputStepper>
+                                                <NumberIncrementStepper/>
+                                                <NumberDecrementStepper />
+                                            </NumberInputStepper>
+                                        </NumberInput>
+                                    </InputGroup>
+             
                                 </List>
                                 <Heading size={'xl'}>R$ {product.preco}</Heading>
                                 <Heading><Button colorScheme='red' onClick={() => { handlePushProductFromArray(product.idStock) }}> <DeleteIcon /></Button></Heading>
@@ -187,30 +201,30 @@ const ThreeTierPricingHorizontal = () => {
                     Finalizar
                 </Button>
             </Stack>
-            
-                {/* MODAL DELETE PRODUCT */}
-                <Modal isOpen={isOpenFinalSale} onClose={onCloseFinalSale} >
-                    <ModalOverlay />
-                    <form onSubmit={(e)=>{handleSubmit(e)}} >
-                        <ModalContent>
-                            <ModalHeader>Finalizar compra</ModalHeader>
-                            <ModalCloseButton />
-                            <ModalBody>
-                                <FormControl >
-                                    <Text>Deseja finalizar a compra?</Text>
-                                    <Text>R$ {totalRound.toFixed(2)}</Text>
-                                </FormControl>
-                            </ModalBody>
-                            <ModalFooter>
-                                <Button colorScheme='blue' mr={'25%'} w={'50%'} type='submit'>
-                                    Finalizar compra
-                                </Button>
-                            </ModalFooter>
-                        </ModalContent>
-                    </form>
-                </Modal>
+
+            {/* MODAL DELETE PRODUCT */}
+            <Modal isOpen={isOpenFinalSale} onClose={onCloseFinalSale} >
+                <ModalOverlay />
+                <form onSubmit={(e) => { handleSubmit(e) }} >
+                    <ModalContent>
+                        <ModalHeader>Finalizar compra</ModalHeader>
+                        <ModalCloseButton />
+                        <ModalBody>
+                            <FormControl >
+                                <Text>Deseja finalizar a compra?</Text>
+                                <Text>R$ {totalRound.toFixed(2)}</Text>
+                            </FormControl>
+                        </ModalBody>
+                        <ModalFooter>
+                            <Button colorScheme='blue' mr={'25%'} w={'50%'} type='submit'>
+                                Finalizar compra
+                            </Button>
+                        </ModalFooter>
+                    </ModalContent>
+                </form>
+            </Modal>
         </Box>
-        
+
     );
 };
 
