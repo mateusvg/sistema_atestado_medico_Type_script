@@ -22,7 +22,7 @@ import {
 import { Search2Icon, DeleteIcon } from '@chakra-ui/icons'
 import React, { useEffect, useState } from 'react';
 import SearchProducts from '../components/SearchProducts'
-import { updateStockProductsAttributes } from '../services/Admin/Stock/updateStockProductsAttributes'
+import { closeFinalSaleService } from '../services/Admin/Stock/closeFinalSale'
 
 
 const ThreeTierPricingHorizontal = () => {
@@ -86,12 +86,12 @@ const ThreeTierPricingHorizontal = () => {
     }
 
     // UPDATE PRODUCTS PRICE, QUANTITY, NAME
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>, ...cart:any): void => {
-        e.preventDefault();
-        const updateProductAttributes = async () => {
-            const updateProductsAttributes = await updateStockProductsAttributes()
+    const handleSubmit = (e: any): void => {
+        e.preventDefault()
+        const closeFinalSale = async () => {
+            const updateProductsAttributes = await closeFinalSaleService(cart)
         }
-        updateProductAttributes()
+        closeFinalSale()
         onCloseFinalSale()
         setTimeout(() => {
 
@@ -187,7 +187,7 @@ const ThreeTierPricingHorizontal = () => {
                 {/* MODAL DELETE PRODUCT */}
                 <Modal isOpen={isOpenFinalSale} onClose={onCloseFinalSale} >
                     <ModalOverlay />
-                    <form onSubmit={handleSubmit} >
+                    <form onSubmit={(e)=>{handleSubmit(e)}} >
                         <ModalContent>
                             <ModalHeader>Finalizar compra</ModalHeader>
                             <ModalCloseButton />
