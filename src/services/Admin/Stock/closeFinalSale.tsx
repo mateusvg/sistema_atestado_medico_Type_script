@@ -9,7 +9,7 @@ export const closeFinalSaleService = async (...props: any) => {
             return val !== undefined;
         });;
     });
-    console.log(`UPDATE 4 ${JSON.stringify(updated2[0])}`)
+    console.log(`UPDATE 4 ${JSON.stringify(updated2[0].idStock)}`)
 
 
 
@@ -20,7 +20,7 @@ export const closeFinalSaleService = async (...props: any) => {
         newArray.push(updated2[0][i][0].idStock)
     }
     console.log(`NOVO ARRAY ${newArray}`)
-        const uri = `${uriRelative}admin/stock/products/sale`
+        const uri = `${uriRelative}admin/sale/products/sale`
         try {
             const response = await fetch(
                 uri, {

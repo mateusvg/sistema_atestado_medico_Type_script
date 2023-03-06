@@ -1,15 +1,14 @@
 import {
+    AlertDescription,
+    AlertIcon,
+    AlertTitle,
     Box,
     Button,
     Center,
     Divider,
     FormControl,
     Heading,
-    Input,
-    InputGroup,
-    InputLeftAddon,
     List,
-    ListItem,
     Modal,
     ModalBody,
     ModalCloseButton,
@@ -17,18 +16,22 @@ import {
     ModalFooter,
     ModalHeader,
     ModalOverlay,
-    NumberDecrementStepper,
-    NumberIncrementStepper,
-    NumberInput,
-    NumberInputField,
-    NumberInputStepper,
     Stack,
+    Table,
     Text,
+    Th,
+    Thead,
+    Tr,
     useDisclosure,
+    useToast,
+    Wrap,
+    WrapItem,
+
 } from '@chakra-ui/react';
 import { Search2Icon, DeleteIcon } from '@chakra-ui/icons'
 import React, { useEffect, useState } from 'react';
 import SearchProducts from '../components/SearchProducts'
+import Alert from '../components/AlertProductSale'
 import { closeFinalSaleService } from '../services/Admin/Stock/closeFinalSale'
 
 
@@ -59,14 +62,14 @@ const ThreeTierPricingHorizontal = () => {
     }, [cart]);
 
     const [idProductInCart, setIdProductInCart] = useState<valorTotal[]>([])
-    
+
     const [inputValues, setInputValues] = useState({})
     const handleChange = ({ target }: any) => {
-  
-      setInputValues({
-        ...inputValues,
-        [target?.id]: target?.value
-      })
+
+        setInputValues({
+            ...inputValues,
+            [target?.id]: target?.value
+        })
     }
 
     function handlePushProductFromArray(idParan: any) {
@@ -103,6 +106,7 @@ const ThreeTierPricingHorizontal = () => {
         console.log(`CARRINHO FINAL ${JSON.stringify(cart[0])}`)
     }
 
+
     // CLOSE FINAL SALE
     const handleSubmit = (e: any): void => {
         e.preventDefault()
@@ -112,10 +116,33 @@ const ThreeTierPricingHorizontal = () => {
         closeFinalSale()
         onCloseFinalSale()
         setTimeout(() => {
-
+            setCart([])
+            setTotalValue([])
         }, 100)
 
+
     };
+
+    function ToastStatusExample() {
+        const toast = useToast()
+        return (
+            <Wrap>
+                <WrapItem >
+                    <Button
+                        onClick={() =>
+                            toast({
+                                title: ` toast`,
+                                status: 'success',
+                                isClosable: true,
+                            })
+                        }
+                    >
+                        produtoadiocionado
+                    </Button>
+                </WrapItem>
+            </Wrap>
+        )
+    }
 
     return (
         <Box py={6} px={5} >
@@ -150,12 +177,23 @@ const ThreeTierPricingHorizontal = () => {
                     </Stack>
                 </Stack>
                 <Divider />
+
+                <Table>
+                    <Thead>
+                        <Tr>
+                            <Th>Nome</Th>
+                            <Th>Quant.</Th>
+                            <Th>Preço</Th>
+                            <Th></Th>
+                        </Tr>
+                    </Thead>
+                </Table>
+
+
                 {cart.length > 0 ? cart.map((carts) => {
                     return <Stack>
                         {carts?.map((product: any) => (
                             <Stack
-                                p={3}
-                                py={3}
                                 justifyContent={{
                                     base: 'flex-start',
                                     md: 'space-around',
@@ -167,19 +205,7 @@ const ThreeTierPricingHorizontal = () => {
                                 alignItems={{ md: 'center' }}>
                                 <Heading size={'md'}>{product.nome}</Heading>
                                 <List spacing={3} textAlign="start">
-              
-                                    <InputGroup>
-                                        <InputLeftAddon children='Quant.' />
-                                        <NumberInput  
-                                            onChange={handleChange}>
-                                            <NumberInputField />
-                                            <NumberInputStepper>
-                                                <NumberIncrementStepper/>
-                                                <NumberDecrementStepper />
-                                            </NumberInputStepper>
-                                        </NumberInput>
-                                    </InputGroup>
-             
+                                    <Heading size={'xl'}>1</Heading>
                                 </List>
                                 <Heading size={'xl'}>R$ {product.preco}</Heading>
                                 <Heading><Button colorScheme='red' onClick={() => { handlePushProductFromArray(product.idStock) }}> <DeleteIcon /></Button></Heading>
@@ -187,6 +213,7 @@ const ThreeTierPricingHorizontal = () => {
                         ))}
                     </Stack>
                 }) : <Center>Carrinho vazio</Center>}
+
                 <Divider />
                 <Heading size={'xl'}>Total:</Heading>
                 <Heading size={'xl'}>R$ {totalRound.toFixed(2)}
@@ -201,6 +228,8 @@ const ThreeTierPricingHorizontal = () => {
                     Finalizar
                 </Button>
             </Stack>
+
+
 
             {/* MODAL DELETE PRODUCT */}
             <Modal isOpen={isOpenFinalSale} onClose={onCloseFinalSale} >
@@ -217,13 +246,20 @@ const ThreeTierPricingHorizontal = () => {
                         </ModalBody>
                         <ModalFooter>
                             <Button colorScheme='blue' mr={'25%'} w={'50%'} type='submit'>
-                                Finalizar compra
+                                <Alert />
                             </Button>
+                            
                         </ModalFooter>
                     </ModalContent>
                 </form>
             </Modal>
+
+
+
         </Box>
+
+
+
 
     );
 };
