@@ -31,6 +31,7 @@ export default function WithSubnavigation() {
     const navigate = useNavigate();
     const { isOpen, onToggle } = useDisclosure();
     const { context, setContext } = useContext(Context);
+    const color = useColorModeValue('gray.200', 'gray.700')
 
     return (
         <Box>
@@ -65,7 +66,9 @@ export default function WithSubnavigation() {
                         color={useColorModeValue('gray.800', 'white')}>
                         <img src={Logo} alt="Logo" onClick={() => navigate('/')} />
                     </Text>
-
+                    {
+                    context ?
+                    <></>: <Flex>
                     <HStack
                         ml={7}
                         as={'nav'}
@@ -77,7 +80,7 @@ export default function WithSubnavigation() {
                             rounded={'md'}
                             _hover={{
                                 textDecoration: 'none',
-                                bg: useColorModeValue('gray.200', 'gray.700'),
+                                bg: color,
                             }} >Status</Link>
                     </HStack>
 
@@ -92,12 +95,12 @@ export default function WithSubnavigation() {
                             rounded={'md'}
                             _hover={{
                                 textDecoration: 'none',
-                                bg: useColorModeValue('gray.200', 'gray.700'),
+                                bg: color,
                             }} >Formulário</Link>
                         <Center height='90%'>
                             <Divider orientation='vertical' />
                         </Center>
-                    </HStack>
+                    </HStack> </Flex>}
                 </Flex>
 
                 {
