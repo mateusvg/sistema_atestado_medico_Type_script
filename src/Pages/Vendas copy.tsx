@@ -28,62 +28,93 @@ import SearchProducts from '../components/SearchProducts'
 import Alert from '../components/AlertProductSale'
 import { closeFinalSaleService } from '../services/Admin/Stock/closeFinalSale'
 
-interface ObjectInterface {
-    idStock: number
-    nome: string
-    preco: number
-    quantidade: number
-}
-
-interface TotalPriceIntercafe {
-    idStock: number
-    preco: number
-}
 
 const ThreeTierPricingHorizontal = () => {
     const { isOpen: isOpenFinalSale, onOpen: onOpenFinalSale, onClose: onCloseFinalSale } = useDisclosure()
-    const [myArray, setMyArray] = useState<ObjectInterface[]>([]);
-    const [totalPrice, setTotalPrice] = useState<TotalPriceIntercafe[]>([]);
-    const [totalGeral, setTotalGeral] = useState<number>(0)
 
-    async function fetchCart(...data: any) {
-        setMyArray([...myArray, data[0]]);
-        setTotalPrice([...totalPrice, data[0].preco])
-        setTotalGeral(totalGeral + data[0].preco)
-        //setTotalGeral(totalPrice?.reduce((t: any, preco: any) => t + preco, data[0].preco))
-        console.log(`GERAL SOMA ${JSON.stringify(totalGeral)}`)
+    type resultProps = {
+        [x: string]: any;
+        idStock: number
+        nome: string
+        preco: number
+        quantidade: number
+    }
+    const [cart, setCart] = useState<resultProps[]>([])
+    interface valorTotal {
+        preco: number
+    }
+    const [totalValue, setTotalValue] = useState<valorTotal[]>([])
+    console.log(totalValue)
+    const fetchCart = (...data: any) => {
+        console.log(`data : ${JSON.stringify(data)}`)
+        setCart([...cart, data]);
+        setTotalValue([...totalValue, data[0]?.preco])
+        setIdProductInCart([...idProductInCart, data[0]?.idStock])
     }
 
-    function deleteObject(id: number, preco: number) {
-        const filteredArray = myArray.filter((obj) => obj.idStock !== id);
-        setMyArray(filteredArray);
-
-        setTotalGeral(totalGeral - preco)
-        console.log(`GERAL SUBTRAIDO ${JSON.stringify(totalGeral)}`)
+    function arrayTreatmentUndefined(){
+        let newArray = totalValue.filter(function( element ) {
+            console.log(`ELEMENTO: ${element}`)
+            return element !== undefined;
+         });
+         let totalRound = newArray?.reduce((t: any, preco: any) => t + preco, 0)
+         return totalRound
     }
 
+    let totalRound = arrayTreatmentUndefined()
 
-    function handleCloseSale(...myArray: any) {
+
+    useEffect(() => {
+    }, [cart]);
+
+    const [idProductInCart, setIdProductInCart] = useState<valorTotal[]>([])
+
+
+    function handlePushProductFromArray(idParan: any) {
+        cart.find((product, index) => {
+            return product?.forEach((prod: any) => {
+
+                // console.log(`index é ${index}`)
+                // console.log(`produto = ${JSON.stringify(prod)}`)
+                // console.log(`${prod.idStock}`)
+                // console.log(`${idParan}`)
+
+                if (prod.idStock === idParan) {
+                    //console.log(`o index ${JSON.stringify(cart[index])}`)
+                    delete cart[index]
+                    setCart([...cart])
+                    //setTotalValue([...totalValue])
+                    //console.log('valor total'+JSON.stringify(totalValue[index]))
+                    console.log(`tamanho total value ${totalValue.length}`)
+                    delete totalValue[index]
+                }
+            });
+        });
+        fetchCart()
+    }
+
+    function handleClearArray() {
+        setCart([])
+        setTotalValue([])
+    }
+
+    function handleCloseSale(...cart: any) {
         onOpenFinalSale()
-        console.log(`CARRINHO FINAL ${JSON.stringify(myArray[0])}`)
+        console.log(`CARRINHO FINAL ${JSON.stringify(cart[0])}`)
     }
 
-    function clearProducts() {
-        setMyArray([]);
-        setTotalGeral(0)
-    }
 
     // CLOSE FINAL SALE
     const handleSubmit = (e: any): void => {
         e.preventDefault()
         const closeFinalSale = async () => {
-            await closeFinalSaleService(myArray)
+            await closeFinalSaleService(cart)
         }
         closeFinalSale()
         onCloseFinalSale()
         setTimeout(() => {
-
-
+            setCart([])
+            setTotalValue([])
         }, 100)
 
 
@@ -136,42 +167,42 @@ const ThreeTierPricingHorizontal = () => {
                 </Table>
 
 
-                {myArray.map((carts) => {
+                {cart.length > 0 ? cart.map((carts) => {
                     return <Stack>
-
-                        <Stack
-                            justifyContent={{
-                                base: 'flex-start',
-                                md: 'space-around',
-                            }}
-                            direction={{
-                                base: 'column',
-                                md: 'row',
-                            }}
-                            alignItems={{ md: 'center' }}
-                        >
-                            <Heading size={'md'}>{carts.nome}</Heading>
-                            <List spacing={3} textAlign="start">
-                                <Heading size={'xl'}>1</Heading>
-                            </List>
-                            <Heading size={'xl'}>R$ {carts.preco}</Heading>
-                            <Heading><Button colorScheme='red' onClick={() => deleteObject(carts.idStock, carts.preco)} > <DeleteIcon /></Button></Heading>
-                        </Stack>
-
+                        {carts?.map((product: any) => (
+                            <Stack
+                                justifyContent={{
+                                    base: 'flex-start',
+                                    md: 'space-around',
+                                }}
+                                direction={{
+                                    base: 'column',
+                                    md: 'row',
+                                }}
+                                alignItems={{ md: 'center' }}
+                                key={product.idStock}>
+                                <Heading size={'md'}>{product.nome}</Heading>
+                                <List spacing={3} textAlign="start">
+                                    <Heading size={'xl'}>1</Heading>
+                                </List>
+                                <Heading size={'xl'}>R$ {product.preco}</Heading>
+                                <Heading><Button colorScheme='red' onClick={() => { handlePushProductFromArray(product.idStock) }}> <DeleteIcon /></Button></Heading>
+                            </Stack>
+                        ))}
                     </Stack>
-                })}
+                }) : <Center>Carrinho vazio</Center>}
 
                 <Divider />
                 <Heading size={'xl'}>Total:</Heading>
-                <Heading size={'xl'}>R$ {totalGeral}
+                <Heading size={'xl'}>R$ {totalRound.toFixed(2)}
                     <Button
-                        onClick={() => { clearProducts() }}
+                        onClick={handleClearArray}
                         size="md" ml={20}>
                         Limpar produtos
                     </Button>
                 </Heading>
                 <Button
-                    size="md" onClick={() => { handleCloseSale(myArray) }}>
+                    size="md" onClick={() => { handleCloseSale(idProductInCart) }}>
                     Finalizar
                 </Button>
             </Stack>
@@ -188,7 +219,7 @@ const ThreeTierPricingHorizontal = () => {
                         <ModalBody>
                             <FormControl >
                                 <Text>Deseja finalizar a compra?</Text>
-                                <Text>R$ 1</Text>
+                                <Text>R$ {totalRound.toFixed(2)}</Text>
                             </FormControl>
                         </ModalBody>
                         <ModalFooter>
