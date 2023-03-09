@@ -1,5 +1,5 @@
 import { useState, useEffect, ChangeEvent } from 'react';
-import { EditIcon, DownloadIcon, Search2Icon, DeleteIcon, AddIcon } from '@chakra-ui/icons'
+import { EditIcon, Search2Icon, DeleteIcon, AddIcon } from '@chakra-ui/icons'
 import CircleStatus from '../components/StatusCircleChakra'
 import {
     Button,
@@ -46,7 +46,7 @@ import { insertStockProducts } from '../services/Admin/Stock/insertStockProduct'
 
 import React, { useContext } from "react";
 import { Context } from "../contexts/Context";
-import { currency } from '../utils/MaskPriceFormater'
+
 
 export default function Simple(props: any) {
     const [nomeProduto, setNomeProduto] = useState('');
@@ -57,13 +57,7 @@ export default function Simple(props: any) {
     const [postImage, setPostImage] = useState({
         foto: '',
     });
-    //Currency, moeda mask
-    // function handleChangeMaskCurrency(event: any) {
-    //     const { value } = event.target
-    //     setPreco(currency(value))
-    //     console.log(value)
 
-    // }
 
     //Modal
     const { isOpen, onOpen: onOpenModal, onClose } = useDisclosure()
@@ -95,10 +89,10 @@ export default function Simple(props: any) {
 
 
     // GET TOTAL PRODUCTS
-    type totalProducts = {
+    type totalProductsType = {
         total: number
     }
-    const [totalProducts, settotalProducts] = useState<totalProducts[] | []>([]);
+    const [totalProducts, settotalProducts] = useState<totalProductsType[] | []>([]);
     useEffect(() => {
         getTotalProducts()
         console.log(totalProducts)
@@ -132,15 +126,6 @@ export default function Simple(props: any) {
     };
     // GET TOTAL PRODUCTS PRICE END
 
-    const handleDownload = (anexo: any) => {
-        anexo = anexo.replace('data:image/png;base64,', '')
-        const payload = { anexo: anexo }
-        // console.log(payload.anexo)
-        var a = document.createElement("a"); //Create <a>
-        a.href = "data:image/png;base64," + payload.anexo; //Image Base64 Goes here
-        a.download = "Image.png"; //File name Here
-        a.click(); //Downloaded file
-    };
 
     const handleChangeDropDown = (e: any) => {
         e.preventDefault()
@@ -153,13 +138,12 @@ export default function Simple(props: any) {
     }
 
 
-
     // INSERT PRODUCTS PRICE, QUANTITY, NAME
     const handleSubmitAddProduct = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
         const insertProductStock = async () => {
             console.log(`base64 foto = ${JSON.stringify(postImage)}`)
-            const insertProductsAttributes = await insertStockProducts({ nome: nomeProduto, foto: postImage, preco: preco, quantidade: quantidade, status: statusProdutoHabilitado })
+            await insertStockProducts({ nome: nomeProduto, foto: postImage, preco: preco, quantidade: quantidade, status: statusProdutoHabilitado })
         }
         insertProductStock()
         onClose()
@@ -196,7 +180,7 @@ export default function Simple(props: any) {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
         const updateProductAttributes = async () => {
-            const updateProductsAttributes = await updateStockProductsAttributes({ idStock: idProduto, nome: nomeProduto, preco: preco, quantidade: quantidade, status: statusProdutoHabilitado })
+            await updateStockProductsAttributes({ idStock: idProduto, nome: nomeProduto, preco: preco, quantidade: quantidade, status: statusProdutoHabilitado })
         }
         updateProductAttributes()
         onClose()
@@ -383,7 +367,7 @@ export default function Simple(props: any) {
                                 <Tr>
                                     <Td>{post.idStock}</Td>
                                     <Td>{post.nome}</Td>
-                                    <Td > <img title={post.nome} src={post.foto} width='45px'/></Td>
+                                    <Td > <img title={post.nome} src={post.foto} width='45px' /></Td>
                                     <Td>{post.preco}</Td>
                                     <Td>{post.quantidade}</Td>
                                     <Td>{post.status}</Td>

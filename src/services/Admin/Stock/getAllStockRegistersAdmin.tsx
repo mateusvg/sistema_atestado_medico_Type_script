@@ -9,7 +9,7 @@ export const getAllStockRegistersAdmin = async () => {
 
       })
       const jsonObj = await response.json();
-      console.log(`resposta stock ${jsonObj}`)
+      console.log(` getAllStockRegistersAdmin resposta stock`)
       return jsonObj
     } catch (error) {
       console.error(error);

@@ -1,7 +1,4 @@
 import {
-    AlertDescription,
-    AlertIcon,
-    AlertTitle,
     Box,
     Button,
     Center,
@@ -23,13 +20,10 @@ import {
     Thead,
     Tr,
     useDisclosure,
-    useToast,
-    Wrap,
-    WrapItem,
 
 } from '@chakra-ui/react';
 import { Search2Icon, DeleteIcon } from '@chakra-ui/icons'
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import SearchProducts from '../components/SearchProducts'
 import Alert from '../components/AlertProductSale'
 import { closeFinalSaleService } from '../services/Admin/Stock/closeFinalSale'
@@ -54,27 +48,31 @@ const ThreeTierPricingHorizontal = () => {
     const fetchCart = (...data: any) => {
         console.log(`data : ${JSON.stringify(data)}`)
         setCart([...cart, data]);
-        setTotalValue([...totalValue, data[0].preco])
-        setIdProductInCart([...idProductInCart, data[0].idStock])
+        setTotalValue([...totalValue, data[0]?.preco])
+        setIdProductInCart([...idProductInCart, data[0]?.idStock])
     }
-    let totalRound = totalValue?.reduce((t: any, preco: any) => t + preco, 0)
+
+    function arrayTreatmentUndefined(){
+        let newArray = totalValue.filter(function( element ) {
+            console.log(`ELEMENTO: ${element}`)
+            return element !== undefined;
+         });
+         let totalRound = newArray?.reduce((t: any, preco: any) => t + preco, 0)
+         return totalRound
+    }
+
+    let totalRound = arrayTreatmentUndefined()
+
+
     useEffect(() => {
     }, [cart]);
 
     const [idProductInCart, setIdProductInCart] = useState<valorTotal[]>([])
 
-    const [inputValues, setInputValues] = useState({})
-    const handleChange = ({ target }: any) => {
-
-        setInputValues({
-            ...inputValues,
-            [target?.id]: target?.value
-        })
-    }
 
     function handlePushProductFromArray(idParan: any) {
         cart.find((product, index) => {
-            product?.find((prod: any) => {
+            return product?.forEach((prod: any) => {
 
                 // console.log(`index é ${index}`)
                 // console.log(`produto = ${JSON.stringify(prod)}`)
@@ -85,12 +83,11 @@ const ThreeTierPricingHorizontal = () => {
                     //console.log(`o index ${JSON.stringify(cart[index])}`)
                     delete cart[index]
                     setCart([...cart])
-                    delete totalValue[index]
                     //setTotalValue([...totalValue])
                     //console.log('valor total'+JSON.stringify(totalValue[index]))
                     console.log(`tamanho total value ${totalValue.length}`)
+                    delete totalValue[index]
                 }
-
             });
         });
         fetchCart()
@@ -111,7 +108,7 @@ const ThreeTierPricingHorizontal = () => {
     const handleSubmit = (e: any): void => {
         e.preventDefault()
         const closeFinalSale = async () => {
-            const updateProductsAttributes = await closeFinalSaleService(cart)
+            await closeFinalSaleService(cart)
         }
         closeFinalSale()
         onCloseFinalSale()
@@ -123,26 +120,6 @@ const ThreeTierPricingHorizontal = () => {
 
     };
 
-    function ToastStatusExample() {
-        const toast = useToast()
-        return (
-            <Wrap>
-                <WrapItem >
-                    <Button
-                        onClick={() =>
-                            toast({
-                                title: ` toast`,
-                                status: 'success',
-                                isClosable: true,
-                            })
-                        }
-                    >
-                        produtoadiocionado
-                    </Button>
-                </WrapItem>
-            </Wrap>
-        )
-    }
 
     return (
         <Box py={6} px={5} >
@@ -202,7 +179,8 @@ const ThreeTierPricingHorizontal = () => {
                                     base: 'column',
                                     md: 'row',
                                 }}
-                                alignItems={{ md: 'center' }}>
+                                alignItems={{ md: 'center' }}
+                                key={product.idStock}>
                                 <Heading size={'md'}>{product.nome}</Heading>
                                 <List spacing={3} textAlign="start">
                                     <Heading size={'xl'}>1</Heading>
@@ -248,7 +226,7 @@ const ThreeTierPricingHorizontal = () => {
                             <Button colorScheme='blue' mr={'25%'} w={'50%'} type='submit'>
                                 <Alert />
                             </Button>
-                            
+
                         </ModalFooter>
                     </ModalContent>
                 </form>

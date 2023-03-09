@@ -9,7 +9,7 @@ export const getTotalProductsStock = async () => {
 
       })
       const jsonObj = await response.json();
-      console.log(`resposta stock ${jsonObj}`)
+      console.log(`getTotalProductsStock resposta stock ${JSON.stringify(jsonObj)}`)
       return jsonObj
     } catch (error) {
       console.error(error);
