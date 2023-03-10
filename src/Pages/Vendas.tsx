@@ -15,6 +15,8 @@ import {
     ModalOverlay,
     Stack,
     Table,
+    Tbody,
+    Td,
     Text,
     Th,
     Thead,
@@ -35,41 +37,31 @@ interface ObjectInterface {
     quantidade: number
 }
 
-interface TotalPriceIntercafe {
-    idStock: number
-    preco: number
-}
 
 const ThreeTierPricingHorizontal = () => {
     const { isOpen: isOpenFinalSale, onOpen: onOpenFinalSale, onClose: onCloseFinalSale } = useDisclosure()
-    const [myArray, setMyArray] = useState<ObjectInterface[]>([]);
-    const [totalPrice, setTotalPrice] = useState<TotalPriceIntercafe[]>([]);
+    const [cart, setCart] = useState<ObjectInterface[]>([]);
     const [totalGeral, setTotalGeral] = useState<number>(0)
 
     async function fetchCart(...data: any) {
-        setMyArray([...myArray, data[0]]);
-        setTotalPrice([...totalPrice, data[0].preco])
+        setCart([...cart, data[0]]);
         setTotalGeral(totalGeral + data[0].preco)
-        //setTotalGeral(totalPrice?.reduce((t: any, preco: any) => t + preco, data[0].preco))
         console.log(`GERAL SOMA ${JSON.stringify(totalGeral)}`)
     }
 
     function deleteObject(id: number, preco: number) {
-        const filteredArray = myArray.filter((obj) => obj.idStock !== id);
-        setMyArray(filteredArray);
-
+        const filteredArray = cart.filter((obj) => obj.idStock !== id);
+        setCart(filteredArray);
         setTotalGeral(totalGeral - preco)
-        console.log(`GERAL SUBTRAIDO ${JSON.stringify(totalGeral)}`)
     }
 
-
-    function handleCloseSale(...myArray: any) {
+    function handleCloseSale(...cart: any) {
         onOpenFinalSale()
-        console.log(`CARRINHO FINAL ${JSON.stringify(myArray[0])}`)
+        console.log(`CARRINHO FINAL ${JSON.stringify(cart[0])}`)
     }
 
     function clearProducts() {
-        setMyArray([]);
+        setCart([]);
         setTotalGeral(0)
     }
 
@@ -77,7 +69,7 @@ const ThreeTierPricingHorizontal = () => {
     const handleSubmit = (e: any): void => {
         e.preventDefault()
         const closeFinalSale = async () => {
-            await closeFinalSaleService(myArray)
+            await closeFinalSaleService(cart)
         }
         closeFinalSale()
         onCloseFinalSale()
@@ -92,91 +84,75 @@ const ThreeTierPricingHorizontal = () => {
 
     return (
         <Box py={6} px={5} >
-            <Stack spacing={4} width={'100%'} direction={'column'}>
-                <Stack
-                    p={5}
-                    alignItems={'center'}
-                    justifyContent={{
-                        base: 'flex-start',
-                        md: 'space-around',
-                    }}
-                    direction={{
-                        base: 'column',
-                        md: 'row',
-                    }}>
+    
+                <Stack spacing={4} width={'100%'} direction={'column'}>
                     <Stack
-                        width={{
-                            base: '100%',
-                            md: '40%',
+                        p={5}
+                        alignItems={'center'}
+                        justifyContent={{
+                            base: 'flex-start',
+                            md: 'space-around',
                         }}
-                        textAlign={'center'}>
-                        <Heading size={'lg'}>
-                            <Search2Icon /> <Text color="purple.400">Produtos</Text>
-                        </Heading>
-                    </Stack>
-                    <Stack
-                        width={{
-                            base: '100%',
-                            md: '60%',
+                        direction={{
+                            base: 'column',
+                            md: 'row',
                         }}>
-                        <SearchProducts func={fetchCart} />
-                    </Stack>
-                </Stack>
-                <Divider />
-
-                <Table>
-                    <Thead>
-                        <Tr>
-                            <Th>Nome</Th>
-                            <Th>Quant.</Th>
-                            <Th>Preço</Th>
-                            <Th></Th>
-                        </Tr>
-                    </Thead>
-                </Table>
-
-
-                {myArray.map((carts) => {
-                    return <Stack>
-
                         <Stack
-                            justifyContent={{
-                                base: 'flex-start',
-                                md: 'space-around',
+                            width={{
+                                base: '100%',
+                                md: '40%',
                             }}
-                            direction={{
-                                base: 'column',
-                                md: 'row',
-                            }}
-                            alignItems={{ md: 'center' }}
-                        >
-                            <Heading size={'md'}>{carts.nome}</Heading>
-                            <List spacing={3} textAlign="start">
-                                <Heading size={'xl'}>1</Heading>
-                            </List>
-                            <Heading size={'xl'}>R$ {carts.preco}</Heading>
-                            <Heading><Button colorScheme='red' onClick={() => deleteObject(carts.idStock, carts.preco)} > <DeleteIcon /></Button></Heading>
+                            textAlign={'center'}>
+                            <Heading size={'lg'}>
+                                <Search2Icon /> <Text color="purple.400">Produtos</Text>
+                            </Heading>
                         </Stack>
-
+                        <Stack
+                            width={{
+                                base: '100%',
+                                md: '60%',
+                            }}>
+                            <SearchProducts func={fetchCart} />
+                        </Stack>
                     </Stack>
-                })}
-
-                <Divider />
-                <Heading size={'xl'}>Total:</Heading>
-                <Heading size={'xl'}>R$ {totalGeral}
+                    <Divider />
+                    {totalGeral == 0 ? <><Center><Heading size={'xl'}>Carrinho Vazio</Heading></Center></> :
+                    <Table>
+                        <Thead>
+                            <Tr>
+                                <Th>Nome</Th>
+                                <Th>Quant.</Th>
+                                <Th>Preço</Th>
+                            </Tr>
+                        </Thead>
+                        {cart.map((carts) => {
+                            return <Tbody>
+                                <Tr>
+                                    <Td><Heading size={'xl'}>{carts.nome}</Heading></Td>
+                                    <Td><Heading size={'xl'}>1 </Heading></Td>
+                                    <Td><Heading size={'xl'}>R$ {carts.preco}</Heading></Td>
+                                    <Td><Heading><Button colorScheme='red' onClick={() => deleteObject(carts.idStock, carts.preco)} > <DeleteIcon /></Button></Heading></Td>
+                                </Tr>
+                            </Tbody>
+                        })}
+                    </Table>
+                }
+                    <Divider />
+                    <Heading size={'xl'}>Total:</Heading>
+                    <Heading size={'xl'}>R$ {totalGeral}
+                        <Button
+                            onClick={() => { clearProducts() }}
+                            size="md" ml={20}>
+                            Limpar produtos
+                        </Button>
+                    </Heading>
                     <Button
-                        onClick={() => { clearProducts() }}
-                        size="md" ml={20}>
-                        Limpar produtos
+                        size="md" onClick={() => { handleCloseSale(cart) }}>
+                        Finalizar
                     </Button>
-                </Heading>
-                <Button
-                    size="md" onClick={() => { handleCloseSale(myArray) }}>
-                    Finalizar
-                </Button>
-            </Stack>
-
-
+                </Stack>
+                
+            
 
             {/* MODAL DELETE PRODUCT */}
             <Modal isOpen={isOpenFinalSale} onClose={onCloseFinalSale} >
