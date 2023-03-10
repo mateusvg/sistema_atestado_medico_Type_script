@@ -74,8 +74,8 @@ const ThreeTierPricingHorizontal = () => {
         closeFinalSale()
         onCloseFinalSale()
         setTimeout(() => {
-
-
+            setCart([]);
+            setTotalGeral(0)
         }, 100)
 
 
@@ -84,45 +84,46 @@ const ThreeTierPricingHorizontal = () => {
 
     return (
         <Box py={6} px={5} >
-    
-                <Stack spacing={4} width={'100%'} direction={'column'}>
+
+            <Stack spacing={4} width={'100%'} direction={'column'}>
+                <Stack
+                    p={5}
+                    alignItems={'center'}
+                    justifyContent={{
+                        base: 'flex-start',
+                        md: 'space-around',
+                    }}
+                    direction={{
+                        base: 'column',
+                        md: 'row',
+                    }}>
                     <Stack
-                        p={5}
-                        alignItems={'center'}
-                        justifyContent={{
-                            base: 'flex-start',
-                            md: 'space-around',
+                        width={{
+                            base: '100%',
+                            md: '40%',
                         }}
-                        direction={{
-                            base: 'column',
-                            md: 'row',
-                        }}>
-                        <Stack
-                            width={{
-                                base: '100%',
-                                md: '40%',
-                            }}
-                            textAlign={'center'}>
-                            <Heading size={'lg'}>
-                                <Search2Icon /> <Text color="purple.400">Produtos</Text>
-                            </Heading>
-                        </Stack>
-                        <Stack
-                            width={{
-                                base: '100%',
-                                md: '60%',
-                            }}>
-                            <SearchProducts func={fetchCart} />
-                        </Stack>
+                        textAlign={'center'}>
+                        <Heading size={'lg'}>
+                            <Search2Icon /> <Text color="purple.400">Produtos</Text>
+                        </Heading>
                     </Stack>
-                    <Divider />
-                    {totalGeral == 0 ? <><Center><Heading size={'xl'}>Carrinho Vazio</Heading></Center></> :
+                    <Stack
+                        width={{
+                            base: '100%',
+                            md: '60%',
+                        }}>
+                        <SearchProducts func={fetchCart} />
+                    </Stack>
+                </Stack>
+                <Divider />
+                {totalGeral == 0 ? <><Center><Heading size={'xl'}>Carrinho Vazio</Heading></Center></> :
                     <Table>
                         <Thead>
                             <Tr>
                                 <Th>Nome</Th>
                                 <Th>Quant.</Th>
                                 <Th>Preço</Th>
+                                <Th></Th>
                             </Tr>
                         </Thead>
                         {cart.map((carts) => {
@@ -137,22 +138,22 @@ const ThreeTierPricingHorizontal = () => {
                         })}
                     </Table>
                 }
-                    <Divider />
-                    <Heading size={'xl'}>Total:</Heading>
-                    <Heading size={'xl'}>R$ {totalGeral}
-                        <Button
-                            onClick={() => { clearProducts() }}
-                            size="md" ml={20}>
-                            Limpar produtos
-                        </Button>
-                    </Heading>
+                <Divider/>
+                <Heading size={'xl'}>Total:</Heading>
+                <Heading size={'xl'}>R$ {totalGeral}
+                    <Button
+                        onClick={() => { clearProducts() }}
+                        size="md" ml={20}>
+                        Limpar produtos
+                    </Button>
+                </Heading>
                     <Button
                         size="md" onClick={() => { handleCloseSale(cart) }}>
                         Finalizar
                     </Button>
-                </Stack>
-                
-            
+            </Stack>
+
+
 
             {/* MODAL DELETE PRODUCT */}
             <Modal isOpen={isOpenFinalSale} onClose={onCloseFinalSale} >
