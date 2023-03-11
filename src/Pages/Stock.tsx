@@ -363,7 +363,7 @@ export default function StockPage(props: any) {
                                 return post;
                             }
                         }).map((post, index) => (
-                            <Tbody>
+                            <Tbody key={post.idStock}>
                                 <Tr>
                                     <Td>{post.idStock}</Td>
                                     <Td>{post.nome}</Td>

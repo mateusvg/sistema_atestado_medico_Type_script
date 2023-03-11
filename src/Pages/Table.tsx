@@ -275,9 +275,9 @@ export default function TablePage(props: any) {
                                 return post;
                             }
                         }).map((post, index) => (
-                            <Tbody>
+                            <Tbody key={post.idForm}>
                                 <Tr>
-                                    <Td key={post.idForm}>{post.nomePaciente}</Td>
+                                    <Td >{post.nomePaciente}</Td>
                                     <Td>{post.cpf}</Td>
                                     <Td><Button onClick={() => handleDownload(post.anexo)}><DownloadIcon /></Button></Td>
                                     <Td>{post.nomeMedico}</Td>
