@@ -11,24 +11,29 @@ const strGeneretor = (length) => {
     }
     return result;
 }
-let idSale = strGeneretor(10)
+
+
+let date = new Date()
+date = date.toISOString().split('T')[0]
 
 async function saleInsert(values) {
     let quantidadesStockUpdate = values
+    let idSale = strGeneretor(10)
+
     try {
         let idSales = 0
-        const insertValues = await values[0].map(obj => [idSales, 1, obj.idStock, idSale]);
+        const insertValues = await values[0].map(obj => [idSales, 1, obj.idStock, idSale, date]);
         console.log(JSON.stringify(insertValues))
 
         //INSERT into sales (idSales, quantidade, idStockProduct, idSale) VALUES (0,1,2,"RWQt9x1e4l"), (0,1,3,"RWQt9x1e4l");
-        const query = 'INSERT into sales (idSales, quantidade, idStockProduct, idSale) VALUES ?'
+        const query = 'INSERT into sales (idSales, quantidade, idStockProduct, idSale, date) VALUES ?'
         await new Promise((resolve, reject) => {
             conn.query(query, [insertValues], (error, results, fields) => {
                 if (error) return reject(error);
                 return resolve(results);
             });
         })
-
+        
         let quantidade = -1
         const updateStockQuantity = await quantidadesStockUpdate[0].map(obj => [obj.idStock]);
         await new Promise((resolve, reject) => {
