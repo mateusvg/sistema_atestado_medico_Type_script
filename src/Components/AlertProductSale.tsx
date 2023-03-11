@@ -1,25 +1,24 @@
-import { Button, useToast, Wrap, WrapItem } from "@chakra-ui/react"
+import { Button, Center, useToast, Wrap, WrapItem } from "@chakra-ui/react"
 
 export default function ToastStatusExample() {
-    const toast = useToast()
-    return (
+
+  const toast = useToast()
+  return (
       <Wrap>
-
-          <WrapItem >
-            <Button colorScheme='blue'
-              onClick={() =>
-                toast({
-                  title: `Compra finalizada`,
-                  status: 'success',
-                  isClosable: true,
-                })
-              }
-              
-            >
-                Finalizar compra
-            </Button>
-          </WrapItem>
-
+        <WrapItem >
+          <Button colorScheme='blue'
+            type="submit"
+            onClick={() =>
+              toast({
+                title: `Compra finalizada`,
+                status: 'success',
+                isClosable: true,
+              })
+            }
+          >
+            Finalizar compra
+          </Button>
+        </WrapItem>
       </Wrap>
-    )
-  }
+  )
+}

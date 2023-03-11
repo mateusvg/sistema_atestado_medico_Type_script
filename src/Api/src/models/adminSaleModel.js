@@ -1,6 +1,5 @@
 const conn = require('../db/connection')
 
-
 const strGeneretor = (length) => {
     let result = '';
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -14,37 +13,35 @@ const strGeneretor = (length) => {
 }
 let idSale = strGeneretor(10)
 
-    async function saleInsert(values) {
+async function saleInsert(values) {
+    let quantidadesStockUpdate = values
+    try {
+        let idSales = 0
+        const insertValues = await values[0].map(obj => [idSales, 1, obj.idStock, idSale]);
+        console.log(JSON.stringify(insertValues))
 
-        try {
-            let idSales = 0
-            let quantidade = -1
-            const teste = await values[0].map(obj => [idSales, 1, obj.idStock, idSale]);
-            console.log(JSON.stringify(teste))
+        //INSERT into sales (idSales, quantidade, idStockProduct, idSale) VALUES (0,1,2,"RWQt9x1e4l"), (0,1,3,"RWQt9x1e4l");
+        const query = 'INSERT into sales (idSales, quantidade, idStockProduct, idSale) VALUES ?'
+        await new Promise((resolve, reject) => {
+            conn.query(query, [insertValues], (error, results, fields) => {
+                if (error) return reject(error);
+                return resolve(results);
+            });
+        })
 
-            //INSERT into sales (idSales, quantidade, idStockProduct, idSale) VALUES (0,1,2,"RWQt9x1e4l"), (0,1,3,"RWQt9x1e4l");
-            const query = 'INSERT into sales (idSales, quantidade, idStockProduct, idSale) VALUES ?'
-            const result = await new Promise((resolve, reject) => {
-                conn.query(query, [teste], (error, results, fields) => {
-                    if (error) return reject(error);
-                    return resolve(results);
-                });
-            })
-
-            const updateTableStock = await new Promise((resolve, reject) => {
-                conn.query('update stock set  quantidade = quantidade ?  where idStock = ?', [quantidade, teste.idStock], (error, results, fields) => {
+        let quantidade = -1
+        const updateStockQuantity = await quantidadesStockUpdate[0].map(obj => [obj.idStock]);
+        await new Promise((resolve, reject) => {
+            updateStockQuantity.forEach(function (item) {
+                conn.query('update stock set  quantidade = quantidade ?  where idStock = ?', [quantidade, item], (error, results, fields) => {
                     if (error) return reject(error);
                     return resolve(results);
                 })
             })
-            console.log(`update stock table ${updateTableStock}`)
-            let tratado = JSON.stringify(result)
-            return tratado
-        } catch (err) {
-            console.log(err)
-        }
+        })
 
+    } catch (err) {
+        console.log(err)
     }
-
-
+}
 module.exports = { saleInsert }

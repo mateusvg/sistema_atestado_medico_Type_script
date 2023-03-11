@@ -1,10 +1,7 @@
 import { relativeURI } from '../../../helpers/RelativeURI'
 const uriRelative = relativeURI()
 export const closeFinalSaleService = async (...props: any) => {
-
     const uri = `${uriRelative}admin/sale/products/sale`
-    for (let i = 0; i < props[0].length; i++) {
-
         try {
             const response = await fetch(
                 uri, {
@@ -21,7 +18,4 @@ export const closeFinalSaleService = async (...props: any) => {
         } catch (error) {
             console.error(error);
         }
-    }
-
-
-};
+}

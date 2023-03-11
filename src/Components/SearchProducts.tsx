@@ -22,7 +22,7 @@ import { Context } from '../contexts/Context'
 import { getAllStockRegistersAdmin } from '../services/Admin/Stock/getAllStockRegistersAdmin'
 import { CloseIcon } from '@chakra-ui/icons'
 
-export default function PlacementExample(props: any) {
+export default function SearchComponentSales(props: any) {
     const { isOpen, onOpen, onClose } = useDisclosure()
 
     //Get all registers products
@@ -117,9 +117,9 @@ export default function PlacementExample(props: any) {
                                         return post;
                                     } 
                                 }).map((post, index) => (
-                                    <Tbody>
+                                    <Tbody key={post.idStock}>
                                         <Tr>
-                                            <Td key={post.idStock}>{post.idStock}</Td>
+                                            <Td>{post.idStock}</Td>
                                             <Td>{post.nome}</Td>
                                             <Td>{post.preco}</Td>
                                             <Td>{post.quantidade}</Td>

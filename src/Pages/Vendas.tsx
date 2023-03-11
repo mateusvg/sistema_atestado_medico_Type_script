@@ -5,7 +5,6 @@ import {
     Divider,
     FormControl,
     Heading,
-    List,
     Modal,
     ModalBody,
     ModalCloseButton,
@@ -22,10 +21,10 @@ import {
     Thead,
     Tr,
     useDisclosure,
-
 } from '@chakra-ui/react';
+
 import { Search2Icon, DeleteIcon } from '@chakra-ui/icons'
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import SearchProducts from '../components/SearchProducts'
 import Alert from '../components/AlertProductSale'
 import { closeFinalSaleService } from '../services/Admin/Stock/closeFinalSale'
@@ -37,8 +36,7 @@ interface ObjectInterface {
     quantidade: number
 }
 
-
-const ThreeTierPricingHorizontal = () => {
+const SalesPage = () => {
     const { isOpen: isOpenFinalSale, onOpen: onOpenFinalSale, onClose: onCloseFinalSale } = useDisclosure()
     const [cart, setCart] = useState<ObjectInterface[]>([]);
     const [totalGeral, setTotalGeral] = useState<number>(0)
@@ -55,9 +53,8 @@ const ThreeTierPricingHorizontal = () => {
         setTotalGeral(totalGeral - preco)
     }
 
-    function handleCloseSale(...cart: any) {
+    function handleCloseSale() {
         onOpenFinalSale()
-        console.log(`CARRINHO FINAL ${JSON.stringify(cart[0])}`)
     }
 
     function clearProducts() {
@@ -68,19 +65,13 @@ const ThreeTierPricingHorizontal = () => {
     // CLOSE FINAL SALE
     const handleSubmit = (e: any): void => {
         e.preventDefault()
-        const closeFinalSale = async () => {
-            await closeFinalSaleService(cart)
-        }
-        closeFinalSale()
+        closeFinalSaleService(cart)
         onCloseFinalSale()
         setTimeout(() => {
             setCart([]);
             setTotalGeral(0)
         }, 100)
-
-
     };
-
 
     return (
         <Box py={6} px={5} >
@@ -116,7 +107,7 @@ const ThreeTierPricingHorizontal = () => {
                     </Stack>
                 </Stack>
                 <Divider />
-                {totalGeral == 0 ? <><Center><Heading size={'xl'}>Carrinho Vazio</Heading></Center></> :
+                {totalGeral === 0 ? <><Center><Heading size={'xl'}>Carrinho Vazio</Heading></Center></> :
                     <Table>
                         <Thead>
                             <Tr>
@@ -127,7 +118,7 @@ const ThreeTierPricingHorizontal = () => {
                             </Tr>
                         </Thead>
                         {cart.map((carts) => {
-                            return <Tbody>
+                            return <Tbody key={carts.idStock} >
                                 <Tr>
                                     <Td><Heading size={'xl'}>{carts.nome}</Heading></Td>
                                     <Td><Heading size={'xl'}>1 </Heading></Td>
@@ -138,7 +129,7 @@ const ThreeTierPricingHorizontal = () => {
                         })}
                     </Table>
                 }
-                <Divider/>
+                <Divider />
                 <Heading size={'xl'}>Total:</Heading>
                 <Heading size={'xl'}>R$ {totalGeral}
                     <Button
@@ -147,15 +138,13 @@ const ThreeTierPricingHorizontal = () => {
                         Limpar produtos
                     </Button>
                 </Heading>
-                    <Button
-                        size="md" onClick={() => { handleCloseSale(cart) }}>
-                        Finalizar
-                    </Button>
+                <Button
+                    size="md" onClick={handleCloseSale}>
+                    Finalizar
+                </Button>
             </Stack>
 
-
-
-            {/* MODAL DELETE PRODUCT */}
+            {/* MODAL FINALIZAR COMPRA */}
             <Modal isOpen={isOpenFinalSale} onClose={onCloseFinalSale} >
                 <ModalOverlay />
                 <form onSubmit={(e) => { handleSubmit(e) }} >
@@ -165,27 +154,17 @@ const ThreeTierPricingHorizontal = () => {
                         <ModalBody>
                             <FormControl >
                                 <Text>Deseja finalizar a compra?</Text>
-                                <Text>R$ 1</Text>
+                                <Text mt={2}><Heading size={'x'}>R$ {totalGeral} </Heading></Text>
                             </FormControl>
                         </ModalBody>
                         <ModalFooter>
-                            <Button colorScheme='blue' mr={'25%'} w={'50%'} type='submit'>
                                 <Alert />
-                            </Button>
-
                         </ModalFooter>
                     </ModalContent>
                 </form>
             </Modal>
-
-
-
         </Box>
-
-
-
-
     );
 };
 
-export default ThreeTierPricingHorizontal;
+export default SalesPage;
