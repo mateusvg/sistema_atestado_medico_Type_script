@@ -26,7 +26,7 @@ import {
 import { useDisclosure } from '@chakra-ui/react'
 import { postFormUser } from '../services/User/postFormUser'
 
-export default function Simple() {
+export default function FormPage() {
     const { isOpen, onOpen: onOpenModal, onClose } = useDisclosure()
     const navigate = useNavigate();
     const [nomePaciente, setNomePaciente] = useState('');

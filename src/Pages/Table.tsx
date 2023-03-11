@@ -35,7 +35,7 @@ import { getStatusCountRegistersAdmin } from '../services/Admin/TableAdmin/getSt
 import React, { useContext } from "react";
 import { Context } from "../contexts/Context";
 
-export default function Simple(props: any) {
+export default function TablePage(props: any) {
 
     //Modal
     const { isOpen, onOpen: onOpenModal, onClose } = useDisclosure()
@@ -277,7 +277,7 @@ export default function Simple(props: any) {
                         }).map((post, index) => (
                             <Tbody>
                                 <Tr>
-                                    <Td>{post.nomePaciente}</Td>
+                                    <Td key={post.idForm}>{post.nomePaciente}</Td>
                                     <Td>{post.cpf}</Td>
                                     <Td><Button onClick={() => handleDownload(post.anexo)}><DownloadIcon /></Button></Td>
                                     <Td>{post.nomeMedico}</Td>

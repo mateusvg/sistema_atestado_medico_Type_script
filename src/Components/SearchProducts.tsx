@@ -119,7 +119,7 @@ export default function PlacementExample(props: any) {
                                 }).map((post, index) => (
                                     <Tbody>
                                         <Tr>
-                                            <Td>{post.idStock}</Td>
+                                            <Td key={post.idStock}>{post.idStock}</Td>
                                             <Td>{post.nome}</Td>
                                             <Td>{post.preco}</Td>
                                             <Td>{post.quantidade}</Td>

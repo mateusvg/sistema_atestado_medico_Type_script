@@ -48,7 +48,7 @@ import React, { useContext } from "react";
 import { Context } from "../contexts/Context";
 
 
-export default function Simple(props: any) {
+export default function StockPage(props: any) {
     const [nomeProduto, setNomeProduto] = useState('');
     const [idProduto, setIdProduto] = useState('')
     const [quantidade, setQuantidade] = useState<number>(0)

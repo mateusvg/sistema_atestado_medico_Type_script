@@ -10,7 +10,7 @@ import {
 import { CheckIcon } from '@chakra-ui/icons';
 import { ChangeEvent, useState } from 'react';
 
-export default function Simple() {
+export default function SettingsPage() {
     const [state, setState] = useState<'initial' | 'submitting' | 'success'>(
         'initial'
     );

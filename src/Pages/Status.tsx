@@ -25,7 +25,7 @@ import { useDisclosure } from '@chakra-ui/react'
 import React from 'react';
 import { getStatusUser } from '../services/User/getStatusUser'
 
-export default function Simple() {
+export default function StatusPage() {
 
     const { isOpen, onOpen: onOpenModal, onClose } = useDisclosure()
     const [cpf, setCPF] = useState('');
