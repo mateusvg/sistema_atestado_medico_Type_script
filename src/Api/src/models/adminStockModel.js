@@ -3,7 +3,7 @@ const conn = require('../db/connection')
 async function viewAllRegistersStock() {
     try {
         const result = await new Promise((resolve, reject) => {
-            conn.query('SELECT * FROM stock INNER JOIN statusitens ON statusitens.idstatusItens = stock.statusItens_idstatusItens; ', (error, results, fields) => {
+            conn.query('SELECT * FROM stock INNER JOIN statusitens ON statusitens.idstatusItens = stock.statusItens_idstatusItens INNER JOIN category_has_stock on category_has_stock.Stock_idStock = stock.idStock INNER JOIN category on category.idCategory = category_has_stock.Category_idCategory', (error, results, fields) => {
                 if (error) return reject(error);
                 return resolve(results);
             });

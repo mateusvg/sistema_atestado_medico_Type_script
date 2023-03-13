@@ -74,11 +74,13 @@ export default function StockPage(props: any) {
         quantidade: number
         status: string
         Status: string
+        Categorycol: string
     }
     //Get all registers
     const [result, setResult] = useState<resultProps[]>([]);
     const getAllRegistersStockProducts = async () => {
         const data = await getAllStockRegistersAdmin()
+        //console.log(`DADOS.............. ${JSON.stringify(data)}`)
         setResult(data)
     }
 
@@ -137,6 +139,9 @@ export default function StockPage(props: any) {
         } else {
             setStatusProdutoHabilitado('2')
         }
+    }
+    const handleChangeDropDownCategory = (e:any) =>{
+
     }
 
 
@@ -341,14 +346,11 @@ export default function StockPage(props: any) {
 
                 <Stack ml={4} mb={2}>
                     <Button
-
-                        as={'a'}
                         display={{ base: 'none', md: 'inline-flex' }}
                         fontSize={'sm'}
                         fontWeight={600}
                         color={'white'}
                         bg={'blue.400'}
-                        href={'#'}
                         _hover={{
                             bg: 'blue.300',
                         }}
@@ -360,14 +362,11 @@ export default function StockPage(props: any) {
 
                 <Stack ml={4} mb={2}>
                     <Button
-
-                        as={'a'}
                         display={{ base: 'none', md: 'inline-flex' }}
                         fontSize={'sm'}
                         fontWeight={600}
                         color={'white'}
                         bg={'blue.400'}
-                        href={'#'}
                         _hover={{
                             bg: 'blue.300',
                         }}
@@ -389,6 +388,7 @@ export default function StockPage(props: any) {
                             <Th>Quant.</Th>
                             <Th>Status</Th>
                             <Th></Th>
+                            <Th>Categoria</Th>
                             <Th>Editar</Th>
                             <Th></Th>
                         </Tr>
@@ -410,6 +410,7 @@ export default function StockPage(props: any) {
                                     <Td>{post.quantidade}</Td>
                                     <Td>{post.status}</Td>
                                     <Td><CircleStatus status={setStatusColorIconChakra(post.status)} /></Td>
+                                    <Td>{post.Categorycol}</Td>
                                     <Td><Button onClick={() => handleOpenModal(post.idStock, post.nome, post.preco, post.quantidade, post.status)}><EditIcon /></Button></Td>
                                     <Td><Button colorScheme='red' onClick={() => handleOpenModalDelete(post.idStock, post.nome)}> <DeleteIcon /></Button></Td>
                                 </Tr>
@@ -474,7 +475,7 @@ export default function StockPage(props: any) {
                                         />
                                     </InputGroup>
 
-                                    <InputGroup>
+                                    <InputGroup mb={2}>
                                         <InputLeftAddon children='Quant.' />
                                         <NumberInput value={quantidade}
                                             onChange={(val) => {
@@ -490,8 +491,13 @@ export default function StockPage(props: any) {
                                             </NumberInputStepper>
                                         </NumberInput>
                                     </InputGroup>
-                                    <Select placeholder='Selecione o status' onChange={handleChangeDropDown} >
+                                    <Select placeholder='Selecione o status' onChange={handleChangeDropDown} mb={2} >
                                         <option value='Ativado'>Ativado</option>
+                                        <option value='Inativado'>Inativo</option>
+                                    </Select>
+
+                                    <Select placeholder='Categoria' onChange={handleChangeDropDownCategory} mb={2} >
+                                        <option value='Ativado'>CATEGORIA TESTE</option>
                                         <option value='Inativado'>Inativo</option>
                                     </Select>
                                 </FormControl>
@@ -572,7 +578,7 @@ export default function StockPage(props: any) {
                                         />
                                     </InputGroup>
 
-                                    <InputGroup>
+                                    <InputGroup mb={2}>
                                         <InputLeftAddon children='Quant.' />
                                         <NumberInput value={quantidade}
                                             onChange={(val) => {
@@ -588,8 +594,12 @@ export default function StockPage(props: any) {
                                             </NumberInputStepper>
                                         </NumberInput>
                                     </InputGroup>
-                                    <Select placeholder='Selecione o status' onChange={handleChangeDropDown} >
+                                    <Select placeholder='Selecione o status' onChange={handleChangeDropDown}  mb={2}>
                                         <option value='Ativado'>Ativado</option>
+                                        <option value='Inativado'>Inativo</option>
+                                    </Select>
+                                    <Select placeholder='Categoria' onChange={handleChangeDropDownCategory} mb={2} >
+                                        <option value='Ativado'>CATEGORIA TESTE</option>
                                         <option value='Inativado'>Inativo</option>
                                     </Select>
                                 </FormControl>
