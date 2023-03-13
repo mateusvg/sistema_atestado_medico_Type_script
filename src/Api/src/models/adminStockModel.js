@@ -8,7 +8,7 @@ async function viewAllRegistersStock() {
                 return resolve(results);
             });
         });
-        console.log(result)
+       // console.log(result)
         let tratado = JSON.stringify(result)
         return tratado
     } catch (err) {
@@ -25,7 +25,7 @@ async function viewAllProductsStock() {
                 return resolve(results);
             });
         });
-        console.log(result)
+        //console.log(result)
         let tratado = JSON.stringify(result)
         return tratado
     } catch (err) {
@@ -42,7 +42,7 @@ async function getTotalStockProductsPrice() {
                 return resolve(results);
             });
         });
-        console.log(result)
+        //console.log(result)
         let tratado = JSON.stringify(result)
         return tratado
     } catch (err) {
@@ -59,7 +59,7 @@ async function updateProductAttributes(nome, preco, quantidade, idStock, statusP
                 return resolve(results);
             });
         });
-        console.log(result)
+        //console.log(result)
         return result
     } catch (err) {
         console.log(err)

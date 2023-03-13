@@ -16,6 +16,7 @@ const adminTableData = require('./routes/adminTableData')
 const adminSettings = require('./routes/adminSettings')
 const adminStock = require('./routes/adminStock')
 const adminSale = require('./routes/adminSale')
+const adminCategory = require('./routes/adminCatagory')
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -28,5 +29,6 @@ app.use('/admin/table', adminTableData)
 app.use('/admin/stock', adminStock)
 app.use('/admin/sale', adminSale)
 app.use('/admin/settings', adminSettings)
+app.use('/admin/category', adminCategory)
 
 module.exports = app;

@@ -45,6 +45,7 @@ import { getAllStockRegistersAdmin } from '../services/Admin/Stock/getAllStockRe
 import { getTotalProductsStock } from '../services/Admin/Stock/getTotalProductsStock'
 import { getTotalPriceProductsInStock } from '../services/Admin/Stock/getTotalPriceProductsInStock'
 import { insertStockProducts } from '../services/Admin/Stock/insertStockProduct'
+import { addCategoryService } from '../services/Admin/Category/AddCategory'
 
 export default function StockPage(props: any) {
     const [nomeProduto, setNomeProduto] = useState('');
@@ -56,11 +57,14 @@ export default function StockPage(props: any) {
         foto: '',
     });
 
+    const [nomeCategoria, setNomeCategoria] = useState('');
+
 
     //Modal
     const { isOpen, onOpen: onOpenModal, onClose } = useDisclosure()
     const { isOpen: isOpenDelete, onOpen: onOpenDelete, onClose: onCloseDelete } = useDisclosure()
     const { isOpen: isOpenAddProduct, onOpen: onOpenAddProduct, onClose: onCloseAddProduct } = useDisclosure()
+    const { isOpen: isOpenAddCategory, onOpen: onOpenAddCategory, onClose: onCloseAddCategory } = useDisclosure()
 
     type resultProps = {
         idStock: string
@@ -277,6 +281,24 @@ export default function StockPage(props: any) {
     }
 
 
+    function handleSubmitAddCategory(e: any) {
+        e.preventDefault()
+        const addCategory = async () => {
+            await addCategoryService({ nomeCategoria: nomeCategoria })
+        }
+        addCategory()
+        onCloseAddCategory()
+        setTimeout(() => {
+            getAllRegistersStockProducts()
+            getTotalPriceProducts()
+            getTotalProducts()
+        }, 100)
+        setNomeProduto('')
+        setQuantidade(0)
+        setPreco(0)
+        setNomeCategoria('')
+    }
+
     return (
         <>
             <Stack spacing={5} direction='row' justify='center' mt={4}>
@@ -332,6 +354,25 @@ export default function StockPage(props: any) {
                         }}
                         onClick={() => { onOpenAddProduct() }}
                     > Adicionar Produto
+                        <AddIcon ml={3} />
+                    </Button>
+                </Stack>
+
+                <Stack ml={4} mb={2}>
+                    <Button
+
+                        as={'a'}
+                        display={{ base: 'none', md: 'inline-flex' }}
+                        fontSize={'sm'}
+                        fontWeight={600}
+                        color={'white'}
+                        bg={'blue.400'}
+                        href={'#'}
+                        _hover={{
+                            bg: 'blue.300',
+                        }}
+                        onClick={() => { onOpenAddCategory() }}
+                    > Adicionar Categoria
                         <AddIcon ml={3} />
                     </Button>
                 </Stack>
@@ -579,6 +620,50 @@ export default function StockPage(props: any) {
                             <ModalFooter>
                                 <Button colorScheme='red' mr={'25%'} w={'50%'} type='submit' onClick={(event => handleDelete(event))}>
                                     Deletar
+                                </Button>
+                            </ModalFooter>
+                        </ModalContent>
+                    </form>
+                </Modal>
+
+
+                {/*MODAL ADD Category*/}
+                <Modal isOpen={isOpenAddCategory} onClose={onCloseAddCategory} >
+                    <ModalOverlay />
+                    <form onSubmit={handleSubmitAddCategory} >
+                        <ModalContent>
+                            <ModalHeader>Nova Categoria</ModalHeader>
+                            <ModalCloseButton />
+                            <ModalBody>
+                                <FormControl >
+                                    <InputGroup>
+                                        <InputLeftAddon children='Categoria' />
+                                        <Input
+                                            mb={2}
+                                            variant={'solid'}
+                                            borderWidth={1}
+                                            color={'gray.800'}
+                                            _placeholder={{
+                                                color: 'gray.400',
+                                            }}
+                                            borderColor={useColorModeValue('gray.300', 'gray.700')}
+                                            id={'nomeCategoria'}
+                                            type={'nomeCategoria'}
+                                            name={nomeCategoria}
+                                            required
+                                            placeholder={'Nome Categoria'}
+                                            aria-label={'Seu nome'}
+                                            value={nomeCategoria}
+                                            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                                                setNomeCategoria(e.target.value)
+                                            }
+                                        />
+                                    </InputGroup>
+                                </FormControl>
+                            </ModalBody>
+                            <ModalFooter>
+                                <Button colorScheme='blue' mr={'25%'} w={'50%'} type='submit' onClick={onCloseAddCategory}>
+                                    Adicionar
                                 </Button>
                             </ModalFooter>
                         </ModalContent>
