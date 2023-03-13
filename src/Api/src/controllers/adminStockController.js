@@ -26,8 +26,9 @@ exports.updateProductAttributes = async (req, res, next) => {
     let quantidade = req.body.quantidade
     let idStock = req.body.idStock
     let statusProduto = req.body.status
+    let idCategoria = req.body.nomeCategoria
     console.log(`o STATUS DO PRODUTO E ${statusProduto}`)
-    const data = await adminStock.updateProductAttributes(nome, preco, quantidade, idStock, statusProduto)
+    const data = await adminStock.updateProductAttributes(nome, preco, quantidade, idStock, statusProduto, idCategoria)
     res.status(200).send(data);
 };
 
@@ -40,7 +41,6 @@ exports.insertProductStock = async (req, res, next) => {
     let quantidade = req.body.quantidade
     let statusProduto = req.body.status
     let idCategoria = req.body.nomeCategoria
-    console.log(`id categoria ${idCategoria}`)
     const data = await adminStock.insertProductStock(nome, foto, preco, quantidade, statusProduto, idCategoria)
     res.status(200).send(data);
 };

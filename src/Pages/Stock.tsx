@@ -196,7 +196,7 @@ export default function StockPage(props: any) {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
         const updateProductAttributes = async () => {
-            await updateStockProductsAttributes({ idStock: idProduto, nome: nomeProduto, preco: preco, quantidade: quantidade, status: statusProdutoHabilitado })
+            await updateStockProductsAttributes({ idStock: idProduto, nome: nomeProduto, preco: preco, quantidade: quantidade, status: statusProdutoHabilitado, nomeCategoria: updateCategoria })
         }
         updateProductAttributes()
         onClose()
@@ -508,7 +508,7 @@ export default function StockPage(props: any) {
 
                                     <Select placeholder='Categoria' onChange={handleChangeDropDownCategory} mb={2} >
                                         {allCategories.map((data, index) => (
-                                            <option value='Ativado'>{data.Categorycol}</option>
+                                            <option value={data.idCategory}>{data.Categorycol}</option>
                                         ))}
                                     </Select>
                                 </FormControl>

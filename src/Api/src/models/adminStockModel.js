@@ -51,7 +51,7 @@ async function getTotalStockProductsPrice() {
 
 }
 
-async function updateProductAttributes(nome, preco, quantidade, idStock, statusProduto) {
+async function updateProductAttributes(nome, preco, quantidade, idStock, statusProduto, idCategoria) {
     try {
         const result = await new Promise((resolve, reject) => {
             conn.query("UPDATE stock set nome = ?, preco = ?, quantidade = ?, statusItens_idstatusItens = ?  where idStock = ?  ", [nome, preco, quantidade, statusProduto, idStock], (error, results, fields) => {
@@ -59,7 +59,13 @@ async function updateProductAttributes(nome, preco, quantidade, idStock, statusP
                 return resolve(results);
             });
         });
-        //console.log(result)
+
+        const updateCatagory = await new Promise((resolve, reject) => {
+            conn.query("UPDATE category_has_stock set Category_idCategory = ?  where Stock_idStock = ?  ", [idCategoria, idStock], (error, results, fields) => {
+                if (error) return reject(error);
+                return resolve(results);
+            });
+        });
         return result
     } catch (err) {
         console.log(err)
