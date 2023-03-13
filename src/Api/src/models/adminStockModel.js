@@ -66,11 +66,25 @@ async function updateProductAttributes(nome, preco, quantidade, idStock, statusP
     }
 }
 
-async function insertProductStock(nome, foto, preco, quantidade, statusProduto) {
+async function insertProductStock(nome, foto, preco, quantidade, statusProduto, idCategoria) {
     let IdStock = ''
     try {
         const result = await new Promise((resolve, reject) => {
             conn.query("INSERT INTO stock VALUES (?, ?, ?, ?, ?, ?)", [IdStock, nome, foto, preco, quantidade, statusProduto], (error, results, fields) => {
+                if (error) return reject(error);
+                return resolve(results);
+            });
+        });
+
+        const lastInsert = await new Promise((resolve, reject) => {
+            conn.query("SELECT idStock from stock ORDER BY idStock DESC LIMIT 1", (error, results, fields) => {
+                if (error) return reject(error);
+                return resolve(JSON.stringify(results[0].idStock));
+            });
+        });
+
+        const updateTableCategoria = await new Promise((resolve, reject) => {
+            conn.query("INSERT INTO category_has_stock VALUES (?, ?, ?)", [idCategoria, lastInsert, 1 ], (error, results, fields) => {
                 if (error) return reject(error);
                 return resolve(results);
             });

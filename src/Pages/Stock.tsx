@@ -59,8 +59,8 @@ export default function StockPage(props: any) {
     });
 
     const [nomeCategoria, setNomeCategoria] = useState('');
-    const [allCategories, setAllCategories] = useState([{ 'Categorycol': 'Categorycol' }])
-    console.log(`todas categorias ${JSON.stringify(allCategories)}`)
+    const [allCategories, setAllCategories] = useState([{'idCategory': 'idCategory', 'Categorycol': 'Categorycol' }])
+    const [updateCategoria, setUpdateCategoria] = useState('');
 
     //Modal
     const { isOpen, onOpen: onOpenModal, onClose } = useDisclosure()
@@ -148,7 +148,9 @@ export default function StockPage(props: any) {
         }
     }
     const handleChangeDropDownCategory = (e: any) => {
-
+        e.preventDefault()
+        console.log(`CETEGORIA: ${e.target.value}`)
+        setUpdateCategoria(e.target.value)
     }
 
 
@@ -156,8 +158,8 @@ export default function StockPage(props: any) {
     const handleSubmitAddProduct = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
         const insertProductStock = async () => {
-            console.log(`base64 foto = ${JSON.stringify(postImage)}`)
-            await insertStockProducts({ nome: nomeProduto, foto: postImage, preco: preco, quantidade: quantidade, status: statusProdutoHabilitado })
+            //console.log(`base64 foto = ${JSON.stringify(postImage)}`)
+            await insertStockProducts({ nome: nomeProduto, foto: postImage, preco: preco, quantidade: quantidade, status: statusProdutoHabilitado, nomeCategoria: updateCategoria })
         }
         insertProductStock()
         onClose()
@@ -309,6 +311,7 @@ export default function StockPage(props: any) {
         setQuantidade(0)
         setPreco(0)
         setNomeCategoria('')
+        getAllCategories()
     }
 
     return (
@@ -608,7 +611,7 @@ export default function StockPage(props: any) {
                                     </Select>
                                     <Select placeholder='Categoria' onChange={handleChangeDropDownCategory} mb={2} >
                                         {allCategories.map((data, index) => (
-                                            <option value='Ativado'>{data.Categorycol}</option>
+                                            <option value={data.idCategory}>{data.Categorycol}</option>
                                         ))}
                                     </Select>
                                 </FormControl>

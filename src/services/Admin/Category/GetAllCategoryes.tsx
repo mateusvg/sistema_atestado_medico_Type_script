@@ -13,7 +13,6 @@ export const getAllCategoryService = async () => {
         })
         if (response.ok) {
             const jsonObj = await response.json();
-            console.log(`getAll categoryes ${JSON.stringify(jsonObj)}`)
             return jsonObj
         }
     } catch (error) {

@@ -1,6 +1,7 @@
 import { relativeURI } from '../../../helpers/RelativeURI'
 const uriRelative = relativeURI()
 export const insertStockProducts = async (...props: any) => {
+    console.log(...props)
     if (props[0].status === 'Ativado') {
         props[0].status = 1
       } else if (props[0].status === 'Inativo'){
@@ -8,7 +9,7 @@ export const insertStockProducts = async (...props: any) => {
       } else if (props[0].status ===''){
         props[0].status = 2
       }
-    console.log(JSON.stringify(props[0].status) + "propriedades")
+    //console.log(JSON.stringify(props[0]) + "propriedades......................")
     const uri = `${uriRelative}admin/stock/products/add`
     try {
         const response = await fetch(

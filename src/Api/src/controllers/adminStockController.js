@@ -35,11 +35,13 @@ exports.insertProductStock = async (req, res, next) => {
     console.log("insertProductsStockAttributes")
     let nome = req.body.nome
     let foto = req.body.foto.foto
-    console.log(foto)
+    //console.log(foto)
     let preco = req.body.preco
     let quantidade = req.body.quantidade
     let statusProduto = req.body.status
-    const data = await adminStock.insertProductStock(nome, foto, preco, quantidade, statusProduto)
+    let idCategoria = req.body.nomeCategoria
+    console.log(`id categoria ${idCategoria}`)
+    const data = await adminStock.insertProductStock(nome, foto, preco, quantidade, statusProduto, idCategoria)
     res.status(200).send(data);
 };
 
