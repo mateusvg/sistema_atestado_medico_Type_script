@@ -19,7 +19,7 @@ import {
 } from '@chakra-ui/react'
 import { useContext, useEffect, useState } from 'react'
 import { Context } from '../contexts/Context'
-import { getAllStockRegistersAdmin } from '../services/Admin/Stock/getAllStockRegistersAdmin'
+import { getAllStockRegistersAdminStatusActive } from '../services/Admin/Stock/getAllStockRegistersAdmin'
 import { CloseIcon } from '@chakra-ui/icons'
 
 export default function SearchComponentSales(props: any) {
@@ -38,7 +38,7 @@ export default function SearchComponentSales(props: any) {
     //Get all registers
     const [result, setResult] = useState<resultProps[]>([]);
     const getAllRegistersStockProducts = async () => {
-        const data = await getAllStockRegistersAdmin()
+        const data = await getAllStockRegistersAdminStatusActive()
         setResult(data)
     }
 

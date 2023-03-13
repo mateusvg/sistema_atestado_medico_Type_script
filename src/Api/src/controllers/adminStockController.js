@@ -6,6 +6,13 @@ exports.get = async (req, res, next) => {
     res.status(200).send(data);
 };
 
+exports.getStatusActive = async (req, res, next) => {
+    console.log("stockTableControllerStatusActive")
+    const data = await adminStock.viewAllRegistersStockStatusActive()
+    res.status(200).send(data);
+};
+
+
 exports.getTotalStockProducts = async (req, res, next) => {
     console.log("countTotalStockProducts")
     const data = await adminStock.viewAllProductsStock()

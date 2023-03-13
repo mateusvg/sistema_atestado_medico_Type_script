@@ -8,7 +8,24 @@ async function viewAllRegistersStock() {
                 return resolve(results);
             });
         });
-       // console.log(result)
+        // console.log(result)
+        let tratado = JSON.stringify(result)
+        return tratado
+    } catch (err) {
+        console.log(err)
+    }
+
+}
+
+async function viewAllRegistersStockStatusActive() {
+    try {
+        const result = await new Promise((resolve, reject) => {
+            conn.query('SELECT * FROM stock INNER JOIN statusitens ON statusitens.idstatusItens = stock.statusItens_idstatusItens INNER JOIN category_has_stock on category_has_stock.Stock_idStock = stock.idStock INNER JOIN category on category.idCategory = category_has_stock.Category_idCategory where category_has_stock.Stock_statusItens_idstatusItens = 1', (error, results, fields) => {
+                if (error) return reject(error);
+                return resolve(results);
+            });
+        });
+        // console.log(result)
         let tratado = JSON.stringify(result)
         return tratado
     } catch (err) {
@@ -90,7 +107,7 @@ async function insertProductStock(nome, foto, preco, quantidade, statusProduto, 
         });
 
         const updateTableCategoria = await new Promise((resolve, reject) => {
-            conn.query("INSERT INTO category_has_stock VALUES (?, ?, ?)", [idCategoria, lastInsert, 1 ], (error, results, fields) => {
+            conn.query("INSERT INTO category_has_stock VALUES (?, ?, ?)", [idCategoria, lastInsert, statusProduto], (error, results, fields) => {
                 if (error) return reject(error);
                 return resolve(results);
             });
@@ -105,7 +122,7 @@ async function insertProductStock(nome, foto, preco, quantidade, statusProduto, 
 async function deleteProductStock(id) {
     try {
         const result = await new Promise((resolve, reject) => {
-            console.log("id product"+ id)
+            console.log("id product" + id)
             conn.query("DELETE FROM stock WHERE idStock = ?  ", [id], (error, results, fields) => {
                 if (error) return reject(error);
                 return resolve(results);
@@ -119,6 +136,6 @@ async function deleteProductStock(id) {
 }
 
 
-module.exports = { viewAllRegistersStock, viewAllProductsStock, updateProductAttributes, getTotalStockProductsPrice, insertProductStock, deleteProductStock }
+module.exports = { viewAllRegistersStock, viewAllRegistersStockStatusActive, viewAllProductsStock, updateProductAttributes, getTotalStockProductsPrice, insertProductStock, deleteProductStock }
 
 // SELECT * FROM `form` INNER JOIN `statusporcpf` ON `statusporcpf`.`idtable1` = `form`.`status` WHERE `form`.`CPF` ='787.571.100-26'
