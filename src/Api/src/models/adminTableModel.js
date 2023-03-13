@@ -8,7 +8,7 @@ async function viewAllRegistersTable() {
                 return resolve(results);
             });
         });
-        console.log(result)
+        //console.log(result)
         let tratado = JSON.stringify(result)
         return tratado
     } catch (err) {
