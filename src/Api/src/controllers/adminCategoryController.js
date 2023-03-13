@@ -7,3 +7,9 @@ exports.addCategory = async (req, res, next) => {
     const data = await adminSale.addCategory(nomeCategoria)
     res.status(200).send(data);
 };
+
+exports.getAllCategory = async (req, res, next) => {
+    console.log("get all Category")
+    const data = await adminSale.getAllCategory()
+    res.status(200).send(data);
+};

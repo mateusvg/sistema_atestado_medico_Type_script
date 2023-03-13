@@ -46,6 +46,7 @@ import { getTotalProductsStock } from '../services/Admin/Stock/getTotalProductsS
 import { getTotalPriceProductsInStock } from '../services/Admin/Stock/getTotalPriceProductsInStock'
 import { insertStockProducts } from '../services/Admin/Stock/insertStockProduct'
 import { addCategoryService } from '../services/Admin/Category/AddCategory'
+import { getAllCategoryService } from '../services/Admin/Category/GetAllCategoryes'
 
 export default function StockPage(props: any) {
     const [nomeProduto, setNomeProduto] = useState('');
@@ -58,7 +59,8 @@ export default function StockPage(props: any) {
     });
 
     const [nomeCategoria, setNomeCategoria] = useState('');
-
+    const [allCategories, setAllCategories] = useState([{ 'Categorycol': 'Categorycol' }])
+    console.log(`todas categorias ${JSON.stringify(allCategories)}`)
 
     //Modal
     const { isOpen, onOpen: onOpenModal, onClose } = useDisclosure()
@@ -83,11 +85,16 @@ export default function StockPage(props: any) {
         //console.log(`DADOS.............. ${JSON.stringify(data)}`)
         setResult(data)
     }
+    const getAllCategories = async () => {
+        const data = await getAllCategoryService()
+        setAllCategories(data)
+    }
 
     const { context, setContext } = useContext(Context)
     useEffect(() => {
         getAllRegistersStockProducts()
         setContext(true)
+        getAllCategories()
         console.log(`context table ${context}`)
     }, [])
 
@@ -140,7 +147,7 @@ export default function StockPage(props: any) {
             setStatusProdutoHabilitado('2')
         }
     }
-    const handleChangeDropDownCategory = (e:any) =>{
+    const handleChangeDropDownCategory = (e: any) => {
 
     }
 
@@ -497,8 +504,9 @@ export default function StockPage(props: any) {
                                     </Select>
 
                                     <Select placeholder='Categoria' onChange={handleChangeDropDownCategory} mb={2} >
-                                        <option value='Ativado'>CATEGORIA TESTE</option>
-                                        <option value='Inativado'>Inativo</option>
+                                        {allCategories.map((data, index) => (
+                                            <option value='Ativado'>{data.Categorycol}</option>
+                                        ))}
                                     </Select>
                                 </FormControl>
                             </ModalBody>
@@ -594,13 +602,14 @@ export default function StockPage(props: any) {
                                             </NumberInputStepper>
                                         </NumberInput>
                                     </InputGroup>
-                                    <Select placeholder='Selecione o status' onChange={handleChangeDropDown}  mb={2}>
+                                    <Select placeholder='Selecione o status' onChange={handleChangeDropDown} mb={2}>
                                         <option value='Ativado'>Ativado</option>
                                         <option value='Inativado'>Inativo</option>
                                     </Select>
                                     <Select placeholder='Categoria' onChange={handleChangeDropDownCategory} mb={2} >
-                                        <option value='Ativado'>CATEGORIA TESTE</option>
-                                        <option value='Inativado'>Inativo</option>
+                                        {allCategories.map((data, index) => (
+                                            <option value='Ativado'>{data.Categorycol}</option>
+                                        ))}
                                     </Select>
                                 </FormControl>
                             </ModalBody>
