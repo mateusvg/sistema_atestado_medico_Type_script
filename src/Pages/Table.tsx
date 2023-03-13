@@ -100,7 +100,7 @@ export default function TablePage(props: any) {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
         const updateStatus = async () => {
-            const updateStatusAdminTable = await updateStatusTableAdmin({ status: status, cpf: cpf })
+            await updateStatusTableAdmin({ status: status, cpf: cpf })
         }
         updateStatus()
         onClose()
@@ -110,15 +110,16 @@ export default function TablePage(props: any) {
         }, 100)
     };
 
-    const setStatusColorIcon = (Status: string) => {
-        if (Status === 'Reprovado') {
-            return 'red.500'
-        } else if (Status === 'Aprovado') {
-            return 'green.500'
-        } else {
-            return 'blue.500'
-        }
-    }
+    ////Method static status color
+    // const setStatusColorIcon = (Status: string) => {
+    //     if (Status === 'Reprovado') {
+    //         return 'red.500'
+    //     } else if (Status === 'Aprovado') {
+    //         return 'green.500'
+    //     } else {
+    //         return 'blue.500'
+    //     }
+    // }
 
     const setStatusColorIconChakra = (Status: string) => {
         if (Status === 'Reprovado') {
@@ -170,7 +171,7 @@ export default function TablePage(props: any) {
     function handleDelete(e: any) {
         e.preventDefault()
         const deleteSchedule = async () => {
-            const deleteTableById = await deleteTableRegister({ id: idDelete })
+            await deleteTableRegister({ id: idDelete })
         }
         deleteSchedule()
         onCloseDelete()
@@ -186,9 +187,8 @@ export default function TablePage(props: any) {
         const element = document.createElement("a")
         let novoArray: any = ["ID", "CPF", "Status", "Aptidão"]
         let arraySemAnexo: any = []
-        result.map(function (item, indice, array) {
-            arraySemAnexo.push(` \n ${result[indice]['idForm']}, ${result[indice]['cpf']} , ${result[indice]['Status']} , ${result[indice]['aptidao']}`)
-            console.log(item)
+        result.map(function (item, indice) {
+            return arraySemAnexo.push(` \n ${result[indice]['idForm']}, ${result[indice]['cpf']} , ${result[indice]['Status']} , ${result[indice]['aptidao']}`)
         });
 
         const file = new Blob([`${novoArray} \n ${arraySemAnexo}`]);

@@ -257,9 +257,8 @@ export default function StockPage(props: any) {
         const element = document.createElement("a")
         let novoArray: any = ["ID", "NOME", "PRECO", "QUANTIDADE"]
         let arraySemAnexo: any = []
-        result.map(function (item, indice, array) {
-            arraySemAnexo.push(` \n ${result[indice]['idStock']}, ${result[indice]['nome']} ,${result[indice]['preco']} , ${result[indice]['quantidade']}`)
-            console.log(item)
+        result.map(function (item, indice) {
+            return arraySemAnexo.push(` \n ${result[indice]['idStock']}, ${result[indice]['nome']} ,${result[indice]['preco']} , ${result[indice]['quantidade']}`)
         });
 
         const file = new Blob([`${novoArray} \n ${arraySemAnexo}`]);
