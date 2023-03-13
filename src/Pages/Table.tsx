@@ -37,7 +37,7 @@ import { deleteTableRegister } from '../services/Admin/TableAdmin/deleteRegister
 import { updateStatusTableAdmin } from '../services/Admin/TableAdmin/updateStatusTable'
 import { getAllRegistersAdmin } from '../services/Admin/TableAdmin/getAllRegisterTable'
 import { getStatusCountRegistersAdmin } from '../services/Admin/TableAdmin/getStatusCountAdminTable'
-
+import { mask } from "../utils/MaskFormaterCPF"
 
 export default function TablePage(props: any) {
 
@@ -132,9 +132,9 @@ export default function TablePage(props: any) {
 
     const [searchInput, setSearchInput] = useState("")
     const handleChange = (e: any) => {
+        const { value } = e.target
         e.preventDefault()
-        console.log(searchInput)
-        setSearchInput(e.target.value)
+        setSearchInput(mask(value))
     }
     if (searchInput.length > 0) {
         result.filter((data) => {
@@ -245,6 +245,7 @@ export default function TablePage(props: any) {
                             id="outlined-basic"
                             onChange={handleChange}
                             value={searchInput}
+                            maxLength={14}
                         />
                     </InputGroup>
                 </Stack>

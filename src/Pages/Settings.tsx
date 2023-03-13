@@ -35,13 +35,27 @@ export default function SettingsPage() {
                                 setSenha(e.target.value)
                             } />
                     </InputGroup>
-                    <Button
-                        colorScheme={state === 'success' ? 'green' : 'blue'}
-                        isLoading={state === 'submitting'}
-                        w="100%"
-                        type={state === 'success' ? 'button' : 'submit'}>
-                        {state === 'success' ? <CheckIcon /> : 'Alterar'}
-                    </Button>
+
+                    <Stack mt={4}>
+                        <InputGroup mt={4}>
+                            <InputLeftAddon children='Nova Senha:' />
+                            <Input
+                                type='password'
+                                placeholder='Senha'
+                                required
+                                disabled={state !== 'initial'}
+                                onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                                    setSenha(e.target.value)
+                                } />
+                        </InputGroup>
+                        <Button
+                            colorScheme={state === 'success' ? 'green' : 'blue'}
+                            isLoading={state === 'submitting'}
+                            w="100%"
+                            type={state === 'success' ? 'button' : 'submit'}>
+                            {state === 'success' ? <CheckIcon /> : 'Alterar'}
+                        </Button>
+                    </Stack>
                 </Stack>
             </Center>
         </Stack>
