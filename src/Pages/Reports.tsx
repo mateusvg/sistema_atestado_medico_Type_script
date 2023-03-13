@@ -1,4 +1,3 @@
-
 import {
     Accordion,
     AccordionItem,
@@ -7,7 +6,6 @@ import {
     AccordionIcon,
     Box,
     Button, 
-    Center
 } from '@chakra-ui/react'
 
 export default function Reports() {

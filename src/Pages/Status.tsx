@@ -1,4 +1,4 @@
-import { FormEvent, useState } from 'react';
+import React, { FormEvent, useState } from 'react';
 import { mask } from "../utils/MaskFormaterCPF"
 import {
     Stack,
@@ -10,9 +10,6 @@ import {
     Text,
     Container,
     Flex,
-} from '@chakra-ui/react';
-import { CheckIcon } from '@chakra-ui/icons';
-import {
     Modal,
     ModalOverlay,
     ModalContent,
@@ -20,9 +17,10 @@ import {
     ModalFooter,
     ModalBody,
     ModalCloseButton,
-} from '@chakra-ui/react'
-import { useDisclosure } from '@chakra-ui/react'
-import React from 'react';
+    useDisclosure
+} from '@chakra-ui/react';
+
+import { CheckIcon } from '@chakra-ui/icons';
 import { getStatusUser } from '../services/User/getStatusUser'
 
 export default function StatusPage() {

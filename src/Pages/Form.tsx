@@ -10,11 +10,6 @@ import {
     Text,
     Container,
     Flex,
-} from '@chakra-ui/react';
-import { CheckIcon } from '@chakra-ui/icons';
-import { Radio, RadioGroup } from '@chakra-ui/react'
-import { useNavigate } from 'react-router-dom';
-import {
     Modal,
     ModalOverlay,
     ModalContent,
@@ -22,8 +17,12 @@ import {
     ModalFooter,
     ModalBody,
     ModalCloseButton,
-} from '@chakra-ui/react'
-import { useDisclosure } from '@chakra-ui/react'
+    useDisclosure,
+    Radio, 
+    RadioGroup
+} from '@chakra-ui/react';
+import { CheckIcon } from '@chakra-ui/icons';
+import { useNavigate } from 'react-router-dom';
 import { postFormUser } from '../services/User/postFormUser'
 
 export default function FormPage() {

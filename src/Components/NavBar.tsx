@@ -18,7 +18,6 @@ import {
 import {
     HamburgerIcon,
     CloseIcon,
-    ChevronDownIcon,
 } from '@chakra-ui/icons'
 import Menu from './Menu'
 import Logo from '../assets/img/Logo.png'

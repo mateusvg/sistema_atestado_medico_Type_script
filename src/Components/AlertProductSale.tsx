@@ -1,4 +1,4 @@
-import { Button, Center, useToast, Wrap, WrapItem } from "@chakra-ui/react"
+import { Button, useToast, Wrap, WrapItem } from "@chakra-ui/react"
 
 export default function ToastStatusExample() {
 

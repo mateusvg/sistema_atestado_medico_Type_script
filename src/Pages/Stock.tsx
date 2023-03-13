@@ -1,4 +1,5 @@
-import { useState, useEffect, ChangeEvent } from 'react';
+import React,{ useContext, useState, useEffect, ChangeEvent } from 'react';
+import { Context } from "../contexts/Context";
 import { EditIcon, Search2Icon, DeleteIcon, AddIcon } from '@chakra-ui/icons'
 import CircleStatus from '../components/StatusCircleChakra'
 import {
@@ -37,16 +38,13 @@ import {
     Text
 } from '@chakra-ui/react'
 
+//Services
 import { deleteProductsStock } from '../services/Admin/Stock/deleteStockProduct'
 import { updateStockProductsAttributes } from '../services/Admin/Stock/updateStockProductsAttributes'
 import { getAllStockRegistersAdmin } from '../services/Admin/Stock/getAllStockRegistersAdmin'
 import { getTotalProductsStock } from '../services/Admin/Stock/getTotalProductsStock'
 import { getTotalPriceProductsInStock } from '../services/Admin/Stock/getTotalPriceProductsInStock'
 import { insertStockProducts } from '../services/Admin/Stock/insertStockProduct'
-
-import React, { useContext } from "react";
-import { Context } from "../contexts/Context";
-
 
 export default function StockPage(props: any) {
     const [nomeProduto, setNomeProduto] = useState('');

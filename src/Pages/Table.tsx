@@ -1,10 +1,14 @@
-import { Center, FormControl, Input, InputLeftElement } from '@chakra-ui/react';
 import { CircleIcon } from '../components/CircleIconStatus'
 import { EditIcon, DownloadIcon, Search2Icon, DeleteIcon } from '@chakra-ui/icons'
-import { Button } from '@chakra-ui/react';
-import { useState, useEffect } from 'react';
+import React,{ useState, useEffect, useContext } from 'react';
+import { Context } from "../contexts/Context";
 import CircleStatus from '../components/StatusCircleChakra'
 import {
+    Center, 
+    FormControl, 
+    Input, 
+    InputLeftElement,
+    Button,
     Modal,
     ModalOverlay,
     ModalContent,
@@ -24,16 +28,16 @@ import {
     InputGroup,
     Text,
     Box,
-    Stack
+    Stack,
+    useDisclosure
 } from '@chakra-ui/react'
 
-import { useDisclosure } from '@chakra-ui/react'
+//Services
 import { deleteTableRegister } from '../services/Admin/TableAdmin/deleteRegisterTable'
 import { updateStatusTableAdmin } from '../services/Admin/TableAdmin/updateStatusTable'
 import { getAllRegistersAdmin } from '../services/Admin/TableAdmin/getAllRegisterTable'
 import { getStatusCountRegistersAdmin } from '../services/Admin/TableAdmin/getStatusCountAdminTable'
-import React, { useContext } from "react";
-import { Context } from "../contexts/Context";
+
 
 export default function TablePage(props: any) {
 

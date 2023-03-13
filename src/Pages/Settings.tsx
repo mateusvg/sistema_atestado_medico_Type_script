@@ -5,7 +5,6 @@ import {
     InputLeftAddon,
     Input,
     Button
-
 } from '@chakra-ui/react'
 import { CheckIcon } from '@chakra-ui/icons';
 import { ChangeEvent, useState } from 'react';
@@ -14,7 +13,7 @@ export default function SettingsPage() {
     const [state, setState] = useState<'initial' | 'submitting' | 'success'>(
         'initial'
     );
-    const [senha, setSenha]= useState('')
+    const [senha, setSenha] = useState('')
     return (
         <Stack mt={10}>
             <Center mb={5}>Configurações</Center>

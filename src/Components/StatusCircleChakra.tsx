@@ -1,5 +1,4 @@
-import { Box, Flex, keyframes, Tooltip } from '@chakra-ui/react';
-import React from 'react';
+import { Box, Flex, keyframes } from '@chakra-ui/react';
 
 export default function StatusIndicator(props: any) {
   const activeColor = `${props.status}`;

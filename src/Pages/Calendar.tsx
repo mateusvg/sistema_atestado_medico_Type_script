@@ -3,8 +3,22 @@ import Calendar from 'react-calendar'
 import 'react-calendar/dist/Calendar.css'
 import { mask } from "../utils/MaskFormaterCPF"
 import { phoneMask } from "../utils/MaskPhone"
-import { Center, Text, Stack, FormControl, useColorModeValue, Input, Button, Box, Divider, Spacer, Thead, Tr, Th, Table, Tbody, Td, TableContainer, TableCaption, Select } from '@chakra-ui/react'
-import {
+import { Center, 
+    Text, 
+    Stack, 
+    FormControl, 
+    useColorModeValue, 
+    Input, 
+    Button, 
+    Thead, 
+    Tr, 
+    Th, 
+    Table, 
+    Tbody, 
+    Td, 
+    TableContainer, 
+    TableCaption, 
+    Select,
     Modal,
     ModalOverlay,
     ModalContent,
@@ -12,9 +26,11 @@ import {
     ModalFooter,
     ModalBody,
     ModalCloseButton,
-} from '@chakra-ui/react'
-import { useDisclosure } from '@chakra-ui/react'
+    useDisclosure
+ } from '@chakra-ui/react'
 import { CheckIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons';
+
+//Services
 import { deleteScheduleApointment } from '../services/Admin/CalendarSchedule/deleteSchedule'
 import { updateScheduleApointment } from '../services/Admin/CalendarSchedule/updateScheduleApointment'
 import { getAllScheduleApointments } from '../services/Admin/CalendarSchedule/getAllSchedule'
@@ -137,16 +153,16 @@ export default function () {
         }, 100)
     }
 
-    function colorBackGroundbutton(status :any) {
-        if(status ==='Remarcado'){
+    function colorBackGroundbutton(status: any) {
+        if (status === 'Remarcado') {
             return 'orange'
-        }else if(status ==='Confirmado'){
+        } else if (status === 'Confirmado') {
             return 'green'
         }
-        else if (status ==='A Confirmar'){
+        else if (status === 'A Confirmar') {
             return 'yellow'
         }
-        else if (status ==='Agendado'){
+        else if (status === 'Agendado') {
             return 'gray'
         }
 
