@@ -45,7 +45,7 @@ export default function Login() {
                 const response = await parsedValue[0]?.AdminUserEmail
                 const senha = await parsedValue[0]?.AdminUserPassword
                 console.log(`responsta e :${response}`)
-                if (response === user && senha === password ) {
+                if (response === user && senha === password) {
                     setContext(true)
                     navigate('table')
                 } else {
@@ -58,7 +58,7 @@ export default function Login() {
             }
         }
         authUser()
-    
+
     };
 
     return (

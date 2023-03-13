@@ -1,4 +1,4 @@
-import React,{ useContext, useState, useEffect, ChangeEvent } from 'react';
+import React, { useContext, useState, useEffect, ChangeEvent } from 'react';
 import { Context } from "../contexts/Context";
 import { EditIcon, Search2Icon, DeleteIcon, AddIcon } from '@chakra-ui/icons'
 import CircleStatus from '../components/StatusCircleChakra'

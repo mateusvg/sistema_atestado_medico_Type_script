@@ -3,21 +3,22 @@ import Calendar from 'react-calendar'
 import 'react-calendar/dist/Calendar.css'
 import { mask } from "../utils/MaskFormaterCPF"
 import { phoneMask } from "../utils/MaskPhone"
-import { Center, 
-    Text, 
-    Stack, 
-    FormControl, 
-    useColorModeValue, 
-    Input, 
-    Button, 
-    Thead, 
-    Tr, 
-    Th, 
-    Table, 
-    Tbody, 
-    Td, 
-    TableContainer, 
-    TableCaption, 
+import {
+    Center,
+    Text,
+    Stack,
+    FormControl,
+    useColorModeValue,
+    Input,
+    Button,
+    Thead,
+    Tr,
+    Th,
+    Table,
+    Tbody,
+    Td,
+    TableContainer,
+    TableCaption,
     Select,
     Modal,
     ModalOverlay,
@@ -27,7 +28,7 @@ import { Center,
     ModalBody,
     ModalCloseButton,
     useDisclosure
- } from '@chakra-ui/react'
+} from '@chakra-ui/react'
 import { CheckIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons';
 
 //Services
@@ -49,7 +50,7 @@ export default function () {
         e.preventDefault()
 
         const postScheduleApointment = async () => {
-            const resp = updateScheduleApointment({ nomePaciente: nomePaciente, cpf: cpf, date: data, phone: phone })
+            await updateScheduleApointment({ nomePaciente: nomePaciente, cpf: cpf, date: data, phone: phone })
         }
         postScheduleApointment()
         setNomePaciente('')

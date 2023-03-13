@@ -18,7 +18,7 @@ import {
     ModalBody,
     ModalCloseButton,
     useDisclosure,
-    Radio, 
+    Radio,
     RadioGroup
 } from '@chakra-ui/react';
 import { CheckIcon } from '@chakra-ui/icons';

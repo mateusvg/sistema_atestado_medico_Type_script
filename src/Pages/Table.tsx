@@ -1,12 +1,12 @@
 import { CircleIcon } from '../components/CircleIconStatus'
 import { EditIcon, DownloadIcon, Search2Icon, DeleteIcon } from '@chakra-ui/icons'
-import React,{ useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Context } from "../contexts/Context";
 import CircleStatus from '../components/StatusCircleChakra'
 import {
-    Center, 
-    FormControl, 
-    Input, 
+    Center,
+    FormControl,
+    Input,
     InputLeftElement,
     Button,
     Modal,
@@ -120,7 +120,7 @@ export default function TablePage(props: any) {
         }
     }
 
-    const setStatusColorIconChakra= (Status: string) => {
+    const setStatusColorIconChakra = (Status: string) => {
         if (Status === 'Reprovado') {
             return 'red.500'
         } else if (Status === 'Aprovado') {
@@ -184,15 +184,15 @@ export default function TablePage(props: any) {
     // Download file report XLS OR TXT
     function downloadFile(e: any) {
         const element = document.createElement("a")
-        let novoArray : any =["ID", "CPF", "Status", "Aptidão"] 
-        let arraySemAnexo : any =[]
+        let novoArray: any = ["ID", "CPF", "Status", "Aptidão"]
+        let arraySemAnexo: any = []
         result.map(function (item, indice, array) {
-            arraySemAnexo.push(` \n ${result[indice]['idForm']}, ${result[indice]['cpf']} , ${result[indice]['Status']} , ${result[indice]['aptidao']}` ) 
+            arraySemAnexo.push(` \n ${result[indice]['idForm']}, ${result[indice]['cpf']} , ${result[indice]['Status']} , ${result[indice]['aptidao']}`)
             console.log(item)
-          });
-        
+        });
+
         const file = new Blob([`${novoArray} \n ${arraySemAnexo}`]);
-        
+
         e.preventDefault()
         if (e.target.value === 'XLSX') {
             element.href = URL.createObjectURL(file);
@@ -287,7 +287,7 @@ export default function TablePage(props: any) {
                                     <Td>{post.nomeMedico}</Td>
                                     <Td>{post.aptidao}</Td>
                                     <Td>{post.Status}</Td>
-                                    <Td><CircleStatus status={setStatusColorIconChakra(post.Status)}/></Td>
+                                    <Td><CircleStatus status={setStatusColorIconChakra(post.Status)} /></Td>
                                     {/* <Td><CircleIcon color={`${setStatusColorIcon(post.Status)}`} /></Td> */}
                                     <Td><Button onClick={() => handleOpenModal(post.cpf, post.Status)}><EditIcon /></Button></Td>
                                     <Td><Button colorScheme='red' onClick={() => handleOpenModalDelete(post.idForm, post.cpf)}> <DeleteIcon /></Button></Td>

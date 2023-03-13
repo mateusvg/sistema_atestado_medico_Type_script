@@ -6,7 +6,6 @@ import {
     Button,
     Stack,
     Collapse,
-    Icon,
     Link,
     useColorModeValue,
     useBreakpointValue,
@@ -23,7 +22,7 @@ import Menu from './Menu'
 import Logo from '../assets/img/Logo.png'
 import { useNavigate } from 'react-router-dom';
 
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { Context } from "../contexts/Context";
 
 export default function WithSubnavigation() {
