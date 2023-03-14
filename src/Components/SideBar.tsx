@@ -216,7 +216,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                 fontSize="2xl"
                 fontFamily="monospace"
                 fontWeight="bold">
-                Logo
+                <img src={Logo} alt="Logo" onClick={() => navigate('/')} />
             </Text>
 
             <HStack spacing={{ base: '0', md: '6' }}>
