@@ -10,10 +10,12 @@ import Settings from './pages/Settings'
 import Stock from './pages/Stock'
 import Vendas from './pages/Vendas'
 import Reports from './pages/Reports'
+import SideBar from './components/SideBar'
 
 import { useState } from 'react';
 
 import { Context } from "./contexts/Context";
+import { Stack } from '@chakra-ui/react';
 
 const App = () => {
   const [context, setContext] = useState(false);
@@ -22,22 +24,33 @@ const App = () => {
 
   return (
     <>
-      <Context.Provider value={{context, setContext}}>
-      <NavBar  />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/form" element={<Form />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/login/calendar" element={<Calendar />} />
-        <Route path="/login/table" element={<Table  />} />
-        <Route path="/status" element={<Status />} />
-        <Route path="/form/status" element={<Status />} />
-        <Route path="/login/settings" element={<Settings />} />
-        <Route path="/login/stock" element={<Stock/>} />
-        <Route path="/login/vendas" element={<Vendas/>} />
-        <Route path="/login/reports" element={<Reports/>} />
-      </Routes>
-    </Context.Provider>
+      <Context.Provider value={{ context, setContext }}>
+        {context ? <SideBar >
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/form" element={<Form />} />
+            <Route path="/login/calendar" element={<Calendar />} />
+            <Route path="/login/table" element={<Table />} />
+            <Route path="/status" element={<Status />} />
+            <Route path="/form/status" element={<Status />} />
+            <Route path="/login/settings" element={<Settings />} />
+            <Route path="/login/stock" element={<Stock />} />
+            <Route path="/login/vendas" element={<Vendas />} />
+            <Route path="/login/reports" element={<Reports />} />
+          </Routes>
+        </SideBar> :
+
+          <Stack>
+            <NavBar />
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/form" element={<Form />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/status" element={<Status />} />
+            </Routes>
+          </Stack>
+        }
+      </Context.Provider>
     </>
   );
 };
