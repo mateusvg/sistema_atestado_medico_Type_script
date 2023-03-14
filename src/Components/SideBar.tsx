@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from 'react';
+import { ReactNode, useContext } from 'react';
 import {
     IconButton,
     Avatar,
@@ -7,7 +7,6 @@ import {
     Flex,
     HStack,
     VStack,
-    Icon,
     useColorModeValue,
     Link,
     Drawer,
@@ -22,14 +21,9 @@ import {
     MenuItem,
     MenuList,
     Stack,
-    Button,
 } from '@chakra-ui/react';
 import {
     FiHome,
-    FiTrendingUp,
-    FiCompass,
-    FiStar,
-    FiSettings,
     FiMenu,
     FiBell,
     FiChevronDown,
@@ -39,14 +33,9 @@ import {
     FiBox,
     FiUsers
 } from 'react-icons/fi';
-import { useContext } from "react";
 import { Context } from "../contexts/Context";
-
-import { IconType } from 'react-icons';
 import Logo from '../assets/img/Logo.png'
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-
 
 
 export default function SidebarWithHeader({
