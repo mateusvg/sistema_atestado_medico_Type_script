@@ -36,6 +36,7 @@ import {
 import { Context } from "../contexts/Context";
 import Logo from '../assets/img/Logo.png'
 import { useNavigate } from 'react-router-dom';
+import MenuSideBar from './MenuSidebar'
 
 
 export default function SidebarWithHeader({
@@ -97,8 +98,8 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
                 </Text>
 
                 <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
-
             </Flex>
+{/* <MenuSideBar/> */}
 
                 <NavItem onClick={() => navigate('/')}>
                     <Stack mr={2}>

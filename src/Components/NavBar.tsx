@@ -295,6 +295,14 @@ const MobileNavItem = () => {
                 >
                     Status
                 </Text>
+                <Text
+                    m={2}
+                    fontWeight={600}
+                    color={color}
+                    onClick={() => navigate('login')}
+                >
+                    Login
+                </Text>
             </Flex>
         </Stack>
     );
